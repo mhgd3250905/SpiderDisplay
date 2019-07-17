@@ -1,11 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:spider_display/Modle/huxiu_modle.dart';
+import 'package:flutter/material.dart';
+import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Views/huxiu_list_page.dart';
 
 const int PAGE_COUNT = 10;
 
 class HuxiuMainPage extends StatefulWidget {
+  @override
+  _HuxiuMainPageState createState() => new _HuxiuMainPageState();
+}
+
+class _HuxiuMainPageState extends State<HuxiuMainPage>
+    with AutomaticKeepAliveClientMixin {
   ScrollController scrollController = new ScrollController();
   GlobalKey<RefreshIndicatorState> _refreshIndicaterState =
       GlobalKey<RefreshIndicatorState>();
@@ -13,17 +19,11 @@ class HuxiuMainPage extends StatefulWidget {
   int page = 0;
 
   @override
-  _HuxiuMainPageState createState() => new _HuxiuMainPageState();
-}
-
-class _HuxiuMainPageState extends State<HuxiuMainPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
   void initState() {
     super.initState();
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.position.pixels ==
-          widget.scrollController.position.maxScrollExtent) {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
         getMoreData();
       }
     });
@@ -31,30 +31,30 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
 
   Future<List<HuxiuNews>> getData() async {
     var dio = new Dio();
-    Response response = await dio.get(getHuxiuListUrl("huxiu", widget.page));
+    Response response = await dio.get(getHuxiuListUrl("huxiu", page));
     HuxiuNewsList bean = HuxiuNewsList(response.data);
-    print("getData dataList.length= ${widget.dataList.length}");
+    print("getData dataList.length= ${dataList.length}");
     return bean.data;
   }
 
   Future<List<HuxiuNews>> resetData() async {
-    widget.page = 0;
+    page = 0;
     var dio = new Dio();
-    Response response = await dio.get(getHuxiuListUrl("huxiu", widget.page));
+    Response response = await dio.get(getHuxiuListUrl("huxiu", page));
     HuxiuNewsList bean = HuxiuNewsList(response.data);
-    widget.dataList.clear();
-    widget.dataList.addAll(bean.data);
-    print("resetData dataList.length= ${widget.dataList.length}");
+    dataList.clear();
+    dataList.addAll(bean.data);
+    print("resetData dataList.length= ${dataList.length}");
     setState(() {});
   }
 
   Future<List<HuxiuNews>> getMoreData() async {
-    widget.page++;
+    page++;
     var dio = new Dio();
-    Response response = await dio.get(getHuxiuListUrl("huxiu", widget.page));
+    Response response = await dio.get(getHuxiuListUrl("huxiu", page));
     HuxiuNewsList bean = HuxiuNewsList(response.data);
-    widget.dataList.addAll(bean.data);
-    print("getMoreData dataList.length= ${widget.dataList.length}");
+    dataList.addAll(bean.data);
+    print("getMoreData dataList.length= ${dataList.length}");
     setState(() {});
   }
 
@@ -79,11 +79,10 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
                 color: Colors.red,
               );
             }
-            widget.dataList = snapshot.data;
+            dataList = snapshot.data;
             return RefreshIndicator(
-              key: widget._refreshIndicaterState,
-              child:
-                  HuxiuNewsListPage(widget.dataList, widget.scrollController),
+              key: _refreshIndicaterState,
+              child: HuxiuNewsListPage(dataList, scrollController),
               onRefresh: resetData,
             );
             break;
@@ -95,14 +94,13 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
 
   @override
   Widget build(BuildContext context) {
-    return widget.dataList.length == 0
+    return dataList.length == 0
         ? buildFutureBuilder()
         : RefreshIndicator(
-            key: widget._refreshIndicaterState,
-            child: HuxiuNewsListPage(widget.dataList, widget.scrollController),
+            key: _refreshIndicaterState,
+            child: HuxiuNewsListPage(dataList, scrollController),
             onRefresh: resetData,
           );
-    ;
   }
 
   @override

@@ -33,6 +33,7 @@ class HuxiuNews {
   String create_time;
   String desc;
   String image_link;
+  String news_id;
   String news_link;
   String title;
   List<Category> category;
@@ -42,6 +43,7 @@ class HuxiuNews {
       {this.create_time,
       this.desc,
       this.image_link,
+      this.news_id,
       this.news_link,
       this.title,
       this.category,
@@ -51,6 +53,7 @@ class HuxiuNews {
     create_time = jsonRes['create_time'];
     desc = jsonRes['desc'];
     image_link = jsonRes['image_link'];
+    news_id = jsonRes['news_id'];
     news_link = jsonRes['news_link'];
     title = jsonRes['title'];
     category = jsonRes['category'] == null ? null : [];
@@ -67,7 +70,7 @@ class HuxiuNews {
 
   @override
   String toString() {
-    return '{"create_time": ${create_time != null ? '${json.encode(create_time)}' : 'null'},"desc": ${desc != null ? '${json.encode(desc)}' : 'null'},"image_link": ${image_link != null ? '${json.encode(image_link)}' : 'null'},"news_link": ${news_link != null ? '${json.encode(news_link)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"category": $category,"author": $author}';
+    return '{"create_time": ${create_time != null ? '${json.encode(create_time)}' : 'null'},"desc": ${desc != null ? '${json.encode(desc)}' : 'null'},"image_link": ${image_link != null ? '${json.encode(image_link)}' : 'null'},"news_id": ${news_id != null ? '${json.encode(news_id)}' : 'null'},"news_link": ${news_link != null ? '${json.encode(news_link)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"category": $category,"author": $author}';
   }
 }
 

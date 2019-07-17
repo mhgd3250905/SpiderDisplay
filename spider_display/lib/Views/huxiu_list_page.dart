@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:spider_display/Modle/huxiu_modle.dart';
+import 'package:spider_display/Modle/modle_huxiu.dart';
+import 'package:spider_display/Modle/modle_huxiu_detail.dart';
+import 'package:spider_display/Modle/test_content.dart';
+import 'package:spider_display/Utils/navigator_router_utils.dart';
+import 'package:spider_display/Views/huxiu_detail_page.dart';
 
 const TextStyle titleStyle = TextStyle(
     letterSpacing: 1.0,
@@ -28,7 +34,7 @@ class HuxiuNewsListPage extends StatelessWidget {
    * 构建列表ItemView
    */
   Widget buildHuxiuListItemView(HuxiuNews huxiuNews, int pos) {
-    return HuxiuNewsItemView_2(huxiuNews, pos);
+    return HuxiuNewsItemView_2(huxiuNews);
   }
 
   @override
@@ -63,7 +69,13 @@ class HuxiuNewsListPage extends StatelessWidget {
                 child: Ink(
                   child: InkWell(
                     child: buildHuxiuListItemView(huxiuNewsList[i], i),
-                    onTap: () {},
+                    onTap: () {
+                      HuxiuDetail detial =
+                          HuxiuDetail.fromJson(json.decode(HUXIU_DETAIL_STR));
+                      detial.huxiu_news = huxiuNewsList[i];
+                      NavigatorRouterUtils.pushToPage(
+                          context, HuxiuDetailPage(detial));
+                    },
                   ),
                 ),
               ),
@@ -75,9 +87,8 @@ class HuxiuNewsListPage extends StatelessWidget {
 
 class HuxiuNewsItemView extends StatefulWidget {
   final HuxiuNews huxiuNews;
-  final pos;
 
-  HuxiuNewsItemView(this.huxiuNews, this.pos);
+  HuxiuNewsItemView(this.huxiuNews);
 
   @override
   _HuxiuNewsItemViewState createState() => new _HuxiuNewsItemViewState();
@@ -118,7 +129,7 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
                   ),
                 ),
                 child: Hero(
-                  tag: "IMAGE${widget.pos}",
+                  tag: widget.huxiuNews.image_link,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(3.0),
@@ -186,9 +197,8 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
 
 class HuxiuNewsItemView_2 extends StatefulWidget {
   final HuxiuNews huxiuNews;
-  final pos;
 
-  HuxiuNewsItemView_2(this.huxiuNews, this.pos);
+  HuxiuNewsItemView_2(this.huxiuNews);
 
   @override
   _HuxiuNewsItemView_2State createState() => new _HuxiuNewsItemView_2State();
@@ -211,66 +221,60 @@ class _HuxiuNewsItemView_2State extends State<HuxiuNewsItemView_2>
       children: <Widget>[
         Container(
           width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                widget.huxiuNews.image_link
-                    .replaceAll("w/400/h/225", "w/800/h/450"),
-              ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              buildCategorysItemView(widget.huxiuNews),
-              Container(
-                height: 60.0,
-              ),
-              buildAuthorItemView(widget.huxiuNews),
-              Container(
-                margin: const EdgeInsets.only(
-                    left: 10.0, right: 10.0, bottom: 15.0),
-                alignment: Alignment.centerLeft,
-                width: double.infinity,
-                child: Text(
-                  widget.huxiuNews.title.trim(),
-                  style: TextStyle(
-                      letterSpacing: 1.0,
-                      fontSize: 20.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      shadows: <Shadow>[
-                        Shadow(
-                          color: Colors.black,
-                          offset: Offset(0.5, 0.5),
-                          blurRadius: 4.0,
-                        ),
-                      ]),
-                ),
-              ),
-//              Container(
-//                margin: const EdgeInsets.only(
-//                    left: 10.0, right: 10.0, top: 15.0, bottom: 15.0),
-//                alignment: Alignment.centerLeft,
-//                width: double.infinity,
-//                child: Text(
-//                  widget.huxiuNews.desc
-//                      .trim()
-//                      .replaceAll(" ", "")
-//                      .replaceAll("\n", " ")
-//                      .replaceAll("\r", ""),
-//                  style: TextStyle(
-//                      fontSize: 13.0,
-//                      color: Colors.white,
-//                      shadows: <Shadow>[
-//                        Shadow(
-//                          color: Colors.black,
-//                          offset: Offset(0.5, 0.5),
-//                          blurRadius: 4.0,
-//                        ),
-//                      ]),
-//                ),
+//          decoration: BoxDecoration(
+//            image: DecorationImage(
+//              image: NetworkImage(
+//                widget.huxiuNews.image_link,
 //              ),
+//              fit: BoxFit.cover,
+//            ),
+//          ),
+          child: Stack(
+            fit: StackFit.loose,
+            children: <Widget>[
+              Positioned(
+                child: Hero(
+                  tag: widget.huxiuNews.image_link,
+                  child: Image.network(
+                    widget.huxiuNews.image_link,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                left: 0.0,
+                top: 0.0,
+                right: 0.0,
+                bottom: 0.0,
+              ),
+              Column(
+                children: <Widget>[
+                  buildCategorysItemView(widget.huxiuNews),
+                  Container(
+                    height: widget.huxiuNews.category.length > 1 ? 80.0 : 60.0,
+                  ),
+                  buildAuthorItemView(widget.huxiuNews),
+                  Container(
+                    margin: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, bottom: 15.0),
+                    alignment: Alignment.centerLeft,
+                    width: double.infinity,
+                    child: Text(
+                      widget.huxiuNews.title.trim(),
+                      style: TextStyle(
+                          letterSpacing: 1.0,
+                          fontSize: 20.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          shadows: <Shadow>[
+                            Shadow(
+                              color: Colors.black,
+                              offset: Offset(0.5, 0.5),
+                              blurRadius: 4.0,
+                            ),
+                          ]),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

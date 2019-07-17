@@ -320,3 +320,1563 @@ const String BOOK_DETAIL_JSON_STR = '''{
         }
     ]
 }''';
+
+const HUXIU_DETAIL_STR = '''{
+    "huxiu_news": {
+        "title": "工作有益健康，一周上班一天就够了",
+        "news_link": "https://www.huxiu.com/article/306541.html",
+        "author": {
+            "author_name": "果壳?",
+            "author_img": "https://img.huxiucdn.com/auth/data/avatar/001/33/78/39_1529044281.jpg?imageView2/1/w/40/h/40/|imageMogr2/strip/interlace/1/quality/85/format/jpg",
+            "author_id": "1872067"
+        },
+        "create_time": "201907/01/160402662180",
+        "desc": "老板给不给放假，又是另一回事了",
+        "image_link": "https://img.huxiucdn.com/article/cover/201907/01/160402662180.jpg?imageView2/1/w/400/h/225/|imageMogr2/strip/interlace/1/quality/85/format/jpg",
+        "category": [
+            {
+                "category_name": "生活腔调",
+                "category_id": "4"
+            }
+        ]
+    },
+    "contents": [
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "本文来自微信公众号：",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "全媒派（ID：quanmeipai）",
+                    "text_style": 6,
+                    "extra": "https://mp.weixin.qq.com/s?__biz=MzA3MzQ1MzQzNA==&mid=2656951595&idx=1&sn=aecc5a12e69199421269a60d6027724b&chksm=84a7a73eb3d02e28df135dd525e0b58eb084239f2e2e7ae18b6a844a0a47065b176e1d36e7eb&mpshare=1&scene=1&srcid=#rd"
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，作者： 腾讯传媒，标题图来自视觉中国",
+                    "text_style": 5,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "在这个数字时代，人们接受的信息要比以往任何一个时代都多。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "无论何时何地，你都可以快速便捷地获得大量免费信息。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "但你所接触的不仅是简单的符号和文字，而是从种族冲突到全球变暖，从流行文化再到家长里短的一切话题。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "如果控制得当，这些内容能够为读者带来休闲消遣或知识增长的愉悦。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "但是，越来越明显的趋势已经表明，现在的新闻并不总能给读者带来幸福。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "快速发展的技术使得新闻更易获得，但也使得逃避新闻更加容易。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "以至于，过去几年中，“新闻回避",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（news avoidance）",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "”成为了学界研究的新主题。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604959789.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "本期全媒派独家编译，从宏观数据的整体角度和凸显细节的个体视角出发，和你聊聊现代人",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "逃避新闻",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "那些事儿。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "数说“新闻回避”",
+                    "text_style": 2,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "今年6月，路透新闻研究所联合牛津大学发布了最新一期数字新闻报道的相关数据。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "在2017年，29%的全球受访者表示他们会“经常或有时避开新闻”",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，具体到不同国家，在美国这一回避行为占比为38%，在英国为24%。而到了2019年，",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "这组数据在全球范围增加了3个百分点",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，达到32%，在美国上升到41%，英国达到35%。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（即使拥有最忠实读者的日本，回避新闻的人群占比也从2017年的6%增加到了11%）",
+                    "text_style": 5,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604885732.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "为什么人们会回避新闻？",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "第一个原因是大量新闻替代品的出现。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "正如MarkusPrior在2007年出版的《Post-Broadcast Ddemocracy》一书中提到的那样，大众一直在调整对新闻的接触。随着媒介产品的丰富，人们开始更少地消费新闻而选择其他“食物”。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "第二个原因是政治两极分化加剧，特别是情感的两极分化。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "在美国，有35%的受访者表示，自己逃避阅读新闻的原因是“无法相信新闻的真实性”，而在一定程度上，新闻不信任与政治不信任之间存在着联系。在英国，新闻回避行为快速增长的重要原因正是“受挫于英国脱欧及随之出现的困局。”",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604521343.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "此外，读者避开新闻最常见的原因还与心理情绪相关。在美国，有57%的受访人表示，自己拒绝阅读新闻的原因是：“",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（新闻）",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "对我的情绪产生了负面影响”。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "这些数据表明了新闻回避正在成为一个严重的问题。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "但这些数据无法尽可能多地帮助我们解答“为何人们逃避新闻”这一复杂问题。LinkedIn高级编辑Isabelle Roughol向读者询问新闻回避的个体体验，以定性研究的方法对新闻回避这一现象的展开了研究。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "读者说：新闻回避的定性分析",
+                    "text_style": 2,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "Isabelle Roughol在自己的领英主页抛出“你如何看待新闻回避”这一话题，人们通过评论留下了自己的看法。这一调查虽然不够严谨、科学，",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "但倾听这些来自读者的心声，对了解非新闻从业人员如何看待当下的新闻业依然具有独特价值。",
+                    "text_style": 7,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604021237.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "习得性无助",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "在不少读者看来，新闻虽然将他们与现实世界紧紧联结在一起，但是，这种了解对于个体而言，价值甚微。尤其在新闻日益热衷眼球经济和轰动效应的当下，与新闻时刻保持连接，只能让自己更加沮丧和无助。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "是的，你了解了很多，但是然后呢？你对现实无能无力，无可奈何。",
+                    "text_style": 7,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我不想再看川普正在做什么或者不做什么的新闻了。为什么？因为除了明年的投票，我什么也做不了。我期待明年，我可以投出那一票让他下台。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我在十年前开始拒绝新闻，因为我对周围发生的这一切糟心事感到沮丧，并且我意识到除了感到无助外，我无能为力。而在此之前，我曾每天至少有一个小时都在贪婪地阅读报纸。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "人类作为万物之长，我们明白自己的能力和才华，对自己的主观能动性抱有坚定的信念。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "但是，大量的新闻报道，让我们处于“习得性无助”的状态，面对关于战乱饥馑或者人性悲凉的故事，我们除了一声叹息外无能为力。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "没有人会喜欢这种无力感。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "任何人都不应该对“改变”这件事感到无助。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604454652.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "从媒体偏好的内容来看，坏消息就是好新闻。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "但是大量的消极信息，除了对个人心理存在危害外，还会让人产生逃离的欲望。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "从读者留言可以看出，人们虽然喜欢阅读坏消息，但是没有人想一直生活在充斥着消极信息的环境里。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "这些消息既污浊又令人泄气，我想保护自己不受这个恐惧工厂的影响。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我减少了新闻消费。通过自我探索和思考，我意识到新闻对我的情绪、心理健康有着巨大的负面影响，我还无法应对……那些真正重要的新闻总会有办法找到我。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "它很少有积极的东西，总是那么消极。我讨厌听到或者阅读一篇只有糟糕消息的文章。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "不只是消极的，而且没有任何明确的方法来有所作为。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604232693.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "是的。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（新闻）",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "有罪，我们需要数字排毒，远离这些有压力的内容。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "读者们期待怎样的新闻呢？当我们的生活和世界被坏消息所包绕和扭曲，许多人正在呼唤有更多的“好消息”来进行平衡。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "新闻已经变得格外依赖耸人听闻的内容。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "虽然我们的确需要揭示世界可怕的暴行，但是我们也需要正面事物来与之平衡。如果你要报道一则坏消息，那请告诉我们正在有哪些努力去改善，我们能怎么参与帮助。我的问题是，我为什么要损害我的精力和健康的心理去看那些奇形怪状的照片或者令人沮丧的新闻？我倒情愿去看一本满是广告，没有一则新闻的杂志。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604786538.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我觉得要对新闻接触有选择。我订阅了好消息新闻网",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（the Good News Network）",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，每天都会有一些令人振奋的故事。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "离开新闻 你会过得更好",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "“为什么要浪费时间精力，让自己的头脑充满那些有毒的、不真实的内容？我的建议是，不如集中精力在现实生活中多做些好事。”",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "作为有充分自信安排好自己生活的现代人，为了长久地保持内心的平静和自足，很多人选择离开新闻。新闻，已经像酒精毒品一样的东西，成为一群人戒断的对象。这种对新闻接触的成功自制，将是他们引以为豪的“美德”。",
+                    "text_style": 7,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "当我们清晰地思考，认真地过自己的生活时，我们就不会被那些永无止境的循环新闻打扰分心。我们头脑清醒时，我们会知道什么是重要的，什么是需要放弃的。",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "关闭这些白噪音",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（新闻）",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "有助于我们更好地过好自己的生活。",
+                    "text_style": 7,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604927492.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "一段时间前，我过得筋疲力尽。我收到的第一条医嘱是：“不要再看新闻了”。与新闻断开连接，消除了那些耸人听闻的内容和思虑过重带来的压力。让世界自行其是。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我们的大脑总是向往那些令人震惊的新闻故事",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（生存本能需要我们时常感受到恐惧在侧）",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，所以",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "戒掉新闻并不容易。但最为重要的是，能够保持自己内心的平静。",
+                    "text_style": 7,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 1,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我还在阅读和接触，但我绝不在社交媒体上发表有争议性的言论。要做到这一点，需要极大的自制力，但是得益于此，我感受到的压力已经在急剧下降。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "启示录：面对新闻回避 我们还能做什么？",
+                    "text_style": 2,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "应对日常中的信息爆炸是我们在这个数字时代最紧迫的挑战之一。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "记者们需要努力应对来势汹涌的消息来源，读者们则需要应付屏幕上越来越多的媒体内容。对于越来越多的人而言，逃避新闻成为了自己重新掌控生活的重要方式。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604012027.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "但是站在整个社会的角度来看，",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "新闻疲劳和新闻回避已经成为媒介系统和民主国家肌体上的重大病症。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "在这样一个充满了挑衅观点和惊悚内容，却又严重缺乏事实和共识的世界里，如何保证人们享有知情权，又如何在知情权与日益增加的智力、情感负担之间取得平衡？",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "根据本文第二部分，读者对新闻逃避行为的自我披露，内容生产者们或许可以获得一些启发：",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "首先，在撰写报道中，新闻工作者应该努力提供问题的解决方案。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "现在大多数新闻报道因为缺乏对解决问题的积极思考，而倍加让读者感到沮丧和无助。在这种情况下，新闻消费给人们带来了习得性无助，这降低了新闻的吸引力，让更多的人选择逃避。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604484718.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "其次，新闻工作者需要重视读者的情感和心理体验。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "在后特朗普时代，考虑到充斥在社交媒体和传统媒体上对“假新闻”的指摘，“新闻信任”是一个特别的流行词。但是，从上文中读者对新闻回避进行的自我报告来看，我们可能高估了信任在决定人们不阅读、不接触新闻报道中的作用。毕竟，与“我不相信新闻是真实的”相比，“",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "（新闻）",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "对我的情绪会产生负面影响”才是人们新闻逃避的更重要因素。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "现在，由于社交媒体放大了“新闻信任”问题，我们也许只是把目光集中在了那些指责新闻媒体是“骗子”“魔术师”的群体上，反而忽视了更大的群体——对这一群体而言，他们逃避新闻是因为感受到了过多的压力和心理负担、感到时间和精力的无谓付出。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604173952.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "新闻阅读曾是我们生活中的重要仪式，从晨报到晚报，它陪伴人们更好地理解和应对我们所处的世界。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "现在，过载的新闻资讯带给我们压力，",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "在技术提供了更多可能和媒介产品的日益丰富之下，拒绝新闻正在成为一个有吸引力的选项。",
+                    "text_style": 7,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "在这种背景下，许多人认为，作为独立的理性经济人，没有新闻或者减少新闻，能够让他们过得更好。这种观点虽然有着基于现实的思辨价值，",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "但是，对于新闻业乃至现代公共社会而言，这可能并不是一个好消息。",
+                    "text_style": 7,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 3,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "本文来自微信公众号：",
+                    "text_style": 5,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "全媒派（ID：quanmeipai）",
+                    "text_style": 6,
+                    "extra": "https://mp.weixin.qq.com/s?__biz=MzA3MzQ1MzQzNA==&mid=2656951595&idx=1&sn=aecc5a12e69199421269a60d6027724b&chksm=84a7a73eb3d02e28df135dd525e0b58eb084239f2e2e7ae18b6a844a0a47065b176e1d36e7eb&mpshare=1&scene=1&srcid=#rd"
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，作者： 腾讯传媒，标题图来自视觉中国",
+                    "text_style": 5,
+                    "extra": ""
+                }
+            ]
+        }
+    ]
+}''';
