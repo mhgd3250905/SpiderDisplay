@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
-import 'package:spider_display/Modle/modle_huxiu_detail.dart';
-import 'package:spider_display/Modle/test_content.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/huxiu_detail_page.dart';
 
@@ -70,11 +66,11 @@ class HuxiuNewsListPage extends StatelessWidget {
                   child: InkWell(
                     child: buildHuxiuListItemView(huxiuNewsList[i], i),
                     onTap: () {
-                      HuxiuDetail detial =
-                          HuxiuDetail.fromJson(json.decode(HUXIU_DETAIL_STR));
-                      detial.huxiu_news = huxiuNewsList[i];
+//                      HuxiuDetail detial =
+//                          HuxiuDetail.fromJson(json.decode(HUXIU_DETAIL_STR));
+//                      detial.huxiu_news = huxiuNewsList[i];
                       NavigatorRouterUtils.pushToPage(
-                          context, HuxiuDetailPage(detial));
+                          context, HuxiuDetailPage(huxiuNewsList[i]));
                     },
                   ),
                 ),
@@ -129,7 +125,7 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
                   ),
                 ),
                 child: Hero(
-                  tag: widget.huxiuNews.image_link,
+                  tag: widget.huxiuNews.news_id,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(3.0),
@@ -221,20 +217,12 @@ class _HuxiuNewsItemView_2State extends State<HuxiuNewsItemView_2>
       children: <Widget>[
         Container(
           width: double.infinity,
-//          decoration: BoxDecoration(
-//            image: DecorationImage(
-//              image: NetworkImage(
-//                widget.huxiuNews.image_link,
-//              ),
-//              fit: BoxFit.cover,
-//            ),
-//          ),
           child: Stack(
             fit: StackFit.loose,
             children: <Widget>[
               Positioned(
                 child: Hero(
-                  tag: widget.huxiuNews.image_link,
+                  tag: widget.huxiuNews.news_id,
                   child: Image.network(
                     widget.huxiuNews.image_link,
                     fit: BoxFit.cover,
@@ -249,7 +237,7 @@ class _HuxiuNewsItemView_2State extends State<HuxiuNewsItemView_2>
                 children: <Widget>[
                   buildCategorysItemView(widget.huxiuNews),
                   Container(
-                    height: widget.huxiuNews.category.length > 1 ? 80.0 : 60.0,
+                    height: widget.huxiuNews.category.length >= 1 ? 80.0 : 100.0,
                   ),
                   buildAuthorItemView(widget.huxiuNews),
                   Container(

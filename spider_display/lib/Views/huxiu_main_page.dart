@@ -44,6 +44,7 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
     HuxiuNewsList bean = HuxiuNewsList(response.data);
     dataList.clear();
     dataList.addAll(bean.data);
+    dataList = fliterHuxiuNews(dataList);
     print("resetData dataList.length= ${dataList.length}");
     setState(() {});
   }
@@ -54,8 +55,24 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
     Response response = await dio.get(getHuxiuListUrl("huxiu", page));
     HuxiuNewsList bean = HuxiuNewsList(response.data);
     dataList.addAll(bean.data);
+    dataList = fliterHuxiuNews(dataList);
     print("getMoreData dataList.length= ${dataList.length}");
     setState(() {});
+  }
+
+  /**
+   * 筛选出非空的条目
+   */
+  List<HuxiuNews> fliterHuxiuNews(List<HuxiuNews> dataList) {
+    List<HuxiuNews> tempList = [];
+    dataList.forEach((huxiuNews) {
+      if (huxiuNews.news_id.isNotEmpty) {
+        tempList.add(huxiuNews);
+      }
+    });
+    dataList.clear();
+    dataList.addAll(tempList);
+    return dataList;
   }
 
   FutureBuilder<List<HuxiuNews>> buildFutureBuilder() {
@@ -80,6 +97,7 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
               );
             }
             dataList = snapshot.data;
+            dataList = fliterHuxiuNews(dataList);
             return RefreshIndicator(
               key: _refreshIndicaterState,
               child: HuxiuNewsListPage(dataList, scrollController),
@@ -110,7 +128,7 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
 
 String getHuxiuListUrl(String tag, int page) {
   String url =
-      "http://49.234.76.105:80/spider/bookset/$tag?start=${page * PAGE_COUNT}&end=${page * PAGE_COUNT + PAGE_COUNT - 1}";
+      "http://49.234.76.105:80/spider/huxiu/$tag?start=${page * PAGE_COUNT}&end=${page * PAGE_COUNT + PAGE_COUNT - 1}";
   print(url);
   return url;
 }

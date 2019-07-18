@@ -2,6 +2,7 @@ import 'dart:convert' show json;
 
 import 'package:spider_display/Modle/modle_huxiu.dart';
 
+
 class HuxiuDetailBean {
   int err_code;
   String error;
@@ -34,6 +35,8 @@ class HuxiuDetailBean {
 class HuxiuDetail {
   List<Content> contents;
   HuxiuNews huxiu_news;
+
+  HuxiuDetail(this.contents, this.huxiu_news);
 
   HuxiuDetail.fromParams({this.contents, this.huxiu_news});
 
@@ -106,6 +109,7 @@ enum DetailContainerType {
   Normal,
   Blockquote,
   Img,
+  ImgNote,
 }
 
 enum DetailTextType {
