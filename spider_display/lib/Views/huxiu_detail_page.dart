@@ -3,19 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Modle/modle_huxiu_detail.dart';
 import 'package:spider_display/Res/res_text_style.dart';
-import 'package:spider_display/Views/huxiu_list_page.dart';
 
-int double_score_c_ount;
-double douban_score;
-String author;
-String douban_link;
-String download_link_azw3;
-String download_link_epub;
-String download_link_mobi;
-String image;
-String introduction;
-String time;
-String title;
+Dio dio;
 
 class HuxiuDetailPage extends StatefulWidget {
   HuxiuNews huxiuNews;
@@ -28,15 +17,22 @@ class HuxiuDetailPage extends StatefulWidget {
 
 class _HuxiuDetailPageState extends State<HuxiuDetailPage>
     with AutomaticKeepAliveClientMixin {
+  ScrollController scrollController;
   HuxiuDetail detail;
   GlobalKey<RefreshIndicatorState> _refreshIndicaterState =
       GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
+    dio = new Dio();
     super.initState();
     detail = new HuxiuDetail([], widget.huxiuNews);
     getDataDelay();
+  }
+
+  @override
+  void dispose() {
+    dio.clear();
   }
 
   FutureBuilder<HuxiuDetail> buildFutureBuilder() {
@@ -48,19 +44,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
           case ConnectionState.waiting:
           case ConnectionState.none:
             //等待状态
-            return RefreshIndicator(
-              key: _refreshIndicaterState,
-              child: Container(
-                color: Colors.white,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    buildSliverAppBar(context),
-                    buildSliverToBoxAdapter(detail),
-                  ],
-                ),
-              ),
-              onRefresh: resetData,
-            );
+            return buildMainContainer(context, detail);
 
           case ConnectionState.done:
             //完成状态
@@ -70,23 +54,70 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
             } else {
               detail = snapshot.data;
             }
-            return RefreshIndicator(
-              key: _refreshIndicaterState,
-              child: Container(
-                color: Colors.white,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    buildSliverAppBar(context),
-                    buildSliverToBoxAdapter(detail),
-                  ],
-                ),
-              ),
-              onRefresh: resetData,
-            );
+            return buildMainContainer(context, detail);
         }
       },
       future: getData(),
     );
+  }
+
+  Scaffold buildMainContainer(BuildContext context, HuxiuDetail detail) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        actions: buildActions,
+      ),
+      body: RefreshIndicator(
+        key: _refreshIndicaterState,
+        child: Container(
+          color: Colors.white,
+//          child: CustomScrollView(
+//            slivers: <Widget>[
+//              buildSliverAppBar(context),
+//              buildSliverToBoxAdapter(detail),
+//            ],
+//          ),
+          child: Column(
+            children: <Widget>[
+              buildSliverAppBar(context),
+              Expanded(
+                child: buildSliverToBoxAdapter(detail),
+              ),
+            ],
+          ),
+        ),
+        onRefresh: resetData,
+      ),
+    );
+  }
+
+  //构造Appbar 右侧按钮
+  List<Widget> get buildActions {
+    return <Widget>[
+      IconButton(
+        icon: Icon(
+          Icons.bookmark_border,
+          color: Colors.black87,
+        ),
+        onPressed: () {},
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.share,
+          color: Colors.black87,
+        ),
+        onPressed: () {},
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.search,
+          color: Colors.black87,
+        ),
+        onPressed: () {
+//          scrollController.animateTo(offset, duration: null, curve: null)
+        },
+      ),
+    ];
   }
 
   ///延迟300ms获取数据，避免引起动画卡顿
@@ -109,7 +140,6 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
 
   ///重置数据
   Future<HuxiuDetail> resetData() async {
-    var dio = new Dio();
     Response response =
         await dio.get(getHuxiuDetailUrl(widget.huxiuNews.news_id));
     HuxiuDetailBean bean = HuxiuDetailBean(response.data);
@@ -136,104 +166,214 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
     return buildFutureBuilder();
   }
 
-  SliverToBoxAdapter buildSliverToBoxAdapter(HuxiuDetail detail) {
-    return SliverToBoxAdapter(
-      child: Container(
-        child: Column(
-          children: buildContentList(detail.contents),
-        ),
-      ),
+  Widget buildSliverToBoxAdapter(HuxiuDetail detail) {
+    ListView listView = ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return buildContentItem(index, detail.contents[index]);
+      },
+      itemCount: detail.contents.length,
+      controller: scrollController,
     );
+    return listView;
+//    return SliverList(
+//      delegate: SliverChildBuilderDelegate(
+//        (BuildContext context, int index) {
+//          return buildContentItem(index, detail.contents[index]);
+//        },
+//        childCount: detail.contents.length,
+//      ),
+//    );
   }
 
   Widget buildSliverAppBar(BuildContext context) {
     int timeMillis = int.parse(detail.huxiu_news.create_time);
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timeMillis * 1000);
-    return SliverToBoxAdapter(
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            //头部图片
-            Hero(
+    return Container(
+      child: Column(
+        children: <Widget>[
+          //时间
+          Container(
+            margin: const EdgeInsets.only(left: 10.0, top: 8.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "${date.year}年${date.month}月${date.day}日 "
+                  "${date.hour < 10 ? "0" : ""}"
+                  "${date.hour}:"
+                  "${date.minute < 10 ? "0" : ""}"
+                  "${date.minute}",
+              style: TextStyle(
+                fontSize: 13.0,
+                letterSpacing: 0.8,
+                decoration: TextDecoration.none,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+
+          //标题
+          Container(
+            margin: const EdgeInsets.only(left: 10.0, top: 8.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              detail.huxiu_news.title.replaceAll(" ", ""),
+              style: TextStyle(
+                fontSize: 24.0,
+                letterSpacing: 0.8,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.none,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+
+          //作者
+          Container(
+            margin: const EdgeInsets.only(left: 10.0, top: 15.0),
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: ClipOval(
+                    child: Container(
+                      padding: const EdgeInsets.all(0.5),
+                      color: Colors.black54,
+                      child: ClipOval(
+                        child: Image.network(
+                          detail.huxiu_news.author.author_img,
+                          fit: BoxFit.cover,
+                          width: 15.0,
+                          height: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 5.0),
+                  child: Text(
+                    detail.huxiu_news.author.author_name,
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      letterSpacing: 0.8,
+                      decoration: TextDecoration.none,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          //头部图片
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            width: double.infinity,
+            child: Hero(
               tag: detail.huxiu_news.news_id,
               child: Image.network(
                 detail.huxiu_news.image_link,
                 fit: BoxFit.cover,
               ),
             ),
-            //时间
-            Container(
-              margin: const EdgeInsets.only(left: 10.0,top: 8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "${date.year}年${date.month}月${date.day}日 ${date.hour}:${date.minute}",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  letterSpacing: 0.8,
-                  decoration: TextDecoration.none,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-
-            //标题
-            Container(
-              margin: const EdgeInsets.only(left: 10.0,top: 8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                detail.huxiu_news.title.replaceAll(" ", ""),
-                style: TextStyle(
-                  fontSize: 24.0,
-                  letterSpacing: 0.8,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.none,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-
-            //作者
-            Container(
-              margin: const EdgeInsets.only(left: 10.0,top: 8.0),
-              alignment: Alignment.centerLeft,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: ClipOval(
-                      child: Container(
-                        padding: const EdgeInsets.all(0.5),
-                        color: Colors.black87,
-                        child: ClipOval(
-                          child: Image.network(
-                            detail.huxiu_news.author.author_img,
-                            fit: BoxFit.cover,
-                            width: 15.0,
-                            height: 15.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      detail.huxiu_news.author.author_name,
-                      style: TextStyle(
-                        fontSize: 13.0,
-                        letterSpacing: 0.8,
-                        decoration: TextDecoration.none,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+//    return SliverToBoxAdapter(
+//      child: Container(
+//        child: Column(
+//          children: <Widget>[
+//            //时间
+//            Container(
+//              margin: const EdgeInsets.only(left: 10.0, top: 8.0),
+//              alignment: Alignment.centerLeft,
+//              child: Text(
+//                "${date.year}年${date.month}月${date.day}日 "
+//                    "${date.hour < 10 ? "0" : ""}"
+//                    "${date.hour}:"
+//                    "${date.minute < 10 ? "0" : ""}"
+//                    "${date.minute}",
+//                style: TextStyle(
+//                  fontSize: 13.0,
+//                  letterSpacing: 0.8,
+//                  decoration: TextDecoration.none,
+//                  color: Colors.black54,
+//                ),
+//              ),
+//            ),
+//
+//            //标题
+//            Container(
+//              margin: const EdgeInsets.only(left: 10.0, top: 8.0),
+//              alignment: Alignment.centerLeft,
+//              child: Text(
+//                detail.huxiu_news.title.replaceAll(" ", ""),
+//                style: TextStyle(
+//                  fontSize: 24.0,
+//                  letterSpacing: 0.8,
+//                  fontWeight: FontWeight.bold,
+//                  decoration: TextDecoration.none,
+//                  color: Colors.black87,
+//                ),
+//              ),
+//            ),
+//
+//            //作者
+//            Container(
+//              margin: const EdgeInsets.only(left: 10.0, top: 15.0),
+//              alignment: Alignment.centerLeft,
+//              child: Row(
+//                crossAxisAlignment: CrossAxisAlignment.center,
+//                children: <Widget>[
+//                  Container(
+//                    child: ClipOval(
+//                      child: Container(
+//                        padding: const EdgeInsets.all(0.5),
+//                        color: Colors.black54,
+//                        child: ClipOval(
+//                          child: Image.network(
+//                            detail.huxiu_news.author.author_img,
+//                            fit: BoxFit.cover,
+//                            width: 15.0,
+//                            height: 15.0,
+//                          ),
+//                        ),
+//                      ),
+//                    ),
+//                  ),
+//                  Container(
+//                    margin: const EdgeInsets.only(left: 5.0),
+//                    child: Text(
+//                      detail.huxiu_news.author.author_name,
+//                      style: TextStyle(
+//                        fontSize: 13.0,
+//                        letterSpacing: 0.8,
+//                        decoration: TextDecoration.none,
+//                        color: Colors.black54,
+//                      ),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            ),
+//
+//            //头部图片
+//            Container(
+//              margin: EdgeInsets.only(top: 10.0),
+//              width: double.infinity,
+//              child: Hero(
+//                tag: detail.huxiu_news.news_id,
+//                child: Image.network(
+//                  detail.huxiu_news.image_link,
+//                  fit: BoxFit.cover,
+//                ),
+//              ),
+//            ),
+//          ],
+//        ),
+//      ),
+//    );
 //    return SliverAppBar(
 //      leading: IconButton(
 //        icon: Icon(Icons.arrow_back),
@@ -354,10 +494,10 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
     } else {
       return Container(
         margin: EdgeInsets.only(
-            top: index == 0 ? 8.0 : 0.0,
-            bottom: index == 0 ? 8.0 : 0.0,
-            left: 10.0,
-            right: 10.0),
+            top: index == 0 ? 10.0 : 0.0,
+            bottom: index == 0 ? 10.0 : 0.0,
+            left: 16.0,
+            right: 16.0),
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(
             content.content_container_type == DetailContainerType.Normal.index
