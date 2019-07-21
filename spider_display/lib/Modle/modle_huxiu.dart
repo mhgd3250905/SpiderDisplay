@@ -1,11 +1,11 @@
 import 'dart:convert' show json;
 
 class HuxiuNewsList {
-  int err_code;
+  int errCode;
   String error;
   List<HuxiuNews> data;
 
-  HuxiuNewsList.fromParams({this.err_code, this.error, this.data});
+  HuxiuNewsList.fromParams({this.errCode, this.error, this.data});
 
   factory HuxiuNewsList(jsonStr) => jsonStr == null
       ? null
@@ -14,7 +14,7 @@ class HuxiuNewsList {
           : new HuxiuNewsList.fromJson(jsonStr);
 
   HuxiuNewsList.fromJson(jsonRes) {
-    err_code = jsonRes['err_code'];
+    errCode = jsonRes['err_code'];
     error = jsonRes['error'];
     data = jsonRes['data'] == null ? null : [];
 
@@ -25,36 +25,36 @@ class HuxiuNewsList {
 
   @override
   String toString() {
-    return '{"err_code": $err_code,"error": ${error != null ? '${json.encode(error)}' : 'null'},"data": $data}';
+    return '{"err_code": $errCode,"error": ${error != null ? '${json.encode(error)}' : 'null'},"data": $data}';
   }
 }
 
 class HuxiuNews {
-  String create_time;
+  String createTime;
   String desc;
-  String image_link;
-  String news_id;
-  String news_link;
+  String imageLink;
+  String newsId;
+  String newsLink;
   String title;
   List<Category> category;
   Author author;
 
   HuxiuNews.fromParams(
-      {this.create_time,
+      {this.createTime,
       this.desc,
-      this.image_link,
-      this.news_id,
-      this.news_link,
+      this.imageLink,
+      this.newsId,
+      this.newsLink,
       this.title,
       this.category,
       this.author});
 
   HuxiuNews.fromJson(jsonRes) {
-    create_time = jsonRes['create_time'];
+    createTime = jsonRes['create_time'];
     desc = jsonRes['desc'];
-    image_link = jsonRes['image_link'];
-    news_id = jsonRes['news_id'];
-    news_link = jsonRes['news_link'];
+    imageLink = jsonRes['image_link'];
+    newsId = jsonRes['news_id'];
+    newsLink = jsonRes['news_link'];
     title = jsonRes['title'];
     category = jsonRes['category'] == null ? null : [];
 
@@ -70,42 +70,42 @@ class HuxiuNews {
 
   @override
   String toString() {
-    return '{"create_time": ${create_time != null ? '${json.encode(create_time)}' : 'null'},"desc": ${desc != null ? '${json.encode(desc)}' : 'null'},"image_link": ${image_link != null ? '${json.encode(image_link)}' : 'null'},"news_id": ${news_id != null ? '${json.encode(news_id)}' : 'null'},"news_link": ${news_link != null ? '${json.encode(news_link)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"category": $category,"author": $author}';
+    return '{"create_time": ${createTime != null ? '${json.encode(createTime)}' : 'null'},"desc": ${desc != null ? '${json.encode(desc)}' : 'null'},"image_link": ${imageLink != null ? '${json.encode(imageLink)}' : 'null'},"news_id": ${newsId != null ? '${json.encode(newsId)}' : 'null'},"news_link": ${newsLink != null ? '${json.encode(newsLink)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"category": $category,"author": $author}';
   }
 }
 
 class Author {
-  String author_id;
-  String author_img;
-  String author_name;
+  String authorId;
+  String authorImg;
+  String authorName;
 
-  Author.fromParams({this.author_id, this.author_img, this.author_name});
+  Author.fromParams({this.authorId, this.authorImg, this.authorName});
 
   Author.fromJson(jsonRes) {
-    author_id = jsonRes['author_id'];
-    author_img = jsonRes['author_img'];
-    author_name = jsonRes['author_name'];
+    authorId = jsonRes['author_id'];
+    authorImg = jsonRes['author_img'];
+    authorName = jsonRes['author_name'];
   }
 
   @override
   String toString() {
-    return '{"author_id": ${author_id != null ? '${json.encode(author_id)}' : 'null'},"author_img": ${author_img != null ? '${json.encode(author_img)}' : 'null'},"author_name": ${author_name != null ? '${json.encode(author_name)}' : 'null'}}';
+    return '{"author_id": ${authorId != null ? '${json.encode(authorId)}' : 'null'},"author_img": ${authorImg != null ? '${json.encode(authorImg)}' : 'null'},"author_name": ${authorName != null ? '${json.encode(authorName)}' : 'null'}}';
   }
 }
 
 class Category {
-  String category_id;
-  String category_name;
+  String categoryId;
+  String categoryName;
 
-  Category.fromParams({this.category_id, this.category_name});
+  Category.fromParams({this.categoryId, this.categoryName});
 
   Category.fromJson(jsonRes) {
-    category_id = jsonRes['category_id'];
-    category_name = jsonRes['category_name'];
+    categoryId = jsonRes['category_id'];
+    categoryName = jsonRes['category_name'];
   }
 
   @override
   String toString() {
-    return '{"category_id": ${category_id != null ? '${json.encode(category_id)}' : 'null'},"category_name": ${category_name != null ? '${json.encode(category_name)}' : 'null'}}';
+    return '{"category_id": ${categoryId != null ? '${json.encode(categoryId)}' : 'null'},"category_name": ${categoryName != null ? '${json.encode(categoryName)}' : 'null'}}';
   }
 }

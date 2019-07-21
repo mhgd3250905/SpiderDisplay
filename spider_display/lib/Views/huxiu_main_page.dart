@@ -5,6 +5,8 @@ import 'package:spider_display/Views/huxiu_list_page.dart';
 
 const int PAGE_COUNT = 10;
 
+Dio dio;
+
 class HuxiuMainPage extends StatefulWidget {
   @override
   _HuxiuMainPageState createState() => new _HuxiuMainPageState();
@@ -21,6 +23,7 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
   @override
   void initState() {
     super.initState();
+    dio = new Dio();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -29,8 +32,13 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    dio.clear();
+  }
+
   Future<List<HuxiuNews>> getData() async {
-    var dio = new Dio();
     Response response = await dio.get(getHuxiuListUrl("huxiu", page));
     HuxiuNewsList bean = HuxiuNewsList(response.data);
     print("getData dataList.length= ${dataList.length}");
@@ -39,7 +47,6 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
 
   Future<List<HuxiuNews>> resetData() async {
     page = 0;
-    var dio = new Dio();
     Response response = await dio.get(getHuxiuListUrl("huxiu", page));
     HuxiuNewsList bean = HuxiuNewsList(response.data);
     dataList.clear();
@@ -51,7 +58,6 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
 
   Future<List<HuxiuNews>> getMoreData() async {
     page++;
-    var dio = new Dio();
     Response response = await dio.get(getHuxiuListUrl("huxiu", page));
     HuxiuNewsList bean = HuxiuNewsList(response.data);
     dataList.addAll(bean.data);
@@ -66,7 +72,7 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
   List<HuxiuNews> fliterHuxiuNews(List<HuxiuNews> dataList) {
     List<HuxiuNews> tempList = [];
     dataList.forEach((huxiuNews) {
-      if (huxiuNews.news_id.isNotEmpty) {
+      if (huxiuNews.newsId.isNotEmpty) {
         tempList.add(huxiuNews);
       }
     });
@@ -85,7 +91,16 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
           case ConnectionState.none:
             //等待状态
             return Container(
-              color: Colors.blue,
+              color: Colors.white,
+              alignment: Alignment.center,
+              child: Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 4.0,
+                  backgroundColor: Colors.blue,
+                  // value: 0.2,
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.black87),
+                ),
+              ),
             );
           case ConnectionState.done:
             //完成状态
@@ -93,7 +108,16 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
               //结果错误
               print("snapshot.hasErrpr: ${snapshot.error}");
               return Container(
-                color: Colors.red,
+                color: Colors.white,
+                alignment: Alignment.center,
+                child: Text(
+                  "连接错误...",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               );
             }
             dataList = snapshot.data;

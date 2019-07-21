@@ -125,7 +125,7 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
                   ),
                 ),
                 child: Hero(
-                  tag: widget.huxiuNews.news_id,
+                  tag: widget.huxiuNews.newsId,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(3.0),
@@ -134,7 +134,7 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
                       bottomRight: Radius.circular(0.0),
                     ),
                     child: Image.network(
-                      widget.huxiuNews.image_link,
+                      widget.huxiuNews.imageLink,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -158,7 +158,7 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
                           padding: const EdgeInsets.all(5.0),
                           alignment: Alignment.centerLeft,
                           width: double.infinity,
-                          child: Text('${widget.huxiuNews.author.author_name}'),
+                          child: Text('${widget.huxiuNews.author.authorName}'),
                         ),
                       ),
                     ],
@@ -222,9 +222,9 @@ class _HuxiuNewsItemView_2State extends State<HuxiuNewsItemView_2>
             children: <Widget>[
               Positioned(
                 child: Hero(
-                  tag: widget.huxiuNews.news_id,
+                  tag: widget.huxiuNews.newsId,
                   child: Image.network(
-                    widget.huxiuNews.image_link,
+                    widget.huxiuNews.imageLink,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -289,7 +289,7 @@ class _HuxiuNewsItemView_2State extends State<HuxiuNewsItemView_2>
           ),
         ),
         child: Text(
-          category.category_name,
+          category.categoryName,
           style: TextStyle(
             fontSize: 17.0,
             color: Colors.white,
@@ -324,7 +324,7 @@ class _HuxiuNewsItemView_2State extends State<HuxiuNewsItemView_2>
                 color: Colors.white,
                 child: ClipOval(
                   child: Image.network(
-                    huxiuNews.author.author_img,
+                    huxiuNews.author.authorImg,
                     fit: BoxFit.cover,
                     width: 15.0,
                     height: 15.0,
@@ -336,7 +336,7 @@ class _HuxiuNewsItemView_2State extends State<HuxiuNewsItemView_2>
           Container(
             margin: const EdgeInsets.only(left: 5.0),
             child: Text(
-              huxiuNews.author.author_name,
+              huxiuNews.author.authorName,
               style: titleStyle.copyWith(
                 fontSize: 13.0,
                 fontWeight: FontWeight.normal,

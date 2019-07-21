@@ -32,6 +32,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
 
   @override
   void dispose() {
+    super.dispose();
     dio.clear();
   }
 
@@ -44,7 +45,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
           case ConnectionState.waiting:
           case ConnectionState.none:
             //等待状态
-            return buildMainContainer(context, detail);
+            return buildMainContainer(context, detail, true);
 
           case ConnectionState.done:
             //完成状态
@@ -54,14 +55,15 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
             } else {
               detail = snapshot.data;
             }
-            return buildMainContainer(context, detail);
+            return buildMainContainer(context, detail, false);
         }
       },
       future: getData(),
     );
   }
 
-  Scaffold buildMainContainer(BuildContext context, HuxiuDetail detail) {
+  Scaffold buildMainContainer(
+      BuildContext context, HuxiuDetail detail, bool isLoading) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -71,18 +73,10 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
         key: _refreshIndicaterState,
         child: Container(
           color: Colors.white,
-//          child: CustomScrollView(
-//            slivers: <Widget>[
-//              buildSliverAppBar(context),
-//              buildSliverToBoxAdapter(detail),
-//            ],
-//          ),
-          child: Column(
-            children: <Widget>[
+          child: CustomScrollView(
+            slivers: <Widget>[
               buildSliverAppBar(context),
-              Expanded(
-                child: buildSliverToBoxAdapter(detail),
-              ),
+              buildSliverToBoxAdapter(detail),
             ],
           ),
         ),
@@ -141,7 +135,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
   ///重置数据
   Future<HuxiuDetail> resetData() async {
     Response response =
-        await dio.get(getHuxiuDetailUrl(widget.huxiuNews.news_id));
+        await dio.get(getHuxiuDetailUrl(widget.huxiuNews.newsId));
     HuxiuDetailBean bean = HuxiuDetailBean(response.data);
     detail = bean.data[0];
     setState(() {});
@@ -167,297 +161,136 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
   }
 
   Widget buildSliverToBoxAdapter(HuxiuDetail detail) {
-    ListView listView = ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return buildContentItem(index, detail.contents[index]);
-      },
-      itemCount: detail.contents.length,
-      controller: scrollController,
-    );
-    return listView;
-//    return SliverList(
-//      delegate: SliverChildBuilderDelegate(
-//        (BuildContext context, int index) {
-//          return buildContentItem(index, detail.contents[index]);
-//        },
-//        childCount: detail.contents.length,
-//      ),
+//    ListView listView = ListView.builder(
+//      itemBuilder: (BuildContext context, int index) {
+//        return buildContentItem(index, detail.contents[index]);
+//      },
+//      itemCount: detail.contents.length,
+//      controller: scrollController,
 //    );
+    if (detail.contents.length == 0) {
+      return SliverToBoxAdapter(
+        child: Container(
+          margin: EdgeInsets.only(top: 30.0),
+          child: Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 4.0,
+              backgroundColor: Colors.blue,
+              // value: 0.2,
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.black87),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return buildContentItem(index, detail.contents[index]);
+        },
+        childCount: detail.contents.length,
+      ),
+    );
   }
 
   Widget buildSliverAppBar(BuildContext context) {
-    int timeMillis = int.parse(detail.huxiu_news.create_time);
+    int timeMillis = int.parse(detail.huxiuNews.createTime);
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timeMillis * 1000);
-    return Container(
-      child: Column(
-        children: <Widget>[
-          //时间
-          Container(
-            margin: const EdgeInsets.only(left: 10.0, top: 8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "${date.year}年${date.month}月${date.day}日 "
-                  "${date.hour < 10 ? "0" : ""}"
-                  "${date.hour}:"
-                  "${date.minute < 10 ? "0" : ""}"
-                  "${date.minute}",
-              style: TextStyle(
-                fontSize: 13.0,
-                letterSpacing: 0.8,
-                decoration: TextDecoration.none,
-                color: Colors.black54,
+    return SliverToBoxAdapter(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            //时间
+            Container(
+              margin: const EdgeInsets.only(left: 10.0, top: 8.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${date.year}年${date.month}月${date.day}日 "
+                    "${date.hour < 10 ? "0" : ""}"
+                    "${date.hour}:"
+                    "${date.minute < 10 ? "0" : ""}"
+                    "${date.minute}",
+                style: TextStyle(
+                  fontSize: 13.0,
+                  letterSpacing: 0.8,
+                  decoration: TextDecoration.none,
+                  color: Colors.black54,
+                ),
               ),
             ),
-          ),
 
-          //标题
-          Container(
-            margin: const EdgeInsets.only(left: 10.0, top: 8.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              detail.huxiu_news.title.replaceAll(" ", ""),
-              style: TextStyle(
-                fontSize: 24.0,
-                letterSpacing: 0.8,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.none,
-                color: Colors.black87,
+            //标题
+            Container(
+              margin: const EdgeInsets.only(left: 10.0, top: 8.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                detail.huxiuNews.title.replaceAll(" ", ""),
+                style: TextStyle(
+                  fontSize: 24.0,
+                  letterSpacing: 0.8,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                  color: Colors.black87,
+                ),
               ),
             ),
-          ),
 
-          //作者
-          Container(
-            margin: const EdgeInsets.only(left: 10.0, top: 15.0),
-            alignment: Alignment.centerLeft,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: ClipOval(
-                    child: Container(
-                      padding: const EdgeInsets.all(0.5),
-                      color: Colors.black54,
-                      child: ClipOval(
-                        child: Image.network(
-                          detail.huxiu_news.author.author_img,
-                          fit: BoxFit.cover,
-                          width: 15.0,
-                          height: 15.0,
+            //作者
+            Container(
+              margin: const EdgeInsets.only(left: 10.0, top: 15.0),
+              alignment: Alignment.centerLeft,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: ClipOval(
+                      child: Container(
+                        padding: const EdgeInsets.all(0.5),
+                        color: Colors.black54,
+                        child: ClipOval(
+                          child: Image.network(
+                            detail.huxiuNews.author.authorImg,
+                            fit: BoxFit.cover,
+                            width: 15.0,
+                            height: 15.0,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 5.0),
-                  child: Text(
-                    detail.huxiu_news.author.author_name,
-                    style: TextStyle(
-                      fontSize: 13.0,
-                      letterSpacing: 0.8,
-                      decoration: TextDecoration.none,
-                      color: Colors.black54,
+                  Container(
+                    margin: const EdgeInsets.only(left: 5.0),
+                    child: Text(
+                      detail.huxiuNews.author.authorName,
+                      style: TextStyle(
+                        fontSize: 13.0,
+                        letterSpacing: 0.8,
+                        decoration: TextDecoration.none,
+                        color: Colors.black54,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-
-          //头部图片
-          Container(
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            child: Hero(
-              tag: detail.huxiu_news.news_id,
-              child: Image.network(
-                detail.huxiu_news.image_link,
-                fit: BoxFit.cover,
+                ],
               ),
             ),
-          ),
-        ],
+
+            //头部图片
+            Container(
+              margin: EdgeInsets.only(top: 10.0),
+              width: double.infinity,
+              child: Hero(
+                tag: detail.huxiuNews.newsId,
+                child: Image.network(
+                  detail.huxiuNews.imageLink,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
-//    return SliverToBoxAdapter(
-//      child: Container(
-//        child: Column(
-//          children: <Widget>[
-//            //时间
-//            Container(
-//              margin: const EdgeInsets.only(left: 10.0, top: 8.0),
-//              alignment: Alignment.centerLeft,
-//              child: Text(
-//                "${date.year}年${date.month}月${date.day}日 "
-//                    "${date.hour < 10 ? "0" : ""}"
-//                    "${date.hour}:"
-//                    "${date.minute < 10 ? "0" : ""}"
-//                    "${date.minute}",
-//                style: TextStyle(
-//                  fontSize: 13.0,
-//                  letterSpacing: 0.8,
-//                  decoration: TextDecoration.none,
-//                  color: Colors.black54,
-//                ),
-//              ),
-//            ),
-//
-//            //标题
-//            Container(
-//              margin: const EdgeInsets.only(left: 10.0, top: 8.0),
-//              alignment: Alignment.centerLeft,
-//              child: Text(
-//                detail.huxiu_news.title.replaceAll(" ", ""),
-//                style: TextStyle(
-//                  fontSize: 24.0,
-//                  letterSpacing: 0.8,
-//                  fontWeight: FontWeight.bold,
-//                  decoration: TextDecoration.none,
-//                  color: Colors.black87,
-//                ),
-//              ),
-//            ),
-//
-//            //作者
-//            Container(
-//              margin: const EdgeInsets.only(left: 10.0, top: 15.0),
-//              alignment: Alignment.centerLeft,
-//              child: Row(
-//                crossAxisAlignment: CrossAxisAlignment.center,
-//                children: <Widget>[
-//                  Container(
-//                    child: ClipOval(
-//                      child: Container(
-//                        padding: const EdgeInsets.all(0.5),
-//                        color: Colors.black54,
-//                        child: ClipOval(
-//                          child: Image.network(
-//                            detail.huxiu_news.author.author_img,
-//                            fit: BoxFit.cover,
-//                            width: 15.0,
-//                            height: 15.0,
-//                          ),
-//                        ),
-//                      ),
-//                    ),
-//                  ),
-//                  Container(
-//                    margin: const EdgeInsets.only(left: 5.0),
-//                    child: Text(
-//                      detail.huxiu_news.author.author_name,
-//                      style: TextStyle(
-//                        fontSize: 13.0,
-//                        letterSpacing: 0.8,
-//                        decoration: TextDecoration.none,
-//                        color: Colors.black54,
-//                      ),
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//
-//            //头部图片
-//            Container(
-//              margin: EdgeInsets.only(top: 10.0),
-//              width: double.infinity,
-//              child: Hero(
-//                tag: detail.huxiu_news.news_id,
-//                child: Image.network(
-//                  detail.huxiu_news.image_link,
-//                  fit: BoxFit.cover,
-//                ),
-//              ),
-//            ),
-//          ],
-//        ),
-//      ),
-//    );
-//    return SliverAppBar(
-//      leading: IconButton(
-//        icon: Icon(Icons.arrow_back),
-//        onPressed: () {
-//          Navigator.pop(context);
-//        },
-//      ),
-//      /**
-//       * 如果没有leading,automaticallyImplyLeading为true,默认显示返回箭头
-//       * 如果没有leading,且设置为false,则没有箭头，空间留给title
-//       * 如果有leading，这个参数无效
-//       */
-//      automaticallyImplyLeading: true,
-//      //标题
-////          title: Text("Test SliverAppBar"),
-//      //标题是否居中
-//      centerTitle: true,
-//      //右侧按钮
-//      actions: <Widget>[
-//        Icon(Icons.share),
-//      ],
-//      //阴影高度
-//      elevation: 0.0,
-//      //是否显示阴影
-//      forceElevated: false,
-//      //背景颜色
-//      backgroundColor: Colors.transparent,
-//      /**
-//       * light: 白底黑字
-//       * dark: 黑底白字
-//       */
-//      brightness: Brightness.dark,
-//      //图表风格
-//      iconTheme: IconThemeData(
-//        color: Colors.white,
-//        size: 30.0,
-//        opacity: 1,
-//      ),
-//      //字体样式
-//      textTheme: TextTheme(
-//        title: TextStyle(
-//          color: Colors.white,
-//        ),
-//      ),
-//      /**
-//       * appbar是否显示在屏幕最上面？
-//       * true:显示在状态栏下方
-//       * false:置顶
-//       */
-//      primary: true,
-//      //标题两边的空白区域
-//      titleSpacing: 16.0,
-//      //默认高度是状态栏和导航的高度，如果有滚动视差的话就需要大于前二者
-//      expandedHeight: 200.0,
-//      //滑到最上面，再滑动是否隐藏导航栏的文字和标题等具体内容
-//      floating: false,
-//      //是否固定导航栏位置
-//      pinned: false,
-//      /**
-//       * false:线性的展开隐藏
-//       * true:下拉展开，上滑隐藏，触发式非线性
-//       */
-//      snap: false,
-//      flexibleSpace: new FlexibleSpaceBar(
-////        title: Text(
-////          detail.huxiu_news.title,
-////          style: TextStyle(
-////            fontSize: 16.0,
-////            color: Colors.white,
-////          ),
-////        ),
-//        background: Container(
-//          child: Hero(
-//            tag: detail.huxiu_news.news_id,
-//            child: Image.network(
-//              detail.huxiu_news.image_link,
-//              fit: BoxFit.cover,
-//            ),
-//          ),
-//        ),
-//        centerTitle: true,
-//        collapseMode: CollapseMode.pin,
-//      ),
-//    );
   }
 
   //构建内容列表
@@ -473,21 +306,21 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
 
   //构建内容条目
   Widget buildContentItem(int index, Content content) {
-    List<Item> items = content.content_details;
+    List<Item> items = content.contentDetails;
     items.forEach((item) {
-      item.content_detail = stringToDBC(item.content_detail);
+      item.contentDetail = stringToDBC(item.contentDetail);
     });
 
     DetailContainerType containerType =
-        DetailContainerType.values[content.content_container_type];
+        DetailContainerType.values[content.contentContainerType];
 
     //如果是正常文本
-    if (content.content_container_type == DetailContainerType.Img.index) {
+    if (content.contentContainerType == DetailContainerType.Img.index) {
       return Container(
         width: double.infinity,
 //        height: 300.0,
         child: Image.network(
-          content.content_details[0].extra,
+          content.contentDetails[0].extra,
           fit: BoxFit.cover,
         ),
       );
@@ -500,18 +333,18 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
             right: 16.0),
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(
-            content.content_container_type == DetailContainerType.Normal.index
+            content.contentContainerType == DetailContainerType.Normal.index
                 ? 0.0
                 : 5.0),
         decoration: BoxDecoration(
           //显示北京
           border: Border(
               left: BorderSide(
-                  color: content.content_container_type ==
+                  color: content.contentContainerType ==
                           DetailContainerType.Normal.index
                       ? Colors.white
                       : Colors.grey,
-                  width: content.content_container_type ==
+                  width: content.contentContainerType ==
                           DetailContainerType.Normal.index
                       ? 0.0
                       : 5.0)),
@@ -521,7 +354,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
           text: TextSpan(
             children: items.asMap().keys.map((i) {
               String itemStr = items[i]
-                  .content_detail
+                  .contentDetail
                   .replaceAll("</br>", " ")
                   .replaceAll(" ", "");
               if (i == 0) {
@@ -529,7 +362,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
               }
               return TextSpan(
                 text: itemStr,
-                style: buildItemTextStyle(items[i].text_style, containerType),
+                style: buildItemTextStyle(items[i].textStyle, containerType),
               );
             }).toList(),
           ),

@@ -34,11 +34,11 @@ class HuxiuDetailBean {
 
 class HuxiuDetail {
   List<Content> contents;
-  HuxiuNews huxiu_news;
+  HuxiuNews huxiuNews;
 
-  HuxiuDetail(this.contents, this.huxiu_news);
+  HuxiuDetail(this.contents, this.huxiuNews);
 
-  HuxiuDetail.fromParams({this.contents, this.huxiu_news});
+  HuxiuDetail.fromParams({this.contents, this.huxiuNews});
 
   HuxiuDetail.fromJson(jsonRes) {
     contents = jsonRes['contents'] == null ? null : [];
@@ -48,30 +48,30 @@ class HuxiuDetail {
           contentsItem == null ? null : new Content.fromJson(contentsItem));
     }
 
-    huxiu_news = jsonRes['huxiu_news'] == null
+    huxiuNews = jsonRes['huxiu_news'] == null
         ? null
         : new HuxiuNews.fromJson(jsonRes['huxiu_news']);
   }
 
   @override
   String toString() {
-    return '{"contents": $contents,"huxiu_news": $huxiu_news}';
+    return '{"contents": $contents,"huxiu_news": $huxiuNews}';
   }
 }
 
 class Content {
-  int content_container_type;
-  List<Item> content_details;
+  int contentContainerType;
+  List<Item> contentDetails;
 
-  Content.fromParams({this.content_container_type, this.content_details});
+  Content.fromParams({this.contentContainerType, this.contentDetails});
 
   Content.fromJson(jsonRes) {
-    content_container_type = jsonRes['content_container_type'];
-    content_details = jsonRes['content_details'] == null ? null : [];
+    contentContainerType = jsonRes['content_container_type'];
+    contentDetails = jsonRes['content_details'] == null ? null : [];
 
     for (var content_detailsItem
-        in content_details == null ? [] : jsonRes['content_details']) {
-      content_details.add(content_detailsItem == null
+        in contentDetails == null ? [] : jsonRes['content_details']) {
+      contentDetails.add(content_detailsItem == null
           ? null
           : new Item.fromJson(content_detailsItem));
     }
@@ -79,29 +79,29 @@ class Content {
 
   @override
   String toString() {
-    return '{"content_container_type": $content_container_type,"content_details": $content_details}';
+    return '{"content_container_type": $contentContainerType,"content_details": $contentDetails}';
   }
 }
 
 class Item {
-  int content_type;
-  int text_style;
-  String content_detail;
+  int contentType;
+  int textStyle;
+  String contentDetail;
   String extra;
 
   Item.fromParams(
-      {this.content_type, this.text_style, this.content_detail, this.extra});
+      {this.contentType, this.textStyle, this.contentDetail, this.extra});
 
   Item.fromJson(jsonRes) {
-    content_type = jsonRes['content_type'];
-    text_style = jsonRes['text_style'];
-    content_detail = jsonRes['content_detail'];
+    contentType = jsonRes['content_type'];
+    textStyle = jsonRes['text_style'];
+    contentDetail = jsonRes['content_detail'];
     extra = jsonRes['extra'];
   }
 
   @override
   String toString() {
-    return '{"content_type": $content_type,"text_style": $text_style,"content_detail": ${content_detail != null ? '${json.encode(content_detail)}' : 'null'},"extra": ${extra != null ? '${json.encode(extra)}' : 'null'}}';
+    return '{"content_type": $contentType,"text_style": $textStyle,"content_detail": ${contentDetail != null ? '${json.encode(contentDetail)}' : 'null'},"extra": ${extra != null ? '${json.encode(extra)}' : 'null'}}';
   }
 }
 

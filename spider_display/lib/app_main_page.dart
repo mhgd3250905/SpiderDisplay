@@ -75,30 +75,17 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.green,
-      body: PageView(
-        controller: _controller,
-        scrollDirection: Axis.horizontal,
-        pageSnapping: false,
-        children: _pages,
-        onPageChanged: (index) {
-          //切换的时候下方的bottomNavigationBar也需要响应的切换
-          if (_selectedIndex != index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          buildBottomNavigationBarItem(Icons.book, 'Bookset'),
-          buildBottomNavigationBarItem(Icons.cloud_circle, 'Test'),
-        ],
-        currentIndex: _selectedIndex,
-        fixedColor: Colors.green,
-        onTap: onBottomNavigationItemTap,
-        type: BottomNavigationBarType.fixed,
-      ),
+      body: SpiderMainPage(),
+//      bottomNavigationBar: BottomNavigationBar(
+//        items: <BottomNavigationBarItem>[
+//          buildBottomNavigationBarItem(Icons.book, 'Bookset'),
+//          buildBottomNavigationBarItem(Icons.cloud_circle, 'Test'),
+//        ],
+//        currentIndex: _selectedIndex,
+//        fixedColor: Colors.green,
+//        onTap: onBottomNavigationItemTap,
+//        type: BottomNavigationBarType.fixed,
+//      ),
     );
   }
 }
