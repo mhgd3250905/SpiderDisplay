@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
-import 'package:spider_display/Views/huxiu_list_page.dart';
+import 'package:spider_display/Views/page_news_list.dart';
 
 class ChuleItemView extends StatefulWidget {
   final NewsBean huxiuNews;
@@ -15,6 +15,7 @@ class _ChuleItemViewState extends State<ChuleItemView>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    print(widget.huxiuNews.imageLink);
     return Column(
       children: <Widget>[
         Container(

@@ -429,6 +429,7 @@ class _NewsDetailPageState extends State<NewsDetailPage>
 
     //如果是正常文本
     if (content.contentContainerType == DetailContainerType.Img.index) {
+      print(content.contentDetails[0].extra);
       return Container(
         margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
         width: double.infinity,

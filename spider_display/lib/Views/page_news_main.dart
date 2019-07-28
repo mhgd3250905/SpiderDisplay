@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
-import 'package:spider_display/Views/huxiu_list_page.dart';
+import 'package:spider_display/Views/page_news_list.dart';
 
 const int PAGE_COUNT = 10;
 
