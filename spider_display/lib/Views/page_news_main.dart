@@ -7,17 +7,21 @@ const int PAGE_COUNT = 10;
 
 Dio dio;
 
-class HuxiuMainPage extends StatefulWidget {
+class NewsMainPage extends StatefulWidget {
+  String tag;
+
+  NewsMainPage(this.tag);
+
   @override
-  _HuxiuMainPageState createState() => new _HuxiuMainPageState();
+  _NewsMainPageState createState() => new _NewsMainPageState();
 }
 
-class _HuxiuMainPageState extends State<HuxiuMainPage>
+class _NewsMainPageState extends State<NewsMainPage>
     with AutomaticKeepAliveClientMixin {
   ScrollController scrollController = new ScrollController();
   GlobalKey<RefreshIndicatorState> _refreshIndicaterState =
       GlobalKey<RefreshIndicatorState>();
-  List<HuxiuNews> dataList = [];
+  List<NewsBean> dataList = [];
   int page = 0;
 
   @override
@@ -38,30 +42,33 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
     dio.clear();
   }
 
-  Future<List<HuxiuNews>> getData() async {
-    Response response = await dio.get(getHuxiuListUrl("huxiu", page));
-    HuxiuNewsList bean = HuxiuNewsList(response.data);
+  Future<List<NewsBean>> getData() async {
+    Response response = await dio.get(getNewsListUrl(widget.tag, page));
+    NewsListBean bean =
+        NewsListBean(response.data.toString().replaceAll("\n", ""));
     print("getData dataList.length= ${dataList.length}");
     return bean.data;
   }
 
-  Future<List<HuxiuNews>> resetData() async {
+  Future<List<NewsBean>> resetData() async {
     page = 0;
-    Response response = await dio.get(getHuxiuListUrl("huxiu", page));
-    HuxiuNewsList bean = HuxiuNewsList(response.data);
+    Response response = await dio.get(getNewsListUrl(widget.tag, page));
+    NewsListBean bean =
+        NewsListBean(response.data.toString().replaceAll("\n", ""));
     dataList.clear();
     dataList.addAll(bean.data);
-    dataList = fliterHuxiuNews(dataList);
+    dataList = fliterNews(dataList);
     print("resetData dataList.length= ${dataList.length}");
     setState(() {});
   }
 
-  Future<List<HuxiuNews>> getMoreData() async {
+  Future<List<NewsBean>> getMoreData() async {
     page++;
-    Response response = await dio.get(getHuxiuListUrl("huxiu", page));
-    HuxiuNewsList bean = HuxiuNewsList(response.data);
+    Response response = await dio.get(getNewsListUrl(widget.tag, page));
+    NewsListBean bean =
+        NewsListBean(response.data.toString().replaceAll("\n", ""));
     dataList.addAll(bean.data);
-    dataList = fliterHuxiuNews(dataList);
+    dataList = fliterNews(dataList);
     print("getMoreData dataList.length= ${dataList.length}");
     setState(() {});
   }
@@ -69,8 +76,8 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
   /**
    * 筛选出非空的条目
    */
-  List<HuxiuNews> fliterHuxiuNews(List<HuxiuNews> dataList) {
-    List<HuxiuNews> tempList = [];
+  List<NewsBean> fliterNews(List<NewsBean> dataList) {
+    List<NewsBean> tempList = [];
     dataList.forEach((huxiuNews) {
       if (huxiuNews.newsId.isNotEmpty) {
         tempList.add(huxiuNews);
@@ -81,8 +88,8 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
     return dataList;
   }
 
-  FutureBuilder<List<HuxiuNews>> buildFutureBuilder() {
-    return FutureBuilder<List<HuxiuNews>>(
+  FutureBuilder<List<NewsBean>> buildFutureBuilder() {
+    return FutureBuilder<List<NewsBean>>(
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         ConnectionState state = snapshot.connectionState;
         switch (state) {
@@ -90,41 +97,50 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
           case ConnectionState.waiting:
           case ConnectionState.none:
             //等待状态
-            return Container(
-              color: Colors.white,
-              alignment: Alignment.center,
-              child: Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 4.0,
-                  backgroundColor: Colors.blue,
-                  // value: 0.2,
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.black87),
+            return RefreshIndicator(
+              key: _refreshIndicaterState,
+              child: Container(
+                color: Colors.white,
+                alignment: Alignment.center,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 4.0,
+                    backgroundColor: Colors.blue,
+                    // value: 0.2,
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(Colors.black87),
+                  ),
                 ),
               ),
+              onRefresh: resetData,
             );
           case ConnectionState.done:
             //完成状态
             if (snapshot.hasError) {
               //结果错误
               print("snapshot.hasErrpr: ${snapshot.error}");
-              return Container(
-                color: Colors.white,
-                alignment: Alignment.center,
-                child: Text(
-                  "连接错误...",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
+              return RefreshIndicator(
+                key: _refreshIndicaterState,
+                child: Container(
+                  color: Colors.white,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "连接错误...",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
+                onRefresh: resetData,
               );
             }
             dataList = snapshot.data;
-            dataList = fliterHuxiuNews(dataList);
+            dataList = fliterNews(dataList);
             return RefreshIndicator(
               key: _refreshIndicaterState,
-              child: HuxiuNewsListPage(dataList, scrollController),
+              child: NewsListPage(widget.tag, dataList, scrollController),
               onRefresh: resetData,
             );
             break;
@@ -140,7 +156,7 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
         ? buildFutureBuilder()
         : RefreshIndicator(
             key: _refreshIndicaterState,
-            child: HuxiuNewsListPage(dataList, scrollController),
+            child: NewsListPage(widget.tag, dataList, scrollController),
             onRefresh: resetData,
           );
   }
@@ -150,9 +166,9 @@ class _HuxiuMainPageState extends State<HuxiuMainPage>
   bool get wantKeepAlive => true;
 }
 
-String getHuxiuListUrl(String tag, int page) {
+String getNewsListUrl(String tag, int page) {
   String url =
-      "http://49.234.76.105:80/spider/huxiu/$tag?start=${page * PAGE_COUNT}&end=${page * PAGE_COUNT + PAGE_COUNT - 1}";
+      "http://49.234.76.105:80/spider/news/$tag?start=${page * PAGE_COUNT}&end=${page * PAGE_COUNT + PAGE_COUNT - 1}";
   print(url);
   return url;
 }

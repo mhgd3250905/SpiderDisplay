@@ -1,25 +1,26 @@
 import 'dart:convert' show json;
 
-class HuxiuNewsList {
+
+class NewsListBean {
   int errCode;
   String error;
-  List<HuxiuNews> data;
+  List<NewsBean> data;
 
-  HuxiuNewsList.fromParams({this.errCode, this.error, this.data});
+  NewsListBean.fromParams({this.errCode, this.error, this.data});
 
-  factory HuxiuNewsList(jsonStr) => jsonStr == null
+  factory NewsListBean(jsonStr) => jsonStr == null
       ? null
       : jsonStr is String
-          ? new HuxiuNewsList.fromJson(json.decode(jsonStr))
-          : new HuxiuNewsList.fromJson(jsonStr);
+          ? new NewsListBean.fromJson(json.decode(jsonStr))
+          : new NewsListBean.fromJson(jsonStr);
 
-  HuxiuNewsList.fromJson(jsonRes) {
+  NewsListBean.fromJson(jsonRes) {
     errCode = jsonRes['err_code'];
     error = jsonRes['error'];
     data = jsonRes['data'] == null ? null : [];
 
     for (var dataItem in data == null ? [] : jsonRes['data']) {
-      data.add(dataItem == null ? null : new HuxiuNews.fromJson(dataItem));
+      data.add(dataItem == null ? null : new NewsBean.fromJson(dataItem));
     }
   }
 
@@ -29,7 +30,7 @@ class HuxiuNewsList {
   }
 }
 
-class HuxiuNews {
+class NewsBean {
   String createTime;
   String desc;
   String imageLink;
@@ -39,7 +40,7 @@ class HuxiuNews {
   List<Category> category;
   Author author;
 
-  HuxiuNews.fromParams(
+  NewsBean.fromParams(
       {this.createTime,
       this.desc,
       this.imageLink,
@@ -49,7 +50,7 @@ class HuxiuNews {
       this.category,
       this.author});
 
-  HuxiuNews.fromJson(jsonRes) {
+  NewsBean.fromJson(jsonRes) {
     createTime = jsonRes['create_time'];
     desc = jsonRes['desc'];
     imageLink = jsonRes['image_link'];

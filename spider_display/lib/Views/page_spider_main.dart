@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:spider_display/CustomView/search_delegate.dart';
-import 'package:spider_display/Modle/bookset_modle.dart';
+import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Modle/test_content.dart';
 import 'package:spider_display/Res/res_text_style.dart';
 import 'package:spider_display/Views/bookset_list_page.dart';
-import 'package:spider_display/Views/huxiu_main_page.dart';
-import 'package:spider_display/Views/search_page.dart';
+import 'package:spider_display/Views/page_news_main.dart';
+import 'package:spider_display/Views/page_search.dart';
 
 class SpiderMainPage extends StatefulWidget {
   @override
@@ -23,19 +23,10 @@ class _SpiderMainPageState extends State<SpiderMainPage>
       text: "虎嗅",
     ),
     Tab(
-      text: "Bookset",
-    ),
-    Tab(
       text: "触乐网",
     ),
     Tab(
       text: "V2EX",
-    ),
-    Tab(
-      text: "端传媒",
-    ),
-    Tab(
-      text: "LOL",
     ),
   ];
 
@@ -48,8 +39,8 @@ class _SpiderMainPageState extends State<SpiderMainPage>
 
   @override
   Widget build(BuildContext context) {
-    List<Book> bookList =
-        BookList.fromJson(json.decode(BOOK_LIST_JSON_STR)).data;
+    List<NewsBean> chuleList =
+        NewsListBean.fromJson(json.decode(CHULE_LIST_JSON_STR)).data;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -79,11 +70,8 @@ class _SpiderMainPageState extends State<SpiderMainPage>
           child: TabBarView(
             controller: _tabController,
             children: <Widget>[
-              HuxiuMainPage(),
-              BooksetListPage(bookList, null),
-              TestPage(),
-              TestPage(),
-              TestPage(),
+              NewsMainPage("huxiu"),
+              NewsMainPage("chule"),
               TestPage(),
             ],
           ),
@@ -108,7 +96,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
         ),
         onPressed: () {
           //跳转到搜索界面
-          showCustomSearch(context: context, delegate: SearchPage());
+          showCustomSearch(context: context, delegate: HomeSearchPage());
         },
       )
     ];

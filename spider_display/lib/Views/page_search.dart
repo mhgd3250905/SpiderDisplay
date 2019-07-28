@@ -6,7 +6,7 @@ import 'package:spider_display/Modle/bookset_modle.dart';
 import 'package:spider_display/Modle/test_content.dart';
 import 'package:spider_display/Views/bookset_list_page.dart';
 
-class SearchPage extends CustomSearchDelegate<String> {
+class HomeSearchPage extends CustomSearchDelegate<String> {
   @override
   List<Widget> buildActions(BuildContext context) {
     //设置搜索框右侧图标

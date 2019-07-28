@@ -6,16 +6,20 @@ import 'package:spider_display/Res/res_text_style.dart';
 
 Dio dio;
 
-class HuxiuDetailPage extends StatefulWidget {
-  HuxiuNews huxiuNews;
+const TAG_DETAIL_HUXIU = "huxiu_detail";
+const TAG_DETAIL_CHULE = "chule_detail";
 
-  HuxiuDetailPage(this.huxiuNews);
+class NewsDetailPage extends StatefulWidget {
+  NewsBean huxiuNews;
+  String tag;
+
+  NewsDetailPage(this.huxiuNews, this.tag);
 
   @override
-  _HuxiuDetailPageState createState() => new _HuxiuDetailPageState();
+  _NewsDetailPageState createState() => new _NewsDetailPageState();
 }
 
-class _HuxiuDetailPageState extends State<HuxiuDetailPage>
+class _NewsDetailPageState extends State<NewsDetailPage>
     with AutomaticKeepAliveClientMixin {
   ScrollController scrollController;
   HuxiuDetail detail;
@@ -76,6 +80,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
           child: CustomScrollView(
             slivers: <Widget>[
               buildSliverAppBar(context),
+              buildSliverTitle(context),
               buildSliverToBoxAdapter(detail),
             ],
           ),
@@ -135,8 +140,9 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
   ///重置数据
   Future<HuxiuDetail> resetData() async {
     Response response =
-        await dio.get(getHuxiuDetailUrl(widget.huxiuNews.newsId));
-    HuxiuDetailBean bean = HuxiuDetailBean(response.data);
+        await dio.get(getHuxiuDetailUrl(widget.huxiuNews.newsId, widget.tag));
+    HuxiuDetailBean bean =
+        HuxiuDetailBean(response.data.toString().replaceAll("\n", ""));
     detail = bean.data[0];
     setState(() {});
   }
@@ -197,6 +203,117 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
   Widget buildSliverAppBar(BuildContext context) {
     int timeMillis = int.parse(detail.huxiuNews.createTime);
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timeMillis * 1000);
+
+//    return SliverPersistentHeader(
+//      pinned: true,
+//      floating: true,
+//      delegate: SliverAppBarDelegate(
+//        minHeight: 100.0,
+//        maxHeight: 300.0,
+//        child: Container(
+//          margin: EdgeInsets.only(top: 10.0),
+//          width: double.infinity,
+//          child: Hero(
+//            tag: detail.huxiuNews.newsId,
+//            child: Image.network(
+//              detail.huxiuNews.imageLink,
+//              fit: BoxFit.cover,
+//            ),
+//          ),
+//        ),
+//      ),
+//    );
+
+    return SliverAppBar(
+      /**
+       * 如果没有leading,automaticallyImplyLeading为true,默认显示返回箭头
+       * 如果没有leading,且设置为false,则没有箭头，空间留给title
+       * 如果有leading，这个参数无效
+       */
+      automaticallyImplyLeading: false,
+      leading: null,
+      //标题
+//          title: Text("Test SliverAppBar"),
+      //标题是否居中
+//      centerTitle: true,
+//      elevation: 0.0,
+      //是否显示阴影
+      forceElevated: false,
+      //背景颜色
+      backgroundColor: Colors.transparent,
+      /**
+       * light: 白底黑字
+       * dark: 黑底白字
+       */
+      brightness: Brightness.light,
+      //图表风格
+//      iconTheme: IconThemeData(
+//        color: Colors.white,
+//        size: 30.0,
+//        opacity: 1,
+//      ),
+      //字体样式
+      textTheme: TextTheme(
+        title: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      /**
+       * appbar是否显示在屏幕最上面？
+       * true:显示在状态栏下方
+       * false:置顶
+       */
+      primary: true,
+      //标题两边的空白区域
+//      titleSpacing: 16.0,
+      //默认高度是状态栏和导航的高度，如果有滚动视差的话就需要大于前二者
+      expandedHeight: 200.0,
+      //滑到最上面，再滑动是否隐藏导航栏的文字和标题等具体内容
+      floating: false,
+      //是否固定导航栏位置
+      pinned: false,
+      /**
+       * false:线性的展开隐藏
+       * true:下拉展开，上滑隐藏，触发式非线性
+       */
+      snap: false,
+      flexibleSpace: new FlexibleSpaceBar(
+//        title: Text(
+//          "随内容一起滑动的头部",
+//          style: TextStyle(
+//            color: Colors.white,
+//          ),
+//        ),
+        //头部图片
+        background: Container(
+          width: double.infinity,
+          child: Hero(
+            tag: detail.huxiuNews.newsId + detail.huxiuNews.createTime,
+            child: Image.network(
+              detail.huxiuNews.imageLink,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        centerTitle: true,
+        collapseMode: CollapseMode.pin,
+      ),
+    );
+  }
+
+  Widget buildSliverTitle(BuildContext context) {
+    int timeMillis = int.parse(detail.huxiuNews.createTime);
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(timeMillis * 1000);
+
+    String timsStr = "${date.year}年${date.month}月${date.day}日 "
+        "${date.hour < 10 ? "0" : ""}"
+        "${date.hour}:"
+        "${date.minute < 10 ? "0" : ""}"
+        "${date.minute}";
+    if (widget.tag == TAG_DETAIL_CHULE) {
+      timsStr = "${date.year}年${date.month}月${date.day}日";
+    }
+
     return SliverToBoxAdapter(
       child: Container(
         child: Column(
@@ -206,11 +323,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
               margin: const EdgeInsets.only(left: 10.0, top: 8.0),
               alignment: Alignment.centerLeft,
               child: Text(
-                "${date.year}年${date.month}月${date.day}日 "
-                    "${date.hour < 10 ? "0" : ""}"
-                    "${date.hour}:"
-                    "${date.minute < 10 ? "0" : ""}"
-                    "${date.minute}",
+                timsStr,
                 style: TextStyle(
                   fontSize: 13.0,
                   letterSpacing: 0.8,
@@ -275,18 +388,18 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
               ),
             ),
 
-            //头部图片
-            Container(
-              margin: EdgeInsets.only(top: 10.0),
-              width: double.infinity,
-              child: Hero(
-                tag: detail.huxiuNews.newsId,
-                child: Image.network(
-                  detail.huxiuNews.imageLink,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+//            //头部图片
+//            Container(
+//              margin: EdgeInsets.only(top: 10.0),
+//              width: double.infinity,
+//              child: Hero(
+//                tag: detail.huxiuNews.newsId,
+//                child: Image.network(
+//                  detail.huxiuNews.imageLink,
+//                  fit: BoxFit.cover,
+//                ),
+//              ),
+//            ),
           ],
         ),
       ),
@@ -317,6 +430,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
     //如果是正常文本
     if (content.contentContainerType == DetailContainerType.Img.index) {
       return Container(
+        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
         width: double.infinity,
 //        height: 300.0,
         child: Image.network(
@@ -327,8 +441,8 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
     } else {
       return Container(
         margin: EdgeInsets.only(
-            top: index == 0 ? 10.0 : 0.0,
-            bottom: index == 0 ? 10.0 : 0.0,
+            top: index == 0 || widget.tag == TAG_DETAIL_CHULE ? 10.0 : 0.0,
+            bottom: index == 0 || widget.tag == TAG_DETAIL_CHULE ? 10.0 : 0.0,
             left: 16.0,
             right: 16.0),
         alignment: Alignment.centerLeft,
@@ -341,13 +455,13 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
           border: Border(
               left: BorderSide(
                   color: content.contentContainerType ==
-                          DetailContainerType.Normal.index
-                      ? Colors.white
-                      : Colors.grey,
+                          DetailContainerType.Blockquote.index
+                      ? Colors.grey
+                      : Colors.white,
                   width: content.contentContainerType ==
-                          DetailContainerType.Normal.index
-                      ? 0.0
-                      : 5.0)),
+                          DetailContainerType.Blockquote.index
+                      ? 5.0
+                      : 0.0)),
         ),
         child: RichText(
           softWrap: true,
@@ -488,8 +602,45 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-String getHuxiuDetailUrl(String newsId) {
-  String url = "http://49.234.76.105:80/spider/detail/huxiu_detail/$newsId";
+String getHuxiuDetailUrl(String newsId, String tag) {
+  String url = "http://49.234.76.105:80/spider/detail/${tag}/$newsId";
   print(url);
   return url;
+}
+
+class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  final double minHeight;
+  final double maxHeight;
+
+  SliverAppBarDelegate({
+    @required this.child,
+    @required this.minHeight,
+    @required this.maxHeight,
+  });
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    // TODO: implement build
+    return new SizedBox.expand(
+      child: child,
+    );
+  }
+
+  @override
+  // TODO: implement maxExtent
+  double get maxExtent => maxHeight;
+
+  @override
+  // TODO: implement minExtent
+  double get minExtent => minHeight;
+
+  @override
+  bool shouldRebuild(SliverAppBarDelegate oldDelegate) {
+    // TODO: implement shouldRebuild
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
+  }
 }

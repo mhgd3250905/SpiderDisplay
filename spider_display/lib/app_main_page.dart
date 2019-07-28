@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/bookset_modle.dart';
 import 'package:spider_display/Modle/test_content.dart';
 import 'package:spider_display/Views/bookset_list_page.dart';
-import 'package:spider_display/Views/spider_main_page.dart';
+import 'package:spider_display/Views/page_spider_main.dart';
 
 class MainPage extends StatelessWidget {
   @override

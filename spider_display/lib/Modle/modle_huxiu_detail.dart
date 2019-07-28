@@ -34,7 +34,7 @@ class HuxiuDetailBean {
 
 class HuxiuDetail {
   List<Content> contents;
-  HuxiuNews huxiuNews;
+  NewsBean huxiuNews;
 
   HuxiuDetail(this.contents, this.huxiuNews);
 
@@ -50,7 +50,7 @@ class HuxiuDetail {
 
     huxiuNews = jsonRes['huxiu_news'] == null
         ? null
-        : new HuxiuNews.fromJson(jsonRes['huxiu_news']);
+        : new NewsBean.fromJson(jsonRes['huxiu_news']);
   }
 
   @override

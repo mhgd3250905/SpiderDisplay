@@ -321,8 +321,12 @@ const String BOOK_DETAIL_JSON_STR = '''{
     ]
 }''';
 
-const HUXIU_DETAIL_STR = '''{
+const String CHULE_DETAIL_JSON_STR = '''{
+    "err_code": 0,
+    "error": "",
+    "data":[{
     "huxiu_news": {
+        "news_id": "",
         "title": "工作有益健康，一周上班一天就够了",
         "news_link": "https://www.huxiu.com/article/306541.html",
         "author": {
@@ -331,7 +335,7 @@ const HUXIU_DETAIL_STR = '''{
             "author_id": "1872067"
         },
         "create_time": "201907/01/160402662180",
-        "desc": "老板给不给放假，又是另一回事了",
+        "desc": " 老板给不给放假，又是另一回事了",
         "image_link": "https://img.huxiucdn.com/article/cover/201907/01/160402662180.jpg?imageView2/1/w/400/h/225/|imageMogr2/strip/interlace/1/quality/85/format/jpg",
         "category": [
             {
@@ -346,47 +350,19 @@ const HUXIU_DETAIL_STR = '''{
             "content_details": [
                 {
                     "content_type": 0,
-                    "content_detail": "本文来自微信公众号：",
-                    "text_style": 5,
+                    "content_detail": "7月7日，NGA论坛的一位网友",
+                    "text_style": 0,
                     "extra": ""
                 },
                 {
                     "content_type": 0,
-                    "content_detail": "全媒派（ID：quanmeipai）",
+                    "content_detail": "发帖表示",
                     "text_style": 6,
-                    "extra": "https://mp.weixin.qq.com/s?__biz=MzA3MzQ1MzQzNA==&mid=2656951595&idx=1&sn=aecc5a12e69199421269a60d6027724b&chksm=84a7a73eb3d02e28df135dd525e0b58eb084239f2e2e7ae18b6a844a0a47065b176e1d36e7eb&mpshare=1&scene=1&srcid=#rd"
+                    "extra": "https://ngabbs.com/read.php?tid=17818033&rand=553"
                 },
                 {
                     "content_type": 0,
-                    "content_detail": "，作者： 腾讯传媒，标题图来自视觉中国",
-                    "text_style": 5,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "在这个数字时代，人们接受的信息要比以往任何一个时代都多。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "无论何时何地，你都可以快速便捷地获得大量免费信息。",
+                    "content_detail": "，MIUI系统上的《刀塔霸业》被植入了奇怪的广告。具体的表现形式是，在打开《刀塔霸业》时，他发现游戏启动前插播了一条广告，广告内容来自拼多多和今日头条——它们都是国内知名的应用软件。",
                     "text_style": 0,
                     "extra": ""
                 }
@@ -398,29 +374,6 @@ const HUXIU_DETAIL_STR = '''{
                 {
                     "content_type": 0,
                     "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "但你所接触的不仅是简单的符号和文字，而是从种族冲突到全球变暖，从流行文化再到家长里短的一切话题。",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "如果控制得当，这些内容能够为读者带来休闲消遣或知识增长的愉悦。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "但是，越来越明显的趋势已经表明，现在的新闻并不总能给读者带来幸福。",
                     "text_style": 0,
                     "extra": ""
                 }
@@ -431,114 +384,7 @@ const HUXIU_DETAIL_STR = '''{
             "content_details": [
                 {
                     "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "快速发展的技术使得新闻更易获得，但也使得逃避新闻更加容易。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "以至于，过去几年中，“新闻回避",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（news avoidance）",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "”成为了学界研究的新主题。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604959789.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "本期全媒派独家编译，从宏观数据的整体角度和凸显细节的个体视角出发，和你聊聊现代人",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "逃避新闻",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "那些事儿。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "数说“新闻回避”",
+                    "content_detail": "■ 虽然名字很霸气，还是被人插了广告",
                     "text_style": 2,
                     "extra": ""
                 }
@@ -549,92 +395,7 @@ const HUXIU_DETAIL_STR = '''{
             "content_details": [
                 {
                     "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "今年6月，路透新闻研究所联合牛津大学发布了最新一期数字新闻报道的相关数据。",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "在2017年，29%的全球受访者表示他们会“经常或有时避开新闻”",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "，具体到不同国家，在美国这一回避行为占比为38%，在英国为24%。而到了2019年，",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "这组数据在全球范围增加了3个百分点",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "，达到32%，在美国上升到41%，英国达到35%。",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（即使拥有最忠实读者的日本，回避新闻的人群占比也从2017年的6%增加到了11%）",
-                    "text_style": 5,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
                     "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604885732.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "为什么人们会回避新闻？",
                     "text_style": 0,
                     "extra": ""
                 }
@@ -645,369 +406,7 @@ const HUXIU_DETAIL_STR = '''{
             "content_details": [
                 {
                     "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "第一个原因是大量新闻替代品的出现。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "正如MarkusPrior在2007年出版的《Post-Broadcast Ddemocracy》一书中提到的那样，大众一直在调整对新闻的接触。随着媒介产品的丰富，人们开始更少地消费新闻而选择其他“食物”。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "第二个原因是政治两极分化加剧，特别是情感的两极分化。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "在美国，有35%的受访者表示，自己逃避阅读新闻的原因是“无法相信新闻的真实性”，而在一定程度上，新闻不信任与政治不信任之间存在着联系。在英国，新闻回避行为快速增长的重要原因正是“受挫于英国脱欧及随之出现的困局。”",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604521343.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "此外，读者避开新闻最常见的原因还与心理情绪相关。在美国，有57%的受访人表示，自己拒绝阅读新闻的原因是：“",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（新闻）",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "对我的情绪产生了负面影响”。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "这些数据表明了新闻回避正在成为一个严重的问题。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "但这些数据无法尽可能多地帮助我们解答“为何人们逃避新闻”这一复杂问题。LinkedIn高级编辑Isabelle Roughol向读者询问新闻回避的个体体验，以定性研究的方法对新闻回避这一现象的展开了研究。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "读者说：新闻回避的定性分析",
-                    "text_style": 2,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "Isabelle Roughol在自己的领英主页抛出“你如何看待新闻回避”这一话题，人们通过评论留下了自己的看法。这一调查虽然不够严谨、科学，",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "但倾听这些来自读者的心声，对了解非新闻从业人员如何看待当下的新闻业依然具有独特价值。",
-                    "text_style": 7,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604021237.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "习得性无助",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "在不少读者看来，新闻虽然将他们与现实世界紧紧联结在一起，但是，这种了解对于个体而言，价值甚微。尤其在新闻日益热衷眼球经济和轰动效应的当下，与新闻时刻保持连接，只能让自己更加沮丧和无助。",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "是的，你了解了很多，但是然后呢？你对现实无能无力，无可奈何。",
-                    "text_style": 7,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "我不想再看川普正在做什么或者不做什么的新闻了。为什么？因为除了明年的投票，我什么也做不了。我期待明年，我可以投出那一票让他下台。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "我在十年前开始拒绝新闻，因为我对周围发生的这一切糟心事感到沮丧，并且我意识到除了感到无助外，我无能为力。而在此之前，我曾每天至少有一个小时都在贪婪地阅读报纸。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "人类作为万物之长，我们明白自己的能力和才华，对自己的主观能动性抱有坚定的信念。",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "但是，大量的新闻报道，让我们处于“习得性无助”的状态，面对关于战乱饥馑或者人性悲凉的故事，我们除了一声叹息外无能为力。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "没有人会喜欢这种无力感。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "任何人都不应该对“改变”这件事感到无助。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "",
+                    "content_detail": "你当然听说过《刀塔霸业》，它是个正统的自走棋游戏——“自走棋”算是近半年来游戏行业里的明星，而《刀塔霸业》是Valve制作的自走棋游戏。《刀塔霸业》同时登陆PC端和移动端，并做到了数据共通，可以跨平台联机。相比此前《Artifact》的折戟沉沙，《刀塔霸业》的表现相当不错。",
                     "text_style": 0,
                     "extra": ""
                 }
@@ -1020,17 +419,17 @@ const HUXIU_DETAIL_STR = '''{
                     "content_type": 1,
                     "content_detail": "",
                     "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604454652.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
+                    "extra": "http://img.chuapp.com/wp-content/Picture/2019-07-09/7395d246f417c5a1.jpg?imageView2/2/w/700"
                 }
             ]
         },
         {
-            "content_container_type": 0,
+            "content_container_type": 3,
             "content_details": [
                 {
                     "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
+                    "content_detail": "或许是今年来最成功的V社游戏",
+                    "text_style": 1,
                     "extra": ""
                 }
             ]
@@ -1040,843 +439,735 @@ const HUXIU_DETAIL_STR = '''{
             "content_details": [
                 {
                     "content_type": 0,
-                    "content_detail": "从媒体偏好的内容来看，坏消息就是好新闻。",
+                    "content_detail": "TapTap上的许多玩家也反馈了类似的问题。TapTap的一位玩家",
                     "text_style": 0,
                     "extra": ""
                 },
                 {
                     "content_type": 0,
-                    "content_detail": "但是大量的消极信息，除了对个人心理存在危害外，还会让人产生逃离的欲望。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "从读者留言可以看出，人们虽然喜欢阅读坏消息，但是没有人想一直生活在充斥着消极信息的环境里。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "这些消息既污浊又令人泄气，我想保护自己不受这个恐惧工厂的影响。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "我减少了新闻消费。通过自我探索和思考，我意识到新闻对我的情绪、心理健康有着巨大的负面影响，我还无法应对……那些真正重要的新闻总会有办法找到我。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "它很少有积极的东西，总是那么消极。我讨厌听到或者阅读一篇只有糟糕消息的文章。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "不只是消极的，而且没有任何明确的方法来有所作为。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604232693.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "是的。",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（新闻）",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "有罪，我们需要数字排毒，远离这些有压力的内容。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "读者们期待怎样的新闻呢？当我们的生活和世界被坏消息所包绕和扭曲，许多人正在呼唤有更多的“好消息”来进行平衡。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "新闻已经变得格外依赖耸人听闻的内容。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "虽然我们的确需要揭示世界可怕的暴行，但是我们也需要正面事物来与之平衡。如果你要报道一则坏消息，那请告诉我们正在有哪些努力去改善，我们能怎么参与帮助。我的问题是，我为什么要损害我的精力和健康的心理去看那些奇形怪状的照片或者令人沮丧的新闻？我倒情愿去看一本满是广告，没有一则新闻的杂志。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604786538.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "我觉得要对新闻接触有选择。我订阅了好消息新闻网",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（the Good News Network）",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "，每天都会有一些令人振奋的故事。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "离开新闻 你会过得更好",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "“为什么要浪费时间精力，让自己的头脑充满那些有毒的、不真实的内容？我的建议是，不如集中精力在现实生活中多做些好事。”",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "作为有充分自信安排好自己生活的现代人，为了长久地保持内心的平静和自足，很多人选择离开新闻。新闻，已经像酒精毒品一样的东西，成为一群人戒断的对象。这种对新闻接触的成功自制，将是他们引以为豪的“美德”。",
-                    "text_style": 7,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "当我们清晰地思考，认真地过自己的生活时，我们就不会被那些永无止境的循环新闻打扰分心。我们头脑清醒时，我们会知道什么是重要的，什么是需要放弃的。",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "关闭这些白噪音",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（新闻）",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "有助于我们更好地过好自己的生活。",
-                    "text_style": 7,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604927492.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "一段时间前，我过得筋疲力尽。我收到的第一条医嘱是：“不要再看新闻了”。与新闻断开连接，消除了那些耸人听闻的内容和思虑过重带来的压力。让世界自行其是。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "我们的大脑总是向往那些令人震惊的新闻故事",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（生存本能需要我们时常感受到恐惧在侧）",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "，所以",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "戒掉新闻并不容易。但最为重要的是，能够保持自己内心的平静。",
-                    "text_style": 7,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 1,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "我还在阅读和接触，但我绝不在社交媒体上发表有争议性的言论。要做到这一点，需要极大的自制力，但是得益于此，我感受到的压力已经在急剧下降。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "启示录：面对新闻回避 我们还能做什么？",
-                    "text_style": 2,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "应对日常中的信息爆炸是我们在这个数字时代最紧迫的挑战之一。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "记者们需要努力应对来势汹涌的消息来源，读者们则需要应付屏幕上越来越多的媒体内容。对于越来越多的人而言，逃避新闻成为了自己重新掌控生活的重要方式。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604012027.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "但是站在整个社会的角度来看，",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "新闻疲劳和新闻回避已经成为媒介系统和民主国家肌体上的重大病症。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "在这样一个充满了挑衅观点和惊悚内容，却又严重缺乏事实和共识的世界里，如何保证人们享有知情权，又如何在知情权与日益增加的智力、情感负担之间取得平衡？",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "根据本文第二部分，读者对新闻逃避行为的自我披露，内容生产者们或许可以获得一些启发：",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "首先，在撰写报道中，新闻工作者应该努力提供问题的解决方案。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "现在大多数新闻报道因为缺乏对解决问题的积极思考，而倍加让读者感到沮丧和无助。在这种情况下，新闻消费给人们带来了习得性无助，这降低了新闻的吸引力，让更多的人选择逃避。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604484718.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "其次，新闻工作者需要重视读者的情感和心理体验。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "在后特朗普时代，考虑到充斥在社交媒体和传统媒体上对“假新闻”的指摘，“新闻信任”是一个特别的流行词。但是，从上文中读者对新闻回避进行的自我报告来看，我们可能高估了信任在决定人们不阅读、不接触新闻报道中的作用。毕竟，与“我不相信新闻是真实的”相比，“",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "（新闻）",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "对我的情绪会产生负面影响”才是人们新闻逃避的更重要因素。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "现在，由于社交媒体放大了“新闻信任”问题，我们也许只是把目光集中在了那些指责新闻媒体是“骗子”“魔术师”的群体上，反而忽视了更大的群体——对这一群体而言，他们逃避新闻是因为感受到了过多的压力和心理负担、感到时间和精力的无谓付出。",
-                    "text_style": 0,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 2,
-            "content_details": [
-                {
-                    "content_type": 1,
-                    "content_detail": "",
-                    "text_style": 4,
-                    "extra": "https://img.huxiucdn.com/article/content/201907/10/091604173952.jpg?imageView2/2/w/1000/format/jpg/interlace/1/q/85"
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "新闻阅读曾是我们生活中的重要仪式，从晨报到晚报，它陪伴人们更好地理解和应对我们所处的世界。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "现在，过载的新闻资讯带给我们压力，",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "在技术提供了更多可能和媒介产品的日益丰富之下，拒绝新闻正在成为一个有吸引力的选项。",
-                    "text_style": 7,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "在这种背景下，许多人认为，作为独立的理性经济人，没有新闻或者减少新闻，能够让他们过得更好。这种观点虽然有着基于现实的思辨价值，",
-                    "text_style": 0,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "但是，对于新闻业乃至现代公共社会而言，这可能并不是一个好消息。",
-                    "text_style": 7,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "</br>",
-                    "text_style": 3,
-                    "extra": ""
-                }
-            ]
-        },
-        {
-            "content_container_type": 0,
-            "content_details": [
-                {
-                    "content_type": 0,
-                    "content_detail": "本文来自微信公众号：",
-                    "text_style": 5,
-                    "extra": ""
-                },
-                {
-                    "content_type": 0,
-                    "content_detail": "全媒派（ID：quanmeipai）",
+                    "content_detail": "提出了",
                     "text_style": 6,
-                    "extra": "https://mp.weixin.qq.com/s?__biz=MzA3MzQ1MzQzNA==&mid=2656951595&idx=1&sn=aecc5a12e69199421269a60d6027724b&chksm=84a7a73eb3d02e28df135dd525e0b58eb084239f2e2e7ae18b6a844a0a47065b176e1d36e7eb&mpshare=1&scene=1&srcid=#rd"
+                    "extra": "https://www.taptap.com/topic/6587126"
                 },
                 {
                     "content_type": 0,
-                    "content_detail": "，作者： 腾讯传媒，标题图来自视觉中国",
-                    "text_style": 5,
+                    "content_detail": "游戏“自带广告”的问题，他说，自己从多个渠道下载的游戏均有广告。随后，TapTap《刀塔霸业》讨论区的",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "版主发帖称",
+                    "text_style": 6,
+                    "extra": "https://www.taptap.com/topic/6587955"
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "：其他手机均未发现类似问题，“已经可以基本确定是由于玩家使用小米手机的缘故”。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "虽然也有一些小米用户表示没有看见广告，但在NGA论坛的相关帖子里，一些网友在回复中提供了来自小米用户的广告截图。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "http://img.chuapp.com/wp-content/Picture/2019-07-09/6875d246f4c1d590.jpg?imageView2/2/w/700"
+                }
+            ]
+        },
+        {
+            "content_container_type": 3,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "广告的下方带有《刀塔霸业》标志（图片来自NGA）",
+                    "text_style": 1,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "作为一款还未正式上架国内各大应用商店的游戏，《刀塔霸业》的确没有理由插入众多国内厂商的广告。不过，已经有不同的玩家进行了测试，他们的《刀塔霸业》安装包来自不同渠道，包括官方网站、谷歌商店、一些国内的应用商店或来自加速器平台、朋友提供……但都出现了类似的广告。所有这些广告的共同点是，它们出现在搭载MIUI系统的手机上。玩家们于是很自然地推测，小米从系统层面给《刀塔霸业》加上了广告。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "为了验证帖子中所述的真实性，7月8日下午，我利用小米手机（小米MIX 3，MIUI系统版本10.3，稳定版）在谷歌商店下载了《刀塔霸业》，并尝试进入游戏。经过反复试验，游戏并未弹出广告。差不多是同一时间，NGA的帖子中有玩家回复：此前的广告已经不再出现，可能是被“修复”了。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "尽管未能亲眼所见，但MIUI系统中插入类似广告的事件之前也曾发生过。作为一个MIUI使用者，我的确曾在其他程序中见到过布局相似的广告，部分程序甚至有两层广告——跳过疑似系统广告后还会进入App自带的广告。从设计角度上说，很难想象哪个App会设计两层启动广告。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "http://img.chuapp.com/wp-content/Picture/2019-07-09/8605d246f75b690a.jpg?imageView2/2/w/700"
+                }
+            ]
+        },
+        {
+            "content_container_type": 3,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "疑似是系统添加的广告的布局：上半部分广告，下半部分显示App名称与跳过按钮。此前这类广告就出现过，当然这种广告可能来自App与MIUI的合作，但很难想象《刀塔霸业》会和小米有此类合作（图片来自NGA）",
+                    "text_style": 1,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我们当然已经熟悉了手机App广告。作为在商业社会中成长和浸泡的人，我们已经没有那么反感广告了，但在系统层面上强行添加广告则是另外一件事。不管你用什么，只要你还在这个系统上，就可能会被强制播放一段广告。这些广告不给你选择的机会，甚至不告诉你它们从何而来。它们如影随形、无可躲避、毫不讲理。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "小米陷入与广告有关的公关危机已经不是什么新鲜事了，在小米的官方论坛上，甚至有一篇“如何关闭MIUI的18种广告”的",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "教程贴",
+                    "text_style": 6,
+                    "extra": "http://www.miui.com/thread-15991867-1-1.html"
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "。网友们对这个教程贴反响热烈，一共回复了超过3.2万层。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "■ 乌龙霸业",
+                    "text_style": 2,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "MIUI并不是在《刀塔霸业》中找到机会的唯一事物。早在6月24日，《刀塔霸业》就在国内平台",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "闹出过一场乌龙",
+                    "text_style": 6,
+                    "extra": "https://ngabbs.com/read.php?tid=17681968&rand=591"
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，有玩家发现《刀塔霸业》在应用宝上线，并且应用宝还提示游戏有新版本更新，但更新之后，游戏却开始报错。回过头一看，他发现《刀塔霸业》的“开发商”一栏里写着“海沙工作室”。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "http://img.chuapp.com/wp-content/Picture/2019-07-09/8895d246f9c268ed.jpg?imageView2/2/w/700"
+                }
+            ]
+        },
+        {
+            "content_container_type": 3,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "“开发者”往往容易被忽略（图片来自NGA）",
+                    "text_style": 1,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "“海沙工作室”在业内算是小有名气的，除了《刀塔霸业》外，这家能够让人联想到椰林和海浪的工作室还出品过“Uplay手机版客户端”、《旅行青蛙》以及其他各式各样的手机游戏。其实你我都知道，无论是Uplay手机版客户端，还是《旅行青蛙》，都不是这家工作室开发的，他们不过是将这些App上传至各大应用商店，并在“开发者”一栏里冒名顶替。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "但这并不能阻止他们一次又一次地上传一些打着擦边球的玩意儿。在《刀塔霸业》这件事上，现在的进展是，应用宝随后将“开发商”一栏里的名称更改为Valve。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "《刀塔霸业》是一个必定会受欢迎的游戏，恐怕所有平台都不希望用户在自家的平台里无法玩到这个游戏——这可不是一件小事。那么，如果Valve自己不去上传《刀塔霸业》，这些平台会怎么做呢？",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "从另一个角度讲，就算是“海沙工作室”也可以在这场热闹中得到些什么。触乐曾经刊登过一篇关于",
+                    "text_style": 0,
+                    "extra": ""
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "盗版游戏的文章",
+                    "text_style": 6,
+                    "extra": "http://www.chuapp.com/article/286368.html"
+                },
+                {
+                    "content_type": 0,
+                    "content_detail": "，其中提到了当前移动市场的种种乱象。这些平台有两个主要盈利点，最直接的是广告收入，包括平台本身的广告和在安装程序中插入SDK的广告。除此之外，平台也能从联合运营的游戏中获利。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "依据程序中插入的SDK，广告的获益可能交给平台方，也可能交给开发者。这恐怕也或多或少地解释了海沙工作室冒名顶替的动机，在安卓端，解包并插入自己的SDK并不困难，甚至就连游戏的内购数据都可以修改；同时，广告又意味着收入。因此，冒名者们不需要付出开发的成本，只需要对程序稍作修改，就可以获取程序的全部利益。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "■ 一个自走棋出现了，满世界的自走棋都来了",
+                    "text_style": 2,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "对于V社而言，《刀塔霸业》的制作其实已经可以算得上神速了——它竟然没有比国内的一干仿冒者慢多少。V社迅速完成了这个游戏，甚至还把它弄成了多平台共通，这样，它甚至在移动端也没有落下风。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "V社超乎以往的紧迫感也许是有道理的。在中国市场，虽然厂商们很少拿出具有世界级影响力的产品，但在跟进速度方面却从来都不甘居人后。从MOBA到二次元，从“吃鸡”到自走棋，每当一个产品流行起来，你总能看到千万个流行游戏的同胞兄弟。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "http://img.chuapp.com/wp-content/Picture/2019-07-09/3335d246fdba3d8e.png?imageView2/2/w/700"
+                }
+            ]
+        },
+        {
+            "content_container_type": 3,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "V社自走棋中的角色来自“Dota”游戏，其他自走棋当然要另选角色了",
+                    "text_style": 1,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "还是拿自走棋来说，最初作为《Dota 2》Mod流行之后，大量热门游戏都推出了自走棋模式。新模式之外，“新”游戏更是层出不穷，就连“官方版本”都有3版：《Dota 2》游廊模式中的原版、巨鸟多多的手游，以及《刀塔霸业》。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "没有“官方”名号的“自走棋”就更多了，数不胜数。参与制作的既有大厂，也有许多不知名的小厂商，在众多的竞争者中，《刀塔霸业：云顶自走棋》极具特色。这个名字本身就很讲究：“自走棋”开篇明义，“刀塔霸业”中的“刀塔”和“霸业”对应Valve的游戏。与此同时，“云顶”则对应着《英雄联盟》的自走棋模式“云顶之弈”——这个游戏把什么都占全了。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 2,
+            "content_details": [
+                {
+                    "content_type": 1,
+                    "content_detail": "",
+                    "text_style": 4,
+                    "extra": "http://img.chuapp.com/wp-content/Picture/2019-07-09/9245d246fe6cc302.jpg?imageView2/2/w/700"
+                }
+            ]
+        },
+        {
+            "content_container_type": 3,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "令人惊讶的是，这款游戏的评分高达4.8分",
+                    "text_style": 1,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "游戏的介绍也颇具玄机，一句话介绍中写着“魔幻英雄多多战棋手游”。这句话其实又涵盖了多层意思，还将“巨鸟多多”名字的一部分包含进介绍界面，颇具迷惑性。游戏的商店介绍中写着，本作“融合时下热门塔防玩法，汇聚顶尖制作还原‘魔兽’经典，再创革新‘吃鸡’潮流，《魔法自走棋》致力于发扬竞技塔防，将端游军团战玩法呈现于手机端”。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "或许太多的人会惊叹于这句话的兼容并包，毕竟你很难在一句话里包含下“塔防”“魔幻”“魔兽”“吃鸡”“竞技”“还原端游”等所有关键词。在赞叹这句话的同时，可能只有很少的人会发现，介绍中游戏的名字都已经不一样了。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "市场上现在有多少个“自走棋”呢？统计起来有些麻烦，而且没什么必要——不久的将来，还会有更多自走棋。会出现多少模仿者，这已经成了鉴别热门品类的重要参考。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "这个数字非常有趣，它既可以说明一个类型有多火热，也可以用来说明市场有多扭曲——似乎这些开发者平时都无事可做，都在等待一个可供参照的热门游戏，一旦这个游戏出现，他们也全力开工了。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "</br>",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "■ 刀耕火种的市场环境",
+                    "text_style": 2,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "“刀耕火种”指的是石器时代的农业生产方式。原始人类用石斧砍伐草木，然后用一把大火将草木烧尽。火烧的土地变得松软，草木灰也能增强土地肥力。原始人们在土地上播下种子，等待作物成熟。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "刀耕火种的最大特色就是糙，一场大火、随意播种、听天由命。有些时候，游戏行业，尤其是国内的游戏行业，就有那么点刀耕火种的意思。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "一个热门种类就是一场大火，它先是点起玩家的热情，使所有人都意识到一个种类（例如“吃鸡”“自走棋”）火了。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "随后，众多仿造者们纷纷登场，在大火的尘埃之上开始播种，将一个“吃鸡”变成千万盘鸡，将“自走棋”变成千万个“自走棋”。这些“播种”也不需要那么讲究，有的自生自灭，有的野蛮生长……",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "最有趣的是，到了收获季节，收获的人却未必是播种的人。最初放火的人能收获最多吗？播种最勤奋的人能收获最多吗？未必。就现在的市场环境来说，开发商是有死有活，平台或渠道总是稳赚不亏，区别无非是吃相罢了。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "诚然，玩法不受任何法律的保护，仿造也不意味着没有精品。事实上，我们所知的绝大多数优秀作品都早有珠玉在前，是在继承前人基础上的再创造，但这仍然不意味着这种蜂拥而上的市场氛围是合理的。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "我们都知道，总有一天“自走棋”会凉，但总会有下一个热门作品。而当下一个热门作品出现时，大小公司们仍然会将主要研发资源投放在“热门品类”上；渠道还是会利用已有的资源继续创收；玩家可能会满意、可能不会，但不管怎么说，海内海外他们总还有游戏玩。",
+                    "text_style": 0,
+                    "extra": ""
+                }
+            ]
+        },
+        {
+            "content_container_type": 0,
+            "content_details": [
+                {
+                    "content_type": 0,
+                    "content_detail": "市场可能还是会欣欣向荣，但这种循环本身却有些漫无止境、惹人生厌。",
+                    "text_style": 0,
                     "extra": ""
                 }
             ]
         }
     ]
+}]}''';
+
+const String CHULE_LIST_JSON_STR = '''{
+    "err_code": 0,
+    "error": "",
+    "data":[
+    {
+        "news_id": "286536",
+        "title": "“BattleTech”：一个系列游戏的诞生、衰落与重生（下）",
+        "news_link": "/article/286536.html",
+        "author": {
+            "author_name": "爱吃金萝卜的小灰兔",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1563465600",
+        "desc": "“BattleTech”玩家将真正地再续17年来的机甲之梦。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-19/5d315e77e0b0d.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286533",
+        "title": "“BattleTech”：一个系列游戏的诞生、衰落与重生（上）",
+        "news_link": "/article/286533.html",
+        "author": {
+            "author_name": "爱吃金萝卜的小灰兔",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1563379200",
+        "desc": "“机甲战士”系列回归的2019年，是“BattleTech”诞生的35周年。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-18/5d301bd0e36d2.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286530",
+        "title": "游戏少年的职场漂流",
+        "news_link": "/article/286530.html",
+        "author": {
+            "author_name": "池骋",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1563292800",
+        "desc": "“创作行业本身就需要献祭掉99%的人，但真正热爱游戏的人，一辈子都不会屈服于这个现实。”",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-17/5d2ef0956bd22.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286525",
+        "title": "流光溢彩的毕业展与跃跃欲试的“反叛者们”",
+        "news_link": "/article/286525.html",
+        "author": {
+            "author_name": "李应初",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1563206400",
+        "desc": "毕业快乐，西西弗斯。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-16/5d2d7d84c7d0b.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286522",
+        "title": "守护“姨夫”的遗产",
+        "news_link": "/article/286522.html",
+        "author": {
+            "author_name": "陈静",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1563120000",
+        "desc": "虽然自己玩游戏不多，但平井一夫正是那个把索尼变成“索大好”的人。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-15/5d2c247a0ba10.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286520",
+        "title": "一场别开生面的新人编辑陷害大赛（下）",
+        "news_link": "/article/286520.html",
+        "author": {
+            "author_name": "池骋",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1562947200",
+        "desc": "在围观我被各种游戏吊打的时候，众人都哄笑起来——单位内外充满了快活的空气。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-13/5d298c642bb4d.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286517",
+        "title": "一场别开生面的新人编辑陷害大赛（上）",
+        "news_link": "/article/286517.html",
+        "author": {
+            "author_name": "池骋",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1562860800",
+        "desc": "惊呼阵阵，怒骂连连，究竟是什么让新编辑如此激动？",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-12/5d284b6a5f132.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286512",
+        "title": "14年后，“爱神餐馆”等待重新开张",
+        "news_link": "/article/286512.html",
+        "author": {
+            "author_name": "窦宇萌",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1562774400",
+        "desc": "彭子杰今年快要50岁了，他还想做单机游戏。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-11/5d26fcd89dfb4.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286510",
+        "title": "骚男和他的新世界",
+        "news_link": "/article/286510.html",
+        "author": {
+            "author_name": "李应初",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1562688000",
+        "desc": "且随疾风前行，身后亦须留心。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-10/5d2595d4a4742.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    },
+    {
+        "news_id": "286508",
+        "title": "刀耕火种“自走棋”",
+        "news_link": "/article/286508.html",
+        "author": {
+            "author_name": "熊宇",
+            "author_img": "",
+            "author_id": ""
+        },
+        "create_time": "1562601600",
+        "desc": "???????一盘自走棋，千万“卖棋人”。",
+        "image_link": "http://img.chuapp.com//wp-content/Picture/2019-07-09/5d24706cc7e45.jpg?imageView2/5/w/390/h/219",
+        "category": null
+    }
+]
 }''';
