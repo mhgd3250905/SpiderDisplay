@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Modle/modle_huxiu_detail.dart';
 import 'package:spider_display/Res/res_text_style.dart';
+import 'package:spider_display/Utils/navigator_router_utils.dart';
+import 'package:spider_display/Views/page_image_play.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 Dio dio;
 
@@ -289,8 +292,9 @@ class _NewsDetailPageState extends State<NewsDetailPage>
           width: double.infinity,
           child: Hero(
             tag: detail.huxiuNews.newsId + detail.huxiuNews.createTime,
-            child: Image.network(
-              detail.huxiuNews.imageLink,
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: detail.huxiuNews.imageLink,
               fit: BoxFit.cover,
             ),
           ),
@@ -356,22 +360,25 @@ class _NewsDetailPageState extends State<NewsDetailPage>
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    child: ClipOval(
-                      child: Container(
-                        padding: const EdgeInsets.all(0.5),
-                        color: Colors.black54,
-                        child: ClipOval(
-                          child: Image.network(
-                            detail.huxiuNews.author.authorImg,
-                            fit: BoxFit.cover,
-                            width: 15.0,
-                            height: 15.0,
+                  detail.huxiuNews.author.authorImg.isEmpty
+                      ? Container()
+                      : Container(
+                          child: ClipOval(
+                            child: Container(
+                              padding: const EdgeInsets.all(0.5),
+                              color: Colors.black54,
+                              child: ClipOval(
+                                child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: detail.huxiuNews.author.authorImg,
+                                  fit: BoxFit.cover,
+                                  width: 15.0,
+                                  height: 15.0,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
                   Container(
                     margin: const EdgeInsets.only(left: 5.0),
                     child: Text(
@@ -429,15 +436,29 @@ class _NewsDetailPageState extends State<NewsDetailPage>
 
     //如果是正常文本
     if (content.contentContainerType == DetailContainerType.Img.index) {
-      print(content.contentDetails[0].extra);
-      return Container(
-        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-        width: double.infinity,
+//      print(content.contentDetails[0].extra);
+      return InkWell(
+        child: Hero(
+          tag: content.contentDetails[0].extra,
+          child: Container(
+            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+            width: double.infinity,
 //        height: 300.0,
-        child: Image.network(
-          content.contentDetails[0].extra,
-          fit: BoxFit.cover,
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: content.contentDetails[0].extra,
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
+        onTap: () {
+          NavigatorRouterUtils.pushToPage(
+            context,
+            ImageDisplayPage(
+              imageLink: content.contentDetails[0].extra,
+            ),
+          );
+        },
       );
     } else {
       return Container(
@@ -605,7 +626,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
 String getHuxiuDetailUrl(String newsId, String tag) {
   String url = "http://49.234.76.105:80/spider/detail/${tag}/$newsId";
-  print(url);
+//  print(url);
   return url;
 }
 

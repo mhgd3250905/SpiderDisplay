@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Views/page_news_list.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HuxiuNewsItemView extends StatefulWidget {
   final NewsBean huxiuNews;
@@ -34,8 +35,9 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
               Positioned(
                 child: Hero(
                   tag: widget.huxiuNews.newsId + widget.huxiuNews.createTime,
-                  child: Image.network(
-                    widget.huxiuNews.imageLink
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: widget.huxiuNews.imageLink
                         .replaceAll("w/390/h/219", "w/600/h/320"),
                     fit: BoxFit.cover,
                   ),
