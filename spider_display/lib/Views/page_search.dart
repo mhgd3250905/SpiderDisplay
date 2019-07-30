@@ -64,7 +64,7 @@ class HomeSearchPage extends CustomSearchDelegate<String> {
         queryBookList.add(book);
       }
     });
-    return BooksetListPage(queryBookList, null);
+    return BooksetListPage(queryBookList, null, null, null, null);
   }
 
   @override
@@ -78,7 +78,7 @@ class HomeSearchPage extends CustomSearchDelegate<String> {
         queryBookList.add(book);
       }
     });
-    return BooksetListPage(queryBookList, null);
+    return BooksetListPage(queryBookList, null, null, null, null);
   }
 
   @override

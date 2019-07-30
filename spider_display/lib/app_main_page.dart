@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
     List<Book> bookList =
         BookList.fromJson(json.decode(BOOK_LIST_JSON_STR)).data;
     _pages.add(SpiderMainPage());
-    _pages.add(BooksetListPage(bookList, null));
+    _pages.add(BooksetListPage(bookList, null, null, null, null));
   }
 
   ///BottomNavigationBar点击事件

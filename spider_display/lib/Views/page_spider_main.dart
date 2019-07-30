@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:spider_display/CustomView/search_delegate.dart';
+import 'package:spider_display/Modle/bookset_modle.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Modle/test_content.dart';
 import 'package:spider_display/Res/res_text_style.dart';
+import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/bookset_list_page.dart';
 import 'package:spider_display/Views/page_news_main.dart';
 import 'package:spider_display/Views/page_search.dart';
@@ -96,9 +99,31 @@ class _SpiderMainPageState extends State<SpiderMainPage>
         ),
         onPressed: () {
           //跳转到搜索界面
-          showCustomSearch(context: context, delegate: HomeSearchPage());
+//          showCustomSearch(context: context, delegate: HomeSearchPage());
+          List<Book> bookList =
+              BookList.fromJson(json.decode(BOOK_LIST_JSON_STR)).data;
+          NavigatorRouterUtils.pushToPage(
+              context,
+              BooksetListPage(bookList, null, (state) {
+                print("callBack => ${state}");
+              }, (state, percent) {
+//                print("callBack => ${state}, percent => ${percent}");
+              }, loadMore));
         },
       )
     ];
   }
 }
+
+
+
+Future<String> loadMore() async {
+  print("调用：${DateTime.now()}");
+  Response response = await dio.get("http://49.234.76.105:80/spider/news/huxiu?start=0&end=5");
+  NewsListBean bean =
+  NewsListBean(response.data.toString().replaceAll("\n", ""));
+  print("返回：${DateTime.now()}");
+  return bean.data.toString();
+}
+
+
