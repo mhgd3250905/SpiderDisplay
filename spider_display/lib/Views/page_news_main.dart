@@ -1,7 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
+import 'package:spider_display/Utils/navigator_router_utils.dart';
+import 'package:spider_display/Views/page_news_detail.dart';
 import 'package:spider_display/Views/page_news_list.dart';
+import 'package:spider_display/Views/view_chule_item.dart';
+import 'package:spider_display/Views/view_huxiu_item.dart';
+import 'package:spider_display/Views/view_loadmore_list.dart';
 
 const int PAGE_COUNT = 10;
 
@@ -28,12 +33,12 @@ class _NewsMainPageState extends State<NewsMainPage>
   void initState() {
     super.initState();
     dio = new Dio();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        getMoreData();
-      }
-    });
+//    scrollController.addListener(() {
+//      if (scrollController.position.pixels ==
+//          scrollController.position.maxScrollExtent) {
+//        getMoreData();
+//      }
+//    });
   }
 
   @override
@@ -140,7 +145,7 @@ class _NewsMainPageState extends State<NewsMainPage>
             dataList = fliterNews(dataList);
             return RefreshIndicator(
               key: _refreshIndicaterState,
-              child: NewsListPage(widget.tag, dataList, scrollController),
+              child: buildNewsList(),
               onRefresh: resetData,
             );
             break;
@@ -156,9 +161,70 @@ class _NewsMainPageState extends State<NewsMainPage>
         ? buildFutureBuilder()
         : RefreshIndicator(
             key: _refreshIndicaterState,
-            child: NewsListPage(widget.tag, dataList, scrollController),
+            child: buildNewsList(),
             onRefresh: resetData,
           );
+  }
+
+  Widget buildNewsList(){
+    return Container(
+      color: Colors.white,
+      child: LoadMoreListView<List<NewsBean>>(
+        builder: (context, i) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(3.0),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.grey[300],
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 2.0,
+                ),
+                BoxShadow(
+                  color: Colors.grey[300],
+                  offset: Offset(2.0, 0.0),
+                  blurRadius: 2.0,
+                )
+              ],
+            ),
+            margin: i == 0
+                ? const EdgeInsets.all(0.0)
+                : const EdgeInsets.only(top: 1.0),
+            child: Material(
+              child: Ink(
+                child: InkWell(
+                  child: buildNewsListItemView(dataList[i], i),
+                  onTap: () {
+//                      HuxiuDetail detial =
+//                          HuxiuDetail.fromJson(json.decode(HUXIU_DETAIL_STR));
+//                      detial.huxiu_news = huxiuNewsList[i];
+                    NavigatorRouterUtils.pushToPage(
+                        context, NewsDetailPage(dataList[i], "${widget.tag}_detail"));
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+        childCount: dataList.length,
+        loadMore: getMoreData,
+      ),
+    );
+  }
+
+  /**
+   * 构建列表ItemView
+   */
+  Widget buildNewsListItemView(NewsBean news, int pos) {
+    switch (widget.tag) {
+      case TAG_HUXIU:
+        return HuxiuNewsItemView(news);
+      case TAG_CHULE:
+        return ChuleItemView(news);
+      default:
+        return HuxiuNewsItemView(news);
+    }
   }
 
   @override

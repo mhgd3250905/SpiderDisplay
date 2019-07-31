@@ -4,6 +4,7 @@ import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/page_news_detail.dart';
 import 'package:spider_display/Views/view_chule_item.dart';
 import 'package:spider_display/Views/view_huxiu_item.dart';
+import 'package:spider_display/Views/view_loadmore_list.dart';
 
 const TextStyle titleStyle = TextStyle(
     letterSpacing: 1.0,
@@ -50,46 +51,47 @@ class NewsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       color: Colors.white,
-      child: ListView.builder(
-          controller: scrollController,
-          itemCount: newsList.length,
-          itemBuilder: (BuildContext context, int i) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(3.0),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.grey[300],
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 2.0,
-                  ),
-                  BoxShadow(
-                    color: Colors.grey[300],
-                    offset: Offset(2.0, 0.0),
-                    blurRadius: 2.0,
-                  )
-                ],
-              ),
-              margin: i == 0
-                  ? const EdgeInsets.all(0.0)
-                  : const EdgeInsets.only(top: 1.0),
-              child: Material(
-                child: Ink(
-                  child: InkWell(
-                    child: buildNewsListItemView(newsList[i], i),
-                    onTap: () {
+      child: LoadMoreListView(
+        builder: (context, i) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(3.0),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.grey[300],
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 2.0,
+                ),
+                BoxShadow(
+                  color: Colors.grey[300],
+                  offset: Offset(2.0, 0.0),
+                  blurRadius: 2.0,
+                )
+              ],
+            ),
+            margin: i == 0
+                ? const EdgeInsets.all(0.0)
+                : const EdgeInsets.only(top: 1.0),
+            child: Material(
+              child: Ink(
+                child: InkWell(
+                  child: buildNewsListItemView(newsList[i], i),
+                  onTap: () {
 //                      HuxiuDetail detial =
 //                          HuxiuDetail.fromJson(json.decode(HUXIU_DETAIL_STR));
 //                      detial.huxiu_news = huxiuNewsList[i];
-                      NavigatorRouterUtils.pushToPage(context,
-                          NewsDetailPage(newsList[i], "${tag}_detail"));
-                    },
-                  ),
+                    NavigatorRouterUtils.pushToPage(
+                        context, NewsDetailPage(newsList[i], "${tag}_detail"));
+                  },
                 ),
               ),
-            );
-          }),
+            ),
+          );
+        },
+        childCount: newsList.length,
+        loadMore: loadMore,
+      ),
     );
   }
 }
