@@ -90,7 +90,9 @@ class NewsListPage extends StatelessWidget {
           );
         },
         childCount: newsList.length,
-        loadMore: loadMore,
+        loadMoreFunc: (){
+
+        },
       ),
     );
   }

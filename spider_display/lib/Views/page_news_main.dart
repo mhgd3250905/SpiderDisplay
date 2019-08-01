@@ -7,6 +7,8 @@ import 'package:spider_display/Views/page_news_list.dart';
 import 'package:spider_display/Views/view_chule_item.dart';
 import 'package:spider_display/Views/view_huxiu_item.dart';
 import 'package:spider_display/Views/view_loadmore_list.dart';
+import 'package:spider_display/Views/view_refresh_list.dart';
+import 'package:spider_display/Views/view_refresh_loadmore_list.dart';
 
 const int PAGE_COUNT = 10;
 
@@ -67,20 +69,41 @@ class _NewsMainPageState extends State<NewsMainPage>
     setState(() {});
   }
 
+  Future<List<NewsBean>> refreshData() async {
+    page = 0;
+    Response response = await dio.get(getNewsListUrl(widget.tag, page));
+    NewsListBean bean =
+        NewsListBean(response.data.toString().replaceAll("\n", ""));
+    return bean.data;
+  }
+
+  void setRefreshDataList(list) {
+    setState(() {
+      dataList = list;
+    });
+  }
+
   Future<List<NewsBean>> getMoreData() async {
     page++;
     Response response = await dio.get(getNewsListUrl(widget.tag, page));
     NewsListBean bean =
         NewsListBean(response.data.toString().replaceAll("\n", ""));
-    dataList.addAll(bean.data);
-    dataList = fliterNews(dataList);
+    List<NewsBean> tempList = dataList;
+    tempList.addAll(bean.data);
+    tempList = fliterNews(dataList);
     print("getMoreData dataList.length= ${dataList.length}");
-    setState(() {});
+    return tempList;
   }
 
-  /**
-   * 筛选出非空的条目
-   */
+  void setLoadMoreDataList(list) {
+    setState(() {
+      dataList = list;
+    });
+  }
+
+
+
+  ///筛选出非空的条目
   List<NewsBean> fliterNews(List<NewsBean> dataList) {
     List<NewsBean> tempList = [];
     dataList.forEach((huxiuNews) {
@@ -143,11 +166,12 @@ class _NewsMainPageState extends State<NewsMainPage>
             }
             dataList = snapshot.data;
             dataList = fliterNews(dataList);
-            return RefreshIndicator(
-              key: _refreshIndicaterState,
-              child: buildNewsList(),
-              onRefresh: resetData,
-            );
+//            return RefreshIndicator(
+//              key: _refreshIndicaterState,
+//              child: buildNewsList(),
+//              onRefresh: resetData,
+//            );
+            return buildNewsList();
             break;
         }
       },
@@ -157,65 +181,78 @@ class _NewsMainPageState extends State<NewsMainPage>
 
   @override
   Widget build(BuildContext context) {
-    return dataList.length == 0
-        ? buildFutureBuilder()
-        : RefreshIndicator(
-            key: _refreshIndicaterState,
-            child: buildNewsList(),
-            onRefresh: resetData,
-          );
+    return dataList.length == 0 ? buildFutureBuilder() : buildNewsList();
+//        : RefreshIndicator(
+//            key: _refreshIndicaterState,
+//            child: buildNewsList(),
+//            onRefresh: resetData,
+//          );
   }
 
-  Widget buildNewsList(){
+  Widget buildNewsList() {
     return Container(
       color: Colors.white,
-      child: LoadMoreListView<List<NewsBean>>(
-        builder: (context, i) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(3.0),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.grey[300],
-                  offset: Offset(2.0, 2.0),
-                  blurRadius: 2.0,
-                ),
-                BoxShadow(
-                  color: Colors.grey[300],
-                  offset: Offset(2.0, 0.0),
-                  blurRadius: 2.0,
-                )
-              ],
-            ),
-            margin: i == 0
-                ? const EdgeInsets.all(0.0)
-                : const EdgeInsets.only(top: 1.0),
-            child: Material(
-              child: Ink(
-                child: InkWell(
-                  child: buildNewsListItemView(dataList[i], i),
-                  onTap: () {
-//                      HuxiuDetail detial =
-//                          HuxiuDetail.fromJson(json.decode(HUXIU_DETAIL_STR));
-//                      detial.huxiu_news = huxiuNewsList[i];
-                    NavigatorRouterUtils.pushToPage(
-                        context, NewsDetailPage(dataList[i], "${widget.tag}_detail"));
-                  },
-                ),
-              ),
-            ),
-          );
-        },
+//      child: LoadMoreListView<List<NewsBean>>(
+//        builder: (context, i) {
+//          return buildNewsItem(i, context);
+//        },
+//        childCount: dataList.length,
+//        loadMoreFunc: getMoreData,
+//        loadMoreSuccessCallback: setDataList,
+//      ),
+      child: RefreshLoadMoreListView<List<NewsBean>>(
         childCount: dataList.length,
-        loadMore: getMoreData,
+        builder: (context, i) {
+          return buildNewsItem(i, context);
+        },
+//          loadMoreFunc: getMoreData,
+        refreshDataFunc: refreshData,
+        refreshSuccessCallback: setRefreshDataList,
+
+        loadMoreFunc: getMoreData,
+        loadMoreSuccessCallback: setLoadMoreDataList,
       ),
     );
   }
 
-  /**
-   * 构建列表ItemView
-   */
+  Container buildNewsItem(int i, BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(3.0),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.grey[300],
+            offset: Offset(2.0, 2.0),
+            blurRadius: 2.0,
+          ),
+          BoxShadow(
+            color: Colors.grey[300],
+            offset: Offset(2.0, 0.0),
+            blurRadius: 2.0,
+          )
+        ],
+      ),
+      margin:
+          i == 0 ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 1.0),
+      child: Material(
+        child: Ink(
+          child: InkWell(
+            child: buildNewsListItemView(dataList[i], i),
+            onTap: () {
+//                      HuxiuDetail detial =
+//                          HuxiuDetail.fromJson(json.decode(HUXIU_DETAIL_STR));
+//                      detial.huxiu_news = huxiuNewsList[i];
+              NavigatorRouterUtils.pushToPage(
+                  context, NewsDetailPage(dataList[i], "${widget.tag}_detail"));
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  ///构建列表ItemView
   Widget buildNewsListItemView(NewsBean news, int pos) {
     switch (widget.tag) {
       case TAG_HUXIU:

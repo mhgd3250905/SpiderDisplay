@@ -9,20 +9,23 @@ class PullLoadView<T> extends StatefulWidget {
   SliverList child;
   Widget footer;
   LoadMoreCallback loadMoreCallback;
-  LoadMoreUpdateCallback loadMoreUpdateCallback;
+  LoadMoreDragCallback loadMoreUpdateCallback;
   Future<T> Function() loadMore;
+  void Function(T) onLoadMoreSuccess;
 
-  PullLoadView(
-      {@required this.child,
-      @required this.footer,
-      this.loadMoreCallback,
-      this.loadMoreUpdateCallback,
-      @required this.loadMore}) {
+  PullLoadView({
+    @required this.child,
+    @required this.footer,
+    this.loadMoreCallback,
+    this.loadMoreUpdateCallback,
+    @required this.loadMore,
+    @required this.onLoadMoreSuccess,
+  }) {
     assert(child != null);
     assert(footer != null);
     assert(loadMore != null);
-    loadMoreCallback ??= (state) {};
-    loadMoreUpdateCallback ??= (state, percent) {};
+//    loadMoreCallback ??= (state) {};
+//    loadMoreUpdateCallback ??= (state, percent) {};
   }
 
   @override
@@ -39,8 +42,17 @@ enum LoadMoreState {
   Error,
 }
 
+enum LoadResultSate {
+  Success,
+  Error,
+  None,
+}
+
 typedef LoadMoreCallback = void Function(LoadMoreState);
-typedef LoadMoreUpdateCallback = void Function(LoadMoreState, double);
+typedef LoadMoreDragCallback = void Function(double);
+
+typedef RefreshDataCallback = void Function(LoadMoreState);
+typedef RefreshDataDragCallback = void Function(double);
 
 class _PullLoadViewState extends State<PullLoadView>
     with AutomaticKeepAliveClientMixin {
@@ -54,7 +66,7 @@ class _PullLoadViewState extends State<PullLoadView>
 
   bool isMoving = false;
 
-  int state = 0;
+  LoadMoreState state = LoadMoreState.Normal;
 
   @override
   void initState() {
@@ -66,147 +78,7 @@ class _PullLoadViewState extends State<PullLoadView>
   Widget build(BuildContext context) {
 //    print("build!");
     return NotificationListener<ScrollNotification>(
-      onNotification: (notication) {
-        double pixels = notication.metrics.pixels;
-        double curMaxHeight = notication.metrics.maxScrollExtent;
-
-        print("normalH: ${normalMaxHeight}, curMaxH: ${curMaxHeight}, isLoading: ${isLoading}");
-
-        //设置触发区域为footer的1/5
-        double readyTiggerRange = (curMaxHeight - normalMaxHeight) / 10;
-
-        if (!isLoading) {
-          //在未开启footer的时候获取到标准最大高度
-          if (widget.loadMoreCallback != null) {
-            setState(() {
-              widget.loadMoreCallback(LoadMoreState.Normal);
-            });
-          }
-          normalMaxHeight = notication.metrics.maxScrollExtent;
-        }
-
-        if (notication is ScrollStartNotification) {
-//          print("开始滑动！");
-          isMoving = true;
-          if (pixels >= normalMaxHeight) {
-            if (!isLoading) {
-              //未开启刷新
-//              print("滑动到底部！");
-
-              setState(() {
-                if (widget.loadMoreCallback != null) {
-                  widget.loadMoreCallback(LoadMoreState.Start);
-                }
-                isLoading = true;
-              });
-            }
-          }
-        } else if (notication is ScrollEndNotification) {
-//          print("结束滑动！");
-          isMoving = false;
-          if (curMaxHeight > normalMaxHeight) {
-            if (pixels > normalMaxHeight &&
-                pixels < curMaxHeight - readyTiggerRange) {
-//              print("回弹！");
-              doSomeThingDelay(Duration(seconds: 0), () {
-                scrollController
-                    .animateTo(
-                  normalMaxHeight,
-                  duration: Duration(milliseconds: 100),
-                  curve: Curves.linear,
-                )
-                    .whenComplete(() {
-                  //回弹完成时候恢复正常状态
-                  if (widget.loadMoreCallback != null) {
-                    widget.loadMoreCallback(LoadMoreState.Normal);
-                  }
-                  setState(() {
-                    isLoading = false;
-                  });
-                });
-              });
-            } else if (pixels >= curMaxHeight - readyTiggerRange) {
-              //Ready
-              if (widget.loadMoreCallback != null) {
-                setState(() {
-                  widget.loadMoreCallback(LoadMoreState.Loading);
-                });
-                widget.loadMore().then((T) {
-//                  print("success: ${DateTime.now()}");
-                  setState(() {
-                    widget.loadMoreCallback(LoadMoreState.Success);
-                    doSomeThingDelay(Duration(seconds: 2000), () {
-                      scrollController
-                          .animateTo(
-                        normalMaxHeight,
-                        duration: Duration(milliseconds: 1000),
-                        curve: Curves.linear,
-                      )
-                          .whenComplete(() {
-                        //回弹完成时候恢复正常状态
-                        if (widget.loadMoreCallback != null) {
-                          widget.loadMoreCallback(LoadMoreState.Normal);
-                        }
-                        setState(() {
-                          isLoading = false;
-                        });
-                      });
-                    });
-                  });
-                }).catchError((error) {
-                  setState(() {
-                    widget.loadMoreCallback(LoadMoreState.Error);
-                  });
-                });
-              }
-            }
-          }
-        } else if (notication is ScrollUpdateNotification) {
-          //如果是滑动过程中
-//          print("滑动中！");
-
-          if (notication.depth == 0 && !isRefresh) {
-//          print(notication.metrics.pixels);
-            if (pixels >= normalMaxHeight) {
-              //如果当前已经到达底部，就要显示footer了
-              if (!isLoading) {
-                //未开启刷新
-//                print("滑动到底部！");
-                doSomeThingDelay(Duration(seconds: 0), () {
-                  scrollController.jumpTo(normalMaxHeight);
-                });
-                setState(() {
-                  if (widget.loadMoreCallback != null) {
-                    widget.loadMoreCallback(LoadMoreState.Start);
-                  }
-                  isLoading = true;
-                });
-              }
-            } else if (pixels > normalMaxHeight &&
-                pixels < curMaxHeight - readyTiggerRange) {
-              //开启刷新后继续下拉
-//              print("update!");
-              setState(() {
-                dragPercent = (pixels - normalMaxHeight) /
-                    (curMaxHeight - normalMaxHeight);
-
-                if (widget.loadMoreUpdateCallback != null) {
-                  widget.loadMoreUpdateCallback(
-                      LoadMoreState.Update, dragPercent);
-                }
-//                print("dragPercent: ${dragPercent}");
-              });
-            } else if (pixels >= curMaxHeight - readyTiggerRange) {
-//              print("Ready ${isLoading}");
-              if (widget.loadMoreCallback != null) {
-                setState(() {
-                  widget.loadMoreCallback(LoadMoreState.Ready);
-                });
-              }
-            }
-          }
-        }
-      },
+      onNotification: buildNotification,
       child: CustomScrollView(
         controller: scrollController,
         slivers: <Widget>[
@@ -215,6 +87,136 @@ class _PullLoadViewState extends State<PullLoadView>
         ],
       ),
     );
+  }
+
+  bool buildNotification(notication) {
+    double pixels = notication.metrics.pixels;
+    double curMaxHeight = notication.metrics.maxScrollExtent;
+
+    //设置触发区域为footer的1/10
+    double readyTiggerRange = (curMaxHeight - normalMaxHeight) / 10;
+
+//    print(
+//        "pixels: ${pixels.toInt()}, normalH: ${normalMaxHeight.toInt()}, curMaxH: ${curMaxHeight.toInt()},"
+//        " readyTiggerRange: ${readyTiggerRange.toInt()}");
+
+    if (!isLoading) {
+      //在未开启footer的时候获取到标准最大高度
+      if (widget.loadMoreCallback != null) {
+        setState(() {
+          widget.loadMoreCallback(LoadMoreState.Normal);
+        });
+      }
+      if (pixels < curMaxHeight) {
+        normalMaxHeight = notication.metrics.maxScrollExtent;
+      }
+    }
+
+    if (notication is ScrollStartNotification||notication is ScrollUpdateNotification) {
+      //滑动开始的时候
+      if (pixels < normalMaxHeight) {
+        //Normal状态
+        state = LoadMoreState.Normal;
+        widget.loadMoreCallback(LoadMoreState.Normal);
+        isLoading = false;
+      } else if (pixels >= normalMaxHeight && normalMaxHeight >= curMaxHeight) {
+        //开始状态，要加载footer了
+        isLoading = true;
+      } else if (pixels > normalMaxHeight &&
+          normalMaxHeight < curMaxHeight &&
+          pixels < curMaxHeight - readyTiggerRange) {
+        //Update状态
+        isLoading = true;
+        state = LoadMoreState.Update;
+        widget.loadMoreCallback(LoadMoreState.Update);
+        dragPercent =
+            (pixels - normalMaxHeight) / (curMaxHeight - normalMaxHeight);
+        widget.loadMoreUpdateCallback(dragPercent);
+      } else if (pixels >= curMaxHeight - readyTiggerRange &&
+          normalMaxHeight < curMaxHeight) {
+        //Ready状态
+        isLoading = true;
+        state = LoadMoreState.Ready;
+        widget.loadMoreCallback(LoadMoreState.Ready);
+        dragPercent =
+            (pixels - normalMaxHeight) / (curMaxHeight - normalMaxHeight);
+        widget.loadMoreUpdateCallback(dragPercent);
+      }
+    }  else if (notication is ScrollEndNotification) {
+      //滑动结束
+      if (state == LoadMoreState.Normal) {
+        //Normal状态
+        isLoading = false;
+      } else if (state == LoadMoreState.Start) {
+        //Start状态 显示footer
+        isLoading = true;
+      } else if (state == LoadMoreState.Update) {
+        //如果是Update状态就需要回弹
+        //print("回弹！");
+        Future.delayed(Duration(seconds: 0), () {
+          scrollController.animateTo(
+            normalMaxHeight,
+            duration: Duration(milliseconds: 100),
+            curve: Curves.linear,
+          );
+        });
+      } else if (state == LoadMoreState.Ready) {
+        setState(() {
+          widget.loadMoreCallback(LoadMoreState.Loading);
+        });
+        //运行耗时方法
+        widget
+            .loadMore()
+            .then((T) {
+              widget.loadMoreCallback(LoadMoreState.Success);
+              //成功后500毫秒回弹
+              print("接收数据：${T} \n ${DateTime.now()}");
+
+              Future.delayed(Duration(milliseconds: 500)).then((_) {
+                print("执行回弹： ${DateTime.now()}");
+                scrollController
+                    .animateTo(
+                  normalMaxHeight,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.linear,
+                )
+                    .whenComplete(() {
+                  //回弹完成时候恢复正常状态
+                  if (widget.onLoadMoreSuccess != null) {
+                    widget.onLoadMoreSuccess(T);
+                  }
+                  if (widget.loadMoreCallback != null) {
+                    widget.loadMoreCallback(LoadMoreState.Normal);
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                });
+              });
+            })
+            .whenComplete(() {})
+            .catchError((error) {
+              widget.loadMoreCallback(LoadMoreState.Error);
+              Future.delayed(Duration(milliseconds: 500)).then((_) {
+                print("执行回弹： ${DateTime.now()}");
+                scrollController
+                    .animateTo(
+                  normalMaxHeight,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.linear,
+                )
+                    .whenComplete(() {
+                  if (widget.loadMoreCallback != null) {
+                    widget.loadMoreCallback(LoadMoreState.Normal);
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                });
+              });
+            });
+      }
+    }
   }
 
   Widget buildBody() {
@@ -241,6 +243,4 @@ class _PullLoadViewState extends State<PullLoadView>
   bool get wantKeepAlive => true;
 }
 
-void doSomeThingDelay(Duration duration, void Function() doSomething) {
-  Future.delayed(Duration(seconds: 0), doSomething);
-}
+void doSomeThingDelay(Duration duration, void Function() doSomething) {}

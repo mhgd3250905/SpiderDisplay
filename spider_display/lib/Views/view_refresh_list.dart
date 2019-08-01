@@ -1,20 +1,20 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:spider_display/Views/view_pull_load.dart';
+import 'package:spider_display/Views/view_refresh.dart';
 
 /**
  * created by
  * on 2019/7/31
  * note
  **/
-typedef FooterBuilder = Widget Function(
-    LoadMoreState state, double dragPercent, double loadingPercent);
+typedef HeaderBuilder = Widget Function(
+    RefreshState state, double dragPercent, double loadingPercent);
 
-typedef LoadMoreSuccessCallBack<T> = void Function(T);
-typedef LoadMoreDataFunc<T> = Future<T> Function();
+typedef RefreshSuccessCallBack<T> = void Function(T);
+typedef RefreshDataFunc<T> = Future<T> Function();
 
-class LoadMoreListView<T> extends StatefulWidget {
+class RefreshListView<T> extends StatefulWidget {
   //Item构建器
   IndexedWidgetBuilder builder;
 
@@ -22,45 +22,46 @@ class LoadMoreListView<T> extends StatefulWidget {
   int childCount;
 
   //LoadMore构建器
-  FooterBuilder buildFooter;
+  HeaderBuilder buildHeader;
 
   //LoadMore 拖拽回调
-  LoadMoreDragCallback loadMoreUpdateCallback;
+  RefreshDataDragCallback refreshDataDragCallback;
 
   //LoadMore 状态回调
-  LoadMoreCallback loadMoreCallback;
+  RefreshDataCallback refreshDataCallback;
 
   //LoadMore 获取数据方法
-  LoadMoreDataFunc<T> loadMoreFunc;
+  RefreshDataFunc<T> refreshDataFunc;
 
   //LoadMore 获取数据回调
-  LoadMoreSuccessCallBack<T> loadMoreSuccessCallback;
+  RefreshSuccessCallBack<T> refreshSuccessCallback;
 
-  LoadMoreListView({
+  RefreshListView({
     @required this.builder,
     @required this.childCount,
-    this.buildFooter,
-    this.loadMoreUpdateCallback,
-    this.loadMoreCallback,
-    @required this.loadMoreFunc,
-    this.loadMoreSuccessCallback,
+    this.buildHeader,
+    this.refreshDataDragCallback,
+    this.refreshDataCallback,
+    @required this.refreshDataFunc,
+    this.refreshSuccessCallback,
   });
 
   @override
-  _LoadMoreListViewState createState() => new _LoadMoreListViewState<T>();
+  _RefreshListViewState createState() => new _RefreshListViewState<T>();
 }
 
-class _LoadMoreListViewState<T> extends State<LoadMoreListView>
+class _RefreshListViewState<T> extends State<RefreshListView>
     with TickerProviderStateMixin {
   double dragPercent = 0.0;
   double loadingPercent = 0.0;
 
   AnimationController animController;
   Animation<double> animation;
-  LoadResultSate loadResultSate;
+  RefreshResultSate refreshResultSate;
+
   bool isError = false;
 
-  LoadMoreState loadMoreState;
+  RefreshState refreshState;
 
   @override
   void initState() {
@@ -81,46 +82,46 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
 
   @override
   Widget build(BuildContext context) {
-    widget.loadMoreCallback ??= buildLoadMoreCallback;
-    widget.loadMoreUpdateCallback ??= buildLoadMoreUpdateCallback;
-    widget.buildFooter ??= (state, dragPercent, loadingPercent) {
-      return buildDefaultFooter(
-          state, loadResultSate, dragPercent, loadingPercent);
+    widget.refreshDataDragCallback ??= buildRefreshDragCallback;
+    widget.refreshDataCallback ??= buildRefreshCallback;
+    widget.buildHeader ??= (state, dragPercent, loadingPercent) {
+      return buildDefaultHeader(
+          state, refreshResultSate, dragPercent, loadingPercent);
     };
 
-    return PullLoadView<T>(
+    return RefreshView<T>(
       child: buildSliverList(widget.builder, widget.childCount),
-      footer: widget.buildFooter(loadMoreState, dragPercent, loadingPercent),
-      loadMoreUpdateCallback: widget.loadMoreUpdateCallback,
-      loadMoreCallback: widget.loadMoreCallback,
-      loadMore: widget.loadMoreFunc,
-      onLoadMoreSuccess: widget.loadMoreSuccessCallback,
+      footer: widget.buildHeader(refreshState, dragPercent, loadingPercent),
+      refreshDataDragCallback: widget.refreshDataDragCallback,
+      refreshDataCallback: widget.refreshDataCallback,
+      refresh: widget.refreshDataFunc,
+      onRefreshSuccess: widget.refreshSuccessCallback,
     );
   }
 
-  void buildLoadMoreCallback(state) {
+  void buildRefreshCallback(state) {
     print("callback: ${state}");
-    this.loadMoreState = state;
+    this.refreshState = state;
 
-    if (state == LoadMoreState.Loading) {
+    if (state == RefreshState.Loading) {
       startAnim(animController, 0);
       setState(() {
-        loadResultSate = LoadResultSate.None;
+        refreshResultSate = RefreshResultSate.None;
       });
-    } else if (state == LoadMoreState.Normal) {
+    } else if (state == RefreshState.Normal) {
       setState(() {
         stopAnim(animController, 0);
-        loadResultSate = LoadResultSate.None;
+        refreshResultSate = RefreshResultSate.None;
       });
-    } else if (state == LoadMoreState.Success) {
+    } else if (state == RefreshState.Success) {
       setState(() {
         stopAnim(animController, 0);
-        loadResultSate = LoadResultSate.Success;
+        refreshResultSate = RefreshResultSate.Success;
       });
-    } else if (state == LoadMoreState.Error) {
+    } else if (state == RefreshState.Error) {
       setState(() {
         stopAnim(animController, 0);
-        loadResultSate = LoadResultSate.Error;
+        refreshResultSate = RefreshResultSate.Error;
       });
     } else {
       setState(() {
@@ -129,7 +130,7 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
     }
   }
 
-  void buildLoadMoreUpdateCallback(percent) {
+  void buildRefreshDragCallback(percent) {
     this.dragPercent = percent;
     setState(() {});
   }
@@ -141,8 +142,11 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
   /// dragPercent : 拖拽比例（0-1）
   /// loadingPercent : Loading期间动画Value(0-1)
   ///
-  Widget buildDefaultFooter(LoadMoreState state, LoadResultSate loadResultSate,
-      double dragPercent, double loadingPercent) {
+  Widget buildDefaultHeader(
+      RefreshState state,
+      RefreshResultSate loadResultSate,
+      double dragPercent,
+      double loadingPercent) {
 //    print("state: ${state}\t isSuccess: ${isSuccess}\t percent: ${percent}");
     return Container(
       padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
@@ -153,7 +157,7 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
         width: 30.0,
         height: 30.0,
         child: Transform.rotate(
-          angle: loadResultSate != LoadResultSate.None
+          angle: loadResultSate != RefreshResultSate.None
               ? 0.0
               : 4 * pi * (dragPercent + loadingPercent),
           child: AnimatedSwitcher(
@@ -167,14 +171,14 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
               );
             },
             child: Icon(
-              loadResultSate == LoadResultSate.None
+              loadResultSate == RefreshResultSate.None
                   ? Icons.refresh
-                  : loadResultSate == LoadResultSate.Success
+                  : loadResultSate == RefreshResultSate.Success
                       ? Icons.done
                       : Icons.error_outline,
-              key: ValueKey(loadResultSate == LoadResultSate.None
+              key: ValueKey(loadResultSate == RefreshResultSate.None
                   ? Icons.refresh
-                  : loadResultSate == LoadResultSate.Success
+                  : loadResultSate == RefreshResultSate.Success
                       ? Icons.done
                       : Icons.error_outline),
               color: Colors.black87,
