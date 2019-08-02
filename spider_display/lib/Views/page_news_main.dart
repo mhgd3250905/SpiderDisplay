@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/page_news_detail.dart';
-import 'package:spider_display/Views/page_news_list.dart';
+import 'package:spider_display/Views/view_auto_refresh_list.dart';
 import 'package:spider_display/Views/view_chule_item.dart';
 import 'package:spider_display/Views/view_huxiu_item.dart';
-import 'package:spider_display/Views/view_loadmore_list.dart';
-import 'package:spider_display/Views/view_refresh_list.dart';
-import 'package:spider_display/Views/view_refresh_loadmore_list.dart';
 
 const int PAGE_COUNT = 10;
+
+const String TAG_HUXIU="huxiu";
+const String TAG_CHULE="chule";
 
 Dio dio;
 
@@ -30,6 +30,8 @@ class _NewsMainPageState extends State<NewsMainPage>
       GlobalKey<RefreshIndicatorState>();
   List<NewsBean> dataList = [];
   int page = 0;
+
+
 
   @override
   void initState() {
@@ -200,7 +202,7 @@ class _NewsMainPageState extends State<NewsMainPage>
 //        loadMoreFunc: getMoreData,
 //        loadMoreSuccessCallback: setDataList,
 //      ),
-      child: RefreshLoadMoreListView<List<NewsBean>>(
+      child: AutoRefreshListView<List<NewsBean>>(
         childCount: dataList.length,
         builder: (context, i) {
           return buildNewsItem(i, context);
@@ -209,7 +211,7 @@ class _NewsMainPageState extends State<NewsMainPage>
         refreshDataFunc: refreshData,
         refreshSuccessCallback: setRefreshDataList,
 
-        loadMoreFunc: getMoreData,
+        loadMoreDataFunc: getMoreData,
         loadMoreSuccessCallback: setLoadMoreDataList,
       ),
     );

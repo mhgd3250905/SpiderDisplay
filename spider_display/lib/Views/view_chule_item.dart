@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
-import 'package:spider_display/Views/page_news_list.dart';
+import 'package:spider_display/Res/res_text_style.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ChuleItemView extends StatefulWidget {

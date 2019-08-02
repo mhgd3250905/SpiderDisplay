@@ -31,7 +31,7 @@ class LoadMoreListView<T> extends StatefulWidget {
   LoadMoreCallback loadMoreCallback;
 
   //LoadMore 获取数据方法
-  LoadMoreDataFunc<T> loadMoreFunc;
+  LoadMoreDataFunc<T> loadMoreDataFunc;
 
   //LoadMore 获取数据回调
   LoadMoreSuccessCallBack<T> loadMoreSuccessCallback;
@@ -42,7 +42,7 @@ class LoadMoreListView<T> extends StatefulWidget {
     this.buildFooter,
     this.loadMoreUpdateCallback,
     this.loadMoreCallback,
-    @required this.loadMoreFunc,
+    @required this.loadMoreDataFunc,
     this.loadMoreSuccessCallback,
   });
 
@@ -52,13 +52,13 @@ class LoadMoreListView<T> extends StatefulWidget {
 
 class _LoadMoreListViewState<T> extends State<LoadMoreListView>
     with TickerProviderStateMixin {
-  double dragPercent = 0.0;
-  double loadingPercent = 0.0;
+  double loadDragPercent = 0.0;
+  double loadMoreLoadingPercent = 0.0;
+
+  FinishState loadMoreFinishState = FinishState.None;
 
   AnimationController animController;
   Animation<double> animation;
-  LoadResultSate loadResultSate;
-  bool isError = false;
 
   LoadMoreState loadMoreState;
 
@@ -73,9 +73,8 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
   }
 
   void _onProgressChange() {
-//    print("anim: ${animation.value}");
     setState(() {
-      loadingPercent = animation.value;
+      loadMoreLoadingPercent = animation.value;
     });
   }
 
@@ -85,52 +84,34 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
     widget.loadMoreUpdateCallback ??= buildLoadMoreUpdateCallback;
     widget.buildFooter ??= (state, dragPercent, loadingPercent) {
       return buildDefaultFooter(
-          state, loadResultSate, dragPercent, loadingPercent);
+          state, dragPercent, loadingPercent, loadMoreFinishState);
     };
 
     return PullLoadView<T>(
       child: buildSliverList(widget.builder, widget.childCount),
-      footer: widget.buildFooter(loadMoreState, dragPercent, loadingPercent),
+      footer: widget.buildFooter(
+          loadMoreState, loadDragPercent, loadMoreLoadingPercent),
       loadMoreUpdateCallback: widget.loadMoreUpdateCallback,
       loadMoreCallback: widget.loadMoreCallback,
-      loadMore: widget.loadMoreFunc,
-      onLoadMoreSuccess: widget.loadMoreSuccessCallback,
+      loadMoreGetDataFunc: widget.loadMoreDataFunc,
+      onLoadMoreSuccessCallback: widget.loadMoreSuccessCallback,
+      finsihStateCallBack: buildFinishStateCallback,
     );
   }
 
   void buildLoadMoreCallback(state) {
-    print("callback: ${state}");
     this.loadMoreState = state;
-
-    if (state == LoadMoreState.Loading) {
-      startAnim(animController, 0);
-      setState(() {
-        loadResultSate = LoadResultSate.None;
-      });
-    } else if (state == LoadMoreState.Normal) {
-      setState(() {
+    setState(() {
+      if (state == LoadMoreState.Loading) {
+        startAnim(animController, 0);
+      } else {
         stopAnim(animController, 0);
-        loadResultSate = LoadResultSate.None;
-      });
-    } else if (state == LoadMoreState.Success) {
-      setState(() {
-        stopAnim(animController, 0);
-        loadResultSate = LoadResultSate.Success;
-      });
-    } else if (state == LoadMoreState.Error) {
-      setState(() {
-        stopAnim(animController, 0);
-        loadResultSate = LoadResultSate.Error;
-      });
-    } else {
-      setState(() {
-        stopAnim(animController, 0);
-      });
-    }
+      }
+    });
   }
 
   void buildLoadMoreUpdateCallback(percent) {
-    this.dragPercent = percent;
+    this.loadDragPercent = percent;
     setState(() {});
   }
 
@@ -141,9 +122,37 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
   /// dragPercent : 拖拽比例（0-1）
   /// loadingPercent : Loading期间动画Value(0-1)
   ///
-  Widget buildDefaultFooter(LoadMoreState state, LoadResultSate loadResultSate,
-      double dragPercent, double loadingPercent) {
-//    print("state: ${state}\t isSuccess: ${isSuccess}\t percent: ${percent}");
+  Widget buildDefaultFooter(LoadMoreState state, double dragPercent,
+      double loadingPercent, FinishState finishState) {
+    IconData iconData = Icons.refresh;
+
+    if (finishState != FinishState.None) {
+      iconData = finishState == FinishState.Success ? Icons.done : Icons.error;
+    } else {
+      if (state == LoadMoreState.Normal ||
+          state == LoadMoreState.Update ||
+          state == LoadMoreState.Ready ||
+          state == LoadMoreState.Loading) {
+        iconData = Icons.refresh;
+      } else if (state == LoadMoreState.Success) {
+        iconData = Icons.done;
+      } else if (state == LoadMoreState.Error) {
+        iconData = Icons.error;
+      }
+    }
+
+    double angle = 0.0;
+
+    if (finishState == FinishState.None) {
+      if (state == LoadMoreState.Update || state == LoadMoreState.Ready) {
+        angle = 4 * pi * dragPercent;
+      } else if (state == LoadMoreState.Loading) {
+        angle = 4 * pi * (dragPercent + loadingPercent);
+      } else {
+        angle = 0.0;
+      }
+    }
+
     return Container(
       padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
       color: Colors.white,
@@ -153,9 +162,7 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
         width: 30.0,
         height: 30.0,
         child: Transform.rotate(
-          angle: loadResultSate != LoadResultSate.None
-              ? 0.0
-              : 4 * pi * (dragPercent + loadingPercent),
+          angle: angle,
           child: AnimatedSwitcher(
             duration: Duration(
               milliseconds: 200,
@@ -167,16 +174,8 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
               );
             },
             child: Icon(
-              loadResultSate == LoadResultSate.None
-                  ? Icons.refresh
-                  : loadResultSate == LoadResultSate.Success
-                      ? Icons.done
-                      : Icons.error_outline,
-              key: ValueKey(loadResultSate == LoadResultSate.None
-                  ? Icons.refresh
-                  : loadResultSate == LoadResultSate.Success
-                      ? Icons.done
-                      : Icons.error_outline),
+              iconData,
+              key: ValueKey(iconData),
               color: Colors.black87,
             ),
           ),
@@ -197,6 +196,10 @@ class _LoadMoreListViewState<T> extends State<LoadMoreListView>
     // TODO: implement dispose
     super.dispose();
     animController.dispose();
+  }
+
+  void buildFinishStateCallback(FinishState finishState) {
+    this.loadMoreFinishState = finishState;
   }
 }
 

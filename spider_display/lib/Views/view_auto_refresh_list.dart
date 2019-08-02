@@ -1,22 +1,43 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:spider_display/Views/view_refresh.dart';
+import 'package:spider_display/Views/view_auto_refresh.dart';
 
 /**
  * created by
  * on 2019/7/31
  * note
  **/
+typedef FooterBuilder = Widget Function(
+    LoadMoreState state, double dragPercent, double loadingPercent);
+
 typedef HeaderBuilder = Widget Function(
     RefreshState state, double dragPercent, double loadingPercent);
 
-class RefreshListView<T> extends StatefulWidget {
+typedef LoadMoreSuccessCallBack<T> = void Function(T);
+typedef LoadMoreDataFunc<T> = Future<T> Function();
+
+class AutoRefreshListView<T> extends StatefulWidget {
   //Item构建器
   IndexedWidgetBuilder builder;
 
   //Item数量
   int childCount;
+
+  //LoadMore构建器
+  FooterBuilder buildFooter;
+
+  //LoadMore 拖拽回调
+  LoadMoreDragCallback loadMoreUpdateCallback;
+
+  //LoadMore 状态回调
+  LoadMoreCallback loadMoreCallback;
+
+  //LoadMore 获取数据方法
+  LoadMoreDataFunc<T> loadMoreDataFunc;
+
+  //LoadMore 获取数据回调
+  LoadMoreSuccessCallBack<T> loadMoreSuccessCallback;
 
   //LoadMore构建器
   HeaderBuilder buildHeader;
@@ -33,9 +54,14 @@ class RefreshListView<T> extends StatefulWidget {
   //LoadMore 获取数据回调
   OnRefreshSuccessCallback<T> refreshSuccessCallback;
 
-  RefreshListView({
+  AutoRefreshListView({
     @required this.builder,
     @required this.childCount,
+    this.buildFooter,
+    this.loadMoreUpdateCallback,
+    this.loadMoreCallback,
+    @required this.loadMoreDataFunc,
+    this.loadMoreSuccessCallback,
     this.buildHeader,
     this.refreshDataDragCallback,
     this.refreshDataCallback,
@@ -44,30 +70,46 @@ class RefreshListView<T> extends StatefulWidget {
   });
 
   @override
-  _RefreshListViewState createState() => new _RefreshListViewState<T>();
+  _AutoRefreshListViewState createState() => new _AutoRefreshListViewState<T>();
 }
 
-class _RefreshListViewState<T> extends State<RefreshListView>
+class _AutoRefreshListViewState<T> extends State<AutoRefreshListView>
     with TickerProviderStateMixin {
-  double refreshDragPercent = 0.0;
-  double refreshLoadingPercent = 0.0;
+  AnimationController loadMoreAnimController;
+  Animation<double> loadMoreAnimation;
+  double loadDragPercent = 0.0;
+  double loadMoreLoadingPercent = 0.0;
+  FinishState loadMoreFinishState = FinishState.None;
+  LoadMoreState loadMoreState;
 
   AnimationController refreshAnimController;
   Animation<double> refreshAnimation;
-
+  double refreshDragPercent = 0.0;
+  double refreshLoadingPercent = 0.0;
   FinishState refreshFinishState = FinishState.None;
-
   RefreshState refreshState;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    loadMoreAnimController = new AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
+    loadMoreAnimation =
+        new Tween(begin: 0.0, end: 1.0).animate(loadMoreAnimController);
+    loadMoreAnimation.addListener(onLoadMoreDragChange);
+
     refreshAnimController = new AnimationController(
         vsync: this, duration: Duration(milliseconds: 1000));
     refreshAnimation =
         new Tween(begin: 0.0, end: 1.0).animate(refreshAnimController);
     refreshAnimation.addListener(onRefreshDragChange);
+  }
+
+  void onLoadMoreDragChange() {
+    setState(() {
+      loadMoreLoadingPercent = loadMoreAnimation.value;
+    });
   }
 
   void onRefreshDragChange() {
@@ -78,6 +120,14 @@ class _RefreshListViewState<T> extends State<RefreshListView>
 
   @override
   Widget build(BuildContext context) {
+
+    widget.loadMoreCallback ??= buildLoadMoreCallback;
+    widget.loadMoreUpdateCallback ??= buildLoadMoreUpdateCallback;
+    widget.buildFooter ??= (state, dragPercent, loadingPercent) {
+      return buildDefaultFooter(
+          state, dragPercent, loadingPercent, loadMoreFinishState);
+    };
+
     widget.refreshDataDragCallback ??= buildRefreshDragCallback;
     widget.refreshDataCallback ??= buildRefreshCallback;
     widget.buildHeader ??= (state, dragPercent, loadingPercent) {
@@ -85,20 +135,108 @@ class _RefreshListViewState<T> extends State<RefreshListView>
           state, dragPercent, loadingPercent, refreshFinishState);
     };
 
-    return RefreshView<T>(
+    return AutoRefreshView<T>(
       child: buildSliverList(widget.builder, widget.childCount),
+      footer: widget.buildFooter(
+          loadMoreState, loadDragPercent, loadMoreLoadingPercent),
+      loadMoreUpdateCallback: widget.loadMoreUpdateCallback,
+      loadMoreCallback: widget.loadMoreCallback,
+      loadMoreGetDataFunc: widget.loadMoreDataFunc,
+      onLoadMoreSuccessCallback: widget.loadMoreSuccessCallback,
+      finsihStateCallBack: buildLoadMoreFinishStateCallback,
       header: widget.buildHeader(
           refreshState, refreshDragPercent, refreshLoadingPercent),
       refreshDataDragCallback: widget.refreshDataDragCallback,
       refreshDataCallback: widget.refreshDataCallback,
       refreshGetDataFunc: widget.refreshDataFunc,
       onRefreshSuccessCallback: widget.refreshSuccessCallback,
-      refreshFinsihStateCallBack: buildFinishStateCallback,
+      refreshFinsihStateCallBack: buildRefreshFinishStateCallback,
     );
   }
 
-  void buildFinishStateCallback(FinishState finishState) {
-    this.refreshFinishState = finishState;
+  void buildLoadMoreCallback(state) {
+    this.loadMoreState = state;
+    setState(() {
+      if (state == LoadMoreState.Loading) {
+        startAnim(loadMoreAnimController, 0);
+      } else {
+        stopAnim(loadMoreAnimController, 0);
+      }
+    });
+  }
+
+  void buildLoadMoreUpdateCallback(percent) {
+    this.loadDragPercent = percent;
+    setState(() {});
+  }
+
+  ///
+  /// LoadMore Footer构建
+  /// state : 状态
+  /// loadResultState : 加载数据结果状态
+  /// dragPercent : 拖拽比例（0-1）
+  /// loadingPercent : Loading期间动画Value(0-1)
+  ///
+  Widget buildDefaultFooter(LoadMoreState state, double dragPercent,
+      double loadingPercent, FinishState finishState) {
+    IconData iconData = Icons.refresh;
+
+    if (finishState != FinishState.None) {
+      iconData = finishState == FinishState.Success ? Icons.done : Icons.error;
+    } else {
+      if (state == LoadMoreState.Normal ||
+          state == LoadMoreState.Update ||
+          state == LoadMoreState.Ready ||
+          state == LoadMoreState.Loading) {
+        iconData = Icons.refresh;
+      } else if (state == LoadMoreState.Success) {
+        iconData = Icons.done;
+      } else if (state == LoadMoreState.Error) {
+        iconData = Icons.error;
+      }
+    }
+
+    double angle = 0.0;
+
+    if (finishState == FinishState.None) {
+      if (state == LoadMoreState.Update || state == LoadMoreState.Ready) {
+        angle = 4 * pi * dragPercent;
+      } else if (state == LoadMoreState.Loading) {
+        angle = 4 * pi * (dragPercent + loadingPercent);
+      } else {
+        angle = 0.0;
+      }
+    }
+
+    return Container(
+      padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
+      color: Colors.white,
+      width: double.infinity,
+      alignment: Alignment.center,
+      child: Container(
+        width: 30.0,
+        height: 30.0,
+        child: Transform.rotate(
+          angle: angle,
+          child: AnimatedSwitcher(
+            duration: Duration(
+              milliseconds: 200,
+            ),
+            transitionBuilder: (child, anim) {
+              return ScaleTransition(
+                scale: anim,
+                child: child,
+              );
+            },
+            child: Icon(
+              iconData,
+              key: ValueKey(iconData),
+              color: Colors.black87,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   void buildRefreshCallback(state) {
@@ -199,8 +337,16 @@ class _RefreshListViewState<T> extends State<RefreshListView>
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    print("anim dispose");
+    loadMoreAnimController.dispose();
     refreshAnimController.dispose();
+  }
+
+  void buildLoadMoreFinishStateCallback(FinishState finishState) {
+    this.loadMoreFinishState = finishState;
+  }
+
+  void buildRefreshFinishStateCallback(FinishState finishState) {
+    this.refreshFinishState = finishState;
   }
 }
 
@@ -212,7 +358,6 @@ void startAnim(AnimationController controller, int delay) async {
 
 void stopAnim(AnimationController controller, int delay) async {
   Future.delayed(Duration(milliseconds: delay), () {
-    print("anim reset");
     controller.reset();
   });
 }
