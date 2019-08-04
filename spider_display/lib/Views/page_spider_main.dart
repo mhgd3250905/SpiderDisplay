@@ -29,7 +29,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
       text: "触乐网",
     ),
     Tab(
-      text: "V2EX",
+      text: "爱范儿",
     ),
   ];
 
@@ -75,7 +75,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
             children: <Widget>[
               NewsMainPage("huxiu"),
               NewsMainPage("chule"),
-              TestPage(),
+              NewsMainPage("ifanr"),
             ],
           ),
         ),
@@ -87,9 +87,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
-  /**
-   * 获取AppBar上的点按菜单按钮
-   */
+  ///获取AppBar上的点按菜单按钮
   List<Widget> getAppBarMenuBtns() {
     return <Widget>[
       IconButton(
