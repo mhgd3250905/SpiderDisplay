@@ -12,6 +12,8 @@ import 'package:spider_display/Views/bookset_list_page.dart';
 import 'package:spider_display/Views/page_news_main.dart';
 import 'package:spider_display/Views/page_search.dart';
 
+import 'comic/comic_book_page/view_comic_book.dart';
+
 class SpiderMainPage extends StatefulWidget {
   @override
   _SpiderMainPageState createState() => new _SpiderMainPageState();
@@ -30,6 +32,9 @@ class _SpiderMainPageState extends State<SpiderMainPage>
     ),
     Tab(
       text: "爱范儿",
+    ),
+    Tab(
+      text: "漫画",
     ),
   ];
 
@@ -76,6 +81,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
               NewsMainPage("huxiu"),
               NewsMainPage("chule"),
               NewsMainPage("ifanr"),
+              ComicBookPage(),
             ],
           ),
         ),

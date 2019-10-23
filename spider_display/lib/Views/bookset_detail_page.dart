@@ -70,7 +70,7 @@ class BookDetailPage extends StatelessWidget {
              * light: 白底黑字
              * dark: 黑底白字
              */
-            brightness: Brightness.light,
+            brightness: Theme.of(context).brightness,
             //图表风格
             iconTheme: IconThemeData(
               color: Colors.white,
