@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:spider_display/Modle/bookset_modle.dart';
-import 'package:spider_display/Modle/test_content.dart';
-import 'package:spider_display/Views/bookset_list_page.dart';
-import 'package:spider_display/Views/page_spider_main.dart';
+
+import 'Views/news/spider_main_page.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -37,10 +35,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    List<Book> bookList =
-        BookList.fromJson(json.decode(BOOK_LIST_JSON_STR)).data;
     _pages.add(SpiderMainPage());
-    _pages.add(BooksetListPage(bookList, null, null, null, null));
   }
 
   ///BottomNavigationBar点击事件
