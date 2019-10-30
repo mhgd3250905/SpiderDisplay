@@ -1,4 +1,3 @@
-
 import 'package:spider_display/Modle/model_comic.dart';
 import 'package:spider_display/Views/news/comic/comic_book_page/i_comic_book_model.dart';
 
@@ -25,5 +24,23 @@ class ComicChapterPresenter extends IComicChapterPresenter {
             this.view.loadDataWaiting();
           }
         }));
+  }
+
+  @override
+  void toggleSetupView() {
+    if (isShowSetupView) {
+      this.isShowSetupView = false;
+      this.view.hideSetupView();
+    } else {
+      this.isShowSetupView = true;
+      this.view.showSetupView();
+    }
+  }
+
+  @override
+  void jumpPage(int index, bool reverse) {
+    //重置提示信息flag
+    isShowSetupView = false;
+    this.view.jumpPage(index, reverse);
   }
 }

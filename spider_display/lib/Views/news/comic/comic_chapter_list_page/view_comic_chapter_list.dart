@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/model_comic.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/news/comic/comic_chapter_page/view_comic_chapter.dart';
-import 'package:spider_display/Views/news/comic/view_customize/clip_image_view.dart';
-import 'package:spider_display/Views/news/comic/view_customize/comic_generic_view.dart';
+import 'package:spider_display/CustomView/clip_image_view.dart';
+import 'package:spider_display/CustomView/comic_generic_view.dart';
 
 class ComicChapterListPage extends StatelessWidget {
   final Book book;
@@ -19,6 +19,7 @@ class ComicChapterListPage extends StatelessWidget {
         title: Text(book.name),
       ),
       body: Container(
+        padding: const EdgeInsets.only(left: 5.0, right: 5.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -35,12 +36,21 @@ class ComicChapterListPage extends StatelessWidget {
                   return GestureDetector(
                     child: new ClipRRect(
                       child: Container(
-                        height: 30.0,
-                        color: Colors.grey,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(3.0),
+                        ),
+                        alignment: Alignment.center,
+                        height: 20.0,
                         padding: EdgeInsets.all(3.0),
                         child: Text(
                           book.chapters[i].name,
                           style: TextStyle(
+                            fontSize: 14.0,
                             color: Colors.black87,
                             shadows: [
                               Shadow(
@@ -56,7 +66,9 @@ class ComicChapterListPage extends StatelessWidget {
                       NavigatorRouterUtils.pushToPage(
                         context,
                         ComicChapterPage(
-                          chapterId: book.chapters[i].chapter_id,
+                          chapters: book.chapters,
+                          index: i,
+                          reverse: false,
                         ),
                       );
                     },

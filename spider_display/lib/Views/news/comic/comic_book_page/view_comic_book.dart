@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/model_comic.dart';
 import 'package:spider_display/Views/news/comic/comic_book_page/presenter_comic_book.dart';
-import 'package:spider_display/Views/news/comic/view_customize/comic_generic_view.dart';
+import 'package:spider_display/CustomView/comic_generic_view.dart';
 
 import 'i_comic_book_view.dart';
 
