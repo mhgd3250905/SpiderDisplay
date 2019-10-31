@@ -5,6 +5,7 @@ import 'package:spider_display/Res/res_string.dart';
 import 'package:spider_display/Views/news/comic/comic_chapter_page/presenter_comic_chapter.dart';
 
 import 'i_comic_chapter_view.dart';
+import 'widgets_comic_chapter.dart';
 
 class ComicChapterPage extends StatefulWidget {
   //所有章节
@@ -28,7 +29,6 @@ class ComicChapterPage extends StatefulWidget {
 
 class _ComicChapterPageState extends State<ComicChapterPage>
     implements IComicChapterView<ChapterDetail> {
-  List<String> dataList;
   Widget content;
   ComicChapterPresenter presenter;
 
@@ -48,6 +48,9 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 
   //是否处于上一章下一章提示等待时间
   bool isWaitingJump;
+
+  //显示的图片地址列表
+  ChapterDetail _chapterDetail;
 
   @override
   void initState() {
@@ -85,6 +88,15 @@ class _ComicChapterPageState extends State<ComicChapterPage>
     Size screenSize = MediaQuery.of(context).size;
     print("screen width is ${screenSize.width}");
     screenWidth = screenSize.width;
+
+    //获取Slider的最大值
+    double sliderMax =
+        _chapterDetail == null ? 50.0 : _chapterDetail.data.length.toDouble();
+    //获取Slider的选择值
+    double sliderValue =
+        (widget.reverse ? _chapterDetail.data.length - lastPage : lastPage + 1)
+            .toDouble();
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: PreferredSize(
@@ -117,10 +129,54 @@ class _ComicChapterPageState extends State<ComicChapterPage>
           Positioned(
             child: Visibility(
               visible: presenter.isShowSetupView,
-              child: Container(
-                color: Colors.green,
-                height: 200.0,
-                width: screenWidth,
+              child: ChapterSetupView(
+                sliderMax: sliderMax,
+                sliderValue: sliderValue,
+                reverse: widget.reverse,
+                sliderValueChanged: (value) {
+                  int page = (widget.reverse
+                          ? _chapterDetail.data.length - value
+                          : value - 1)
+                      .toInt();
+                  _scrollController.jumpTo(screenWidth * page.toInt());
+                  lastPage = page.toInt();
+                },
+                tapPrevious: () {
+                  if (lastPage <= 0) {
+                    return;
+                  }
+                  _scrollController
+                      .animateTo(screenWidth * (lastPage - 1),
+                          duration: Duration(
+                            milliseconds: 100,
+                          ),
+                          curve: Curves.linear)
+                      .then((v) {
+                    setState(() {
+                      lastPage--;
+                    });
+                  }).catchError((e) {
+                    print(e);
+                  });
+                },
+                tapNext: () {
+                  if (lastPage >= _chapterDetail.data.length - 1) {
+                    return;
+                  }
+                  _scrollController
+                      .animateTo(screenWidth * (lastPage + 1),
+                          duration: Duration(
+                            milliseconds: 100,
+                          ),
+                          curve: Curves.linear)
+                      .then((v) {
+                    setState(() {
+                      lastPage++;
+                    });
+                  }).catchError((e) {
+                    print(e);
+                  });
+                },
               ),
             ),
             bottom: 0.0,
@@ -132,6 +188,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   }
 
   void loadDataSuccess(ChapterDetail chapter) {
+    _chapterDetail = chapter;
     content = getSuccessView(chapter.data);
     setState(() {});
   }
@@ -165,7 +222,8 @@ class _ComicChapterPageState extends State<ComicChapterPage>
         itemBuilder: (BuildContext context, int index) {
           String pageStr = "${_chapter.name} "
               "${widget.reverse ? (data.length - index) : (index + 1)}/${data.length}";
-          return buildImageItemView(data[index], pageStr, data.length);
+          return buildImageItemView(
+              data[index], pageStr, data.length, screenWidth);
         },
       ),
     );
@@ -251,11 +309,11 @@ class _ComicChapterPageState extends State<ComicChapterPage>
       if (x >= screenWidth / 2) {
 //        print("lastPage: ${lastPage}");
         nextOffset = screenWidth * (lastPage + 1);
-        Future.delayed(Duration(seconds: 0), () {
 //          print("animate to ${nextOffset}");
-          _scrollController.animateTo(nextOffset,
-              duration: Duration(milliseconds: 100), curve: Curves.linear);
-        }).then((T) {
+        _scrollController
+            .animateTo(nextOffset,
+                duration: Duration(milliseconds: 100), curve: Curves.linear)
+            .then((T) {
 //          print("前进执行完毕！");
           lastPage++;
 //          print("lastPage: ${lastPage}");
@@ -265,11 +323,11 @@ class _ComicChapterPageState extends State<ComicChapterPage>
       } else {
         print("lastPage: ${lastPage}");
         nextOffset = screenWidth * (lastPage - 1);
-        Future.delayed(Duration(seconds: 0), () {
 //          print("animate to ${nextOffset}");
-          _scrollController.animateTo(nextOffset,
-              duration: Duration(milliseconds: 100), curve: Curves.linear);
-        }).then((T) {
+        _scrollController
+            .animateTo(nextOffset,
+                duration: Duration(milliseconds: 100), curve: Curves.linear)
+            .then((T) {
 //          print("回退执行完毕！");
           lastPage--;
 //          print("lastPage: ${lastPage}");
@@ -371,11 +429,11 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 
         if (touchRange > screenWidth / 8) {
           nextOffset = screenWidth * (lastPage + 1);
-          Future.delayed(Duration(seconds: 0), () {
 //            print("animate to ${nextOffset}");
-            _scrollController.animateTo(nextOffset,
-                duration: Duration(milliseconds: 100), curve: Curves.linear);
-          }).then((T) {
+          _scrollController
+              .animateTo(nextOffset,
+                  duration: Duration(milliseconds: 100), curve: Curves.linear)
+              .then((T) {
 //            print("前进执行完毕！");
             lastPage++;
           }).catchError((e) {
@@ -383,11 +441,11 @@ class _ComicChapterPageState extends State<ComicChapterPage>
           });
         } else if (touchRange < -1 * screenWidth / 8) {
           nextOffset = screenWidth * (lastPage - 1);
-          Future.delayed(Duration(seconds: 0), () {
 //            print("animate to ${nextOffset}");
-            _scrollController.animateTo(nextOffset,
-                duration: Duration(milliseconds: 100), curve: Curves.linear);
-          }).then((T) {
+          _scrollController
+              .animateTo(nextOffset,
+                  duration: Duration(milliseconds: 100), curve: Curves.linear)
+              .then((T) {
 //            print("回退执行完毕！");
             lastPage--;
             if (lastPage < 0) {
@@ -398,11 +456,11 @@ class _ComicChapterPageState extends State<ComicChapterPage>
           });
         } else {
           nextOffset = screenWidth * lastPage;
-          Future.delayed(Duration(seconds: 0), () {
 //            print("animate to ${nextOffset}");
-            _scrollController.animateTo(nextOffset,
-                duration: Duration(milliseconds: 100), curve: Curves.linear);
-          }).then((T) {
+          _scrollController
+              .animateTo(nextOffset,
+                  duration: Duration(milliseconds: 100), curve: Curves.linear)
+              .then((T) {
             print("返回完毕！");
           }).catchError((e) {
             print(e);
@@ -454,44 +512,6 @@ class _ComicChapterPageState extends State<ComicChapterPage>
     super.dispose();
     _scrollController.dispose();
     presenter.dettach();
-  }
-
-  /**
-   * 构建图片
-   */
-  Widget buildImageItemView(String path, String pageStr, int lengthStr) {
-    return Container(
-      width: screenWidth,
-      child: Stack(
-        children: <Widget>[
-          Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 4.0,
-              backgroundColor: Colors.blue,
-              // value: 0.2,
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          ),
-          Center(
-            child: Image.network(
-                "http://49.234.76.105:80/spider/comic/chapter/image?path=${path}"),
-          ),
-          Positioned(
-            child: Text(
-              pageStr,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15.0,
-                fontStyle: FontStyle.normal,
-                decoration: TextDecoration.none,
-              ),
-            ),
-            right: 10.0,
-            bottom: 10.0,
-          ),
-        ],
-      ),
-    );
   }
 
   //延迟1000ms 等待跳转失效
