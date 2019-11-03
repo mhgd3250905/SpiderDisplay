@@ -3,9 +3,9 @@ import 'package:spider_display/CustomView/view_toast.dart';
 import 'package:spider_display/Modle/model_comic.dart';
 import 'package:spider_display/Res/res_string.dart';
 import 'package:spider_display/Views/news/comic/comic_chapter_page/presenter_comic_chapter.dart';
+import 'package:spider_display/Views/news/comic/comic_chapter_page/widgets_comic_chapter.dart';
 
 import 'i_comic_chapter_view.dart';
-import 'widgets_comic_chapter.dart';
 
 class ComicChapterPage extends StatefulWidget {
   //所有章节
@@ -33,6 +33,10 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   ComicChapterPresenter presenter;
 
   ScrollController _scrollController = new ScrollController();
+
+  //设置按钮图标列表
+  List<IconInfoBean> iconInfoArr;
+
   double screenWidth;
   double nextOffset = 0;
 
@@ -62,6 +66,8 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 
     //初始化默认章节信息
     resetChapterInfo(widget.index, widget.reverse);
+
+    iconInfoArr = buildIconInfoArr();
   }
 
   /**
@@ -97,96 +103,105 @@ class _ComicChapterPageState extends State<ComicChapterPage>
         (widget.reverse ? _chapterDetail.data.length - lastPage : lastPage + 1)
             .toDouble();
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(presenter.isShowSetupView
-            ? MediaQuery.of(context).size.height * 0.07
-            : 0.0),
-        child: AppBar(
-          iconTheme: IconTheme.of(context).copyWith(color: Colors.white),
-          backgroundColor: Colors.transparent,
-          title: Text(
-            _chapter.name,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(
-                top: presenter.isShowSetupView
-                    ? 0.0
-                    : MediaQuery.of(context).size.height * 0.07),
-            child: GestureDetector(
-              child: content,
-              onTapDown: getViewTapDownCallback(),
-            ),
-          ),
-          Positioned(
-            child: Visibility(
-              visible: presenter.isShowSetupView,
-              child: ChapterSetupView(
-                sliderMax: sliderMax,
-                sliderValue: sliderValue,
-                reverse: widget.reverse,
-                sliderValueChanged: (value) {
-                  int page = (widget.reverse
-                          ? _chapterDetail.data.length - value
-                          : value - 1)
-                      .toInt();
-                  _scrollController.jumpTo(screenWidth * page.toInt());
-                  lastPage = page.toInt();
-                },
-                tapPrevious: () {
-                  if (lastPage <= 0) {
-                    return;
-                  }
-                  _scrollController
-                      .animateTo(screenWidth * (lastPage - 1),
-                          duration: Duration(
-                            milliseconds: 100,
-                          ),
-                          curve: Curves.linear)
-                      .then((v) {
-                    setState(() {
-                      lastPage--;
-                    });
-                  }).catchError((e) {
-                    print(e);
-                  });
-                },
-                tapNext: () {
-                  if (lastPage >= _chapterDetail.data.length - 1) {
-                    return;
-                  }
-                  _scrollController
-                      .animateTo(screenWidth * (lastPage + 1),
-                          duration: Duration(
-                            milliseconds: 100,
-                          ),
-                          curve: Curves.linear)
-                      .then((v) {
-                    setState(() {
-                      lastPage++;
-                    });
-                  }).catchError((e) {
-                    print(e);
-                  });
-                },
+    return Material(
+      child: Container(
+        color: Colors.black87,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              child: GestureDetector(
+                child: content,
+                onTapDown: getViewTapDownCallback(),
               ),
             ),
-            bottom: 0.0,
-            left: 0.0,
-          ),
-        ],
+            Positioned(
+              child: Visibility(
+                visible: presenter.isShowSetupView,
+                child: ChapterSetupView(
+                  chapterName: _chapter.name,
+                  sliderMax: sliderMax,
+                  sliderValue: sliderValue,
+                  reverse: widget.reverse,
+                  sliderValueChanged: buildSliderValueChanged,
+                  tapPrevious: buildTapPrevious,
+                  tapNext: buildTapNext,
+                  iconInfoBean: iconInfoArr,
+                ),
+              ),
+              bottom: 0.0,
+              left: 0.0,
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  /**
+   * 设置下一页点击事件
+   */
+  void buildTapNext() {
+    if (lastPage >= _chapterDetail.data.length - 1) {
+      return;
+    }
+    scrollAnimToOffset(_scrollController, screenWidth * (lastPage + 1), () {
+      setState(() {
+        lastPage++;
+        if (lastPage >= _chapterDetail.data.length - 1) {
+          lastPage = _chapterDetail.data.length - 1;
+        }
+      });
+    });
+  }
+
+  /**
+   * 设置上一页点击事件
+   */
+  void buildTapPrevious() {
+    if (lastPage <= 0) {
+      return;
+    }
+    scrollAnimToOffset(_scrollController, screenWidth * (lastPage - 1), () {
+      setState(() {
+        lastPage--;
+        if (lastPage < 0) {
+          lastPage = 0;
+        }
+      });
+    });
+  }
+
+  /**
+   * 设置滑动触发事件
+   */
+  void buildSliderValueChanged(value) {
+    int page = (widget.reverse ? _chapterDetail.data.length - value : value - 1)
+        .toInt();
+    _scrollController.jumpTo(screenWidth * page.toInt());
+    lastPage = page.toInt();
+  }
+
+  /**
+   * 滑动到指定位置
+   */
+  void scrollAnimToOffset(ScrollController controller, double offset,
+      void Function() onScrollCompleted) {
+    controller
+        .animateTo(offset,
+            duration: Duration(
+              milliseconds: 100,
+            ),
+            curve: Curves.linear)
+        .then((v) {
+      if (onScrollCompleted != null) {
+        onScrollCompleted();
+      }
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  @override
   void loadDataSuccess(ChapterDetail chapter) {
     _chapterDetail = chapter;
     content = getSuccessView(chapter.data);
@@ -316,6 +331,9 @@ class _ComicChapterPageState extends State<ComicChapterPage>
             .then((T) {
 //          print("前进执行完毕！");
           lastPage++;
+          if (lastPage >= _chapterDetail.data.length - 1) {
+            lastPage = _chapterDetail.data.length - 1;
+          }
 //          print("lastPage: ${lastPage}");
         }).catchError((e) {
           print(e);
@@ -430,41 +448,24 @@ class _ComicChapterPageState extends State<ComicChapterPage>
         if (touchRange > screenWidth / 8) {
           nextOffset = screenWidth * (lastPage + 1);
 //            print("animate to ${nextOffset}");
-          _scrollController
-              .animateTo(nextOffset,
-                  duration: Duration(milliseconds: 100), curve: Curves.linear)
-              .then((T) {
-//            print("前进执行完毕！");
+          scrollAnimToOffset(_scrollController, nextOffset, () {
             lastPage++;
-          }).catchError((e) {
-            print(e);
+            if (lastPage >= _chapterDetail.data.length - 1) {
+              lastPage = _chapterDetail.data.length - 1;
+            }
           });
         } else if (touchRange < -1 * screenWidth / 8) {
           nextOffset = screenWidth * (lastPage - 1);
 //            print("animate to ${nextOffset}");
-          _scrollController
-              .animateTo(nextOffset,
-                  duration: Duration(milliseconds: 100), curve: Curves.linear)
-              .then((T) {
-//            print("回退执行完毕！");
+
+          scrollAnimToOffset(_scrollController, nextOffset, () {
             lastPage--;
             if (lastPage < 0) {
               lastPage = 0;
             }
-          }).catchError((e) {
-            print(e);
           });
         } else {
-          nextOffset = screenWidth * lastPage;
-//            print("animate to ${nextOffset}");
-          _scrollController
-              .animateTo(nextOffset,
-                  duration: Duration(milliseconds: 100), curve: Curves.linear)
-              .then((T) {
-            print("返回完毕！");
-          }).catchError((e) {
-            print(e);
-          });
+          scrollAnimToOffset(_scrollController, screenWidth * lastPage, null);
         }
       },
       child: child,
@@ -552,5 +553,44 @@ class _ComicChapterPageState extends State<ComicChapterPage>
     setState(() {
       resetChapterInfo(index, reverse);
     });
+  }
+
+  /*
+    构建设置界面图标
+   */
+  List<IconInfoBean> buildIconInfoArr() {
+    return <IconInfoBean>[
+      IconInfoBean(
+          iconData: Icons.favorite,
+          onPressed: () {
+            //喜爱
+            Toast.toast(context,
+                msg: "点击了favorite", position: ToastPostion.bottom);
+          },
+          enable: false),
+      IconInfoBean(
+          iconData: Icons.menu,
+          onPressed: () {
+            //菜单
+            Toast.toast(context, msg: "点击了menu", position: ToastPostion.bottom);
+          },
+          enable: false),
+      IconInfoBean(
+          iconData: Icons.wb_sunny,
+          onPressed: () {
+            //？？
+            Toast.toast(context,
+                msg: "点击了wb_sunny", position: ToastPostion.bottom);
+          },
+          enable: false),
+      IconInfoBean(
+          iconData: Icons.settings,
+          onPressed: () {
+            //设置
+            Toast.toast(context,
+                msg: "点击了settings", position: ToastPostion.bottom);
+          },
+          enable: false),
+    ];
   }
 }
