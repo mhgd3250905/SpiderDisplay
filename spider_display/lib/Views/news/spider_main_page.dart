@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:spider_display/Modle/modle_huxiu.dart';
-import 'package:spider_display/Modle/test_content.dart';
 import 'package:spider_display/Res/res_text_style.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/news/page_refresh_test.dart';
 
 import 'comic/comic_book_page/view_comic_book.dart';
-import 'news/news_page/view_huxiu_main.dart';
+import 'huxiu_main_page.dart';
 
 class SpiderMainPage extends StatefulWidget {
   @override
@@ -23,6 +19,16 @@ class _SpiderMainPageState extends State<SpiderMainPage>
   final _pageController = PageController(initialPage: 0);
   int _selectedIndex = 0;
   bool isPageCanChange = true;
+
+  double screenWidth;
+  double nextOffset = 0;
+
+  double pointerStart = 0;
+  double pointerEnd = 0;
+  double touchRange = 0;
+
+  //上一次停留位置
+  int lastPage = 0;
 
   final List<Tab> titleTabs = <Tab>[
     Tab(
@@ -72,8 +78,10 @@ class _SpiderMainPageState extends State<SpiderMainPage>
 
   @override
   Widget build(BuildContext context) {
-    List<NewsBean> chuleList =
-        NewsListBean.fromJson(json.decode(CHULE_LIST_JSON_STR)).data;
+    Size screenSize = MediaQuery.of(context).size;
+    print("screen width is ${screenSize.width}");
+    screenWidth = screenSize.width;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -100,16 +108,73 @@ class _SpiderMainPageState extends State<SpiderMainPage>
       body: Container(
         color: Colors.white,
         child: Container(
-          child: PageView(
-            controller: _pageController,
-            scrollDirection: Axis.horizontal,
-            pageSnapping: false,
-            children: _pages,
-            onPageChanged: (index) {
-              if (isPageCanChange) {
-                onPageChange(index);
+          child: Listener(
+            onPointerDown: (event) {
+              pointerStart = event.position.dx;
+            },
+            onPointerMove: (event) {},
+            onPointerUp: (event) {
+              pointerEnd = event.position.dx;
+              touchRange = pointerStart - pointerEnd;
+
+              if ((touchRange < 0 && lastPage == 0) ||
+                  (touchRange > 0 && lastPage == _pages.length - 1)) {
+                return;
+              }
+//        print("本次拖动距离： ${touchRange}");
+//        print("上次位置： ${lastOffset}");
+              if (touchRange > screenWidth / 8) {
+                nextOffset = screenWidth * (lastPage + 1);
+                Future.delayed(Duration(seconds: 0), () {
+                  print("animate to ${nextOffset}");
+                  _pageController.animateTo(nextOffset,
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.linear);
+                }).then((T) {
+                  print("前进执行完毕！");
+                  lastPage++;
+                }).catchError((e) {
+                  print(e);
+                });
+              } else if (touchRange < -1 * screenWidth / 8) {
+                nextOffset = screenWidth * (lastPage - 1);
+                Future.delayed(Duration(seconds: 0), () {
+                  print("animate to ${nextOffset}");
+                  _pageController.animateTo(nextOffset,
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.linear);
+                }).then((T) {
+                  print("回退执行完毕！");
+                  lastPage--;
+                }).catchError((e) {
+                  print(e);
+                });
+              } else {
+                nextOffset = screenWidth * lastPage;
+                Future.delayed(Duration(seconds: 0), () {
+//            print("animate to ${nextOffset}");
+                  _pageController.animateTo(nextOffset,
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.linear);
+                }).then((T) {
+//            print("返回完毕！");
+                }).catchError((e) {
+                  print(e);
+                });
               }
             },
+            child: PageView(
+              physics: BouncingScrollPhysics(),
+              controller: _pageController,
+              scrollDirection: Axis.horizontal,
+              pageSnapping: false,
+              children: _pages,
+              onPageChanged: (index) {
+                if (isPageCanChange) {
+                  onPageChange(index);
+                }
+              },
+            ),
           ),
         ),
       ),

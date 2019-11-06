@@ -12,7 +12,7 @@ class ComicChapterListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    book.chapters=book.chapters.reversed.toList();
+//    book.chapters=book.chapters.reversed.toList();
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:spider_display/CustomView/view_toggle_widget.dart';
+import 'package:spider_display/Modle/model_comic.dart';
 
 typedef SliderValueChanged<T> = void Function(T);
 
 class ChapterSetupView extends StatefulWidget {
+  bool show;
   String chapterName;
   double sliderValue;
   double sliderMax;
@@ -13,6 +16,7 @@ class ChapterSetupView extends StatefulWidget {
   List<IconInfoBean> iconInfoBean;
 
   ChapterSetupView({
+    @required this.show,
     @required this.chapterName,
     @required this.sliderValue,
     @required this.sliderMax,
@@ -27,7 +31,8 @@ class ChapterSetupView extends StatefulWidget {
   _ChapterSetupViewState createState() => new _ChapterSetupViewState();
 }
 
-class _ChapterSetupViewState extends State<ChapterSetupView> with TickerProviderStateMixin{
+class _ChapterSetupViewState extends State<ChapterSetupView>
+    with TickerProviderStateMixin {
   double screenWidth;
   AnimationController controller;
 
@@ -36,18 +41,24 @@ class _ChapterSetupViewState extends State<ChapterSetupView> with TickerProvider
     // TODO: implement initState
     super.initState();
     controller = new AnimationController(
-        duration: Duration(milliseconds: 500), vsync: this);
+        duration: Duration(milliseconds: 200), vsync: this);
+//    _animation = Tween(begin: 0.0, end: 1.0).animate(controller);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.show) {
+      controller.forward();
+    } else {
+      controller.reverse();
+    }
     Size screenSize = MediaQuery.of(context).size;
 //    print("screen width is ${screenSize.width}");
     screenWidth = screenSize.width;
     return SlideTransition(
-      position: new Tween(
-        begin: Offset(0.0, 0.0),
-        end: Offset(0.0, 1.0),
+      position: Tween<Offset>(
+        begin: Offset(0.0, 1.0),
+        end: Offset(0.0, 0.0),
       ).animate(controller),
       child: Container(
         color: Colors.black.withAlpha(200),
@@ -196,6 +207,65 @@ class _ChapterSetupViewState extends State<ChapterSetupView> with TickerProvider
   }
 }
 
+class ChapterAppbarView extends StatefulWidget {
+  final String title;
+  final bool show;
+
+  ChapterAppbarView({
+    @required this.title,
+    @required this.show,
+  });
+
+  @override
+  _ChapterAppbarViewState createState() => new _ChapterAppbarViewState();
+}
+
+class _ChapterAppbarViewState extends State<ChapterAppbarView>
+    with TickerProviderStateMixin {
+  AnimationController controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = new AnimationController(
+        duration: Duration(milliseconds: 200), vsync: this);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.show) {
+      controller.forward();
+    } else {
+      controller.reverse();
+    }
+
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: Offset(0.0, -1.0),
+        end: Offset(0.0, 0.0),
+      ).animate(controller),
+      child: Container(
+        width: screenWidth,
+        child: AppBar(
+          iconTheme: IconTheme.of(context).copyWith(
+            color: Colors.white,
+          ),
+          title: Text(
+            widget.title,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Colors.black.withAlpha(200),
+        ),
+      ),
+    );
+  }
+}
+
 /**
  * 构建图片
  */
@@ -228,6 +298,69 @@ Widget buildImageItemView(
           ),
           right: 10.0,
           bottom: 10.0,
+        ),
+      ],
+    ),
+  );
+}
+
+/**
+ * 构建章节展示弹框
+ */
+Widget buildChapterListContainer(bool show, List<Chapter> chapters) {
+  return ToggleWidgetView(
+    child: buildChapterListView(chapters),
+    show: show,
+    begin: Offset(0.0, -1.0),
+    end: Offset(0.0, 0.0),
+  );
+}
+
+Widget buildChapterListView(List<Chapter> chapters) {
+  return Container(
+    child: Column(
+      children: <Widget>[
+        Expanded(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 5,
+              crossAxisSpacing: 3.0,
+              mainAxisSpacing: 3.0,
+            ),
+            itemCount: chapters.length,
+            itemBuilder: (BuildContext context, int i) {
+              return GestureDetector(
+                child: new ClipRRect(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(3.0),
+                    ),
+                    alignment: Alignment.center,
+                    height: 20.0,
+                    padding: EdgeInsets.all(3.0),
+                    child: Text(
+                      chapters[i].name,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.black87,
+                        shadows: [
+                          Shadow(
+                              color: Colors.black87, offset: Offset(0.2, 0.2))
+                        ],
+                      ),
+                    ),
+                  ),
+                  borderRadius: new BorderRadius.circular(3.0),
+                ),
+                onTap: () {},
+              );
+            },
+          ),
         ),
       ],
     ),

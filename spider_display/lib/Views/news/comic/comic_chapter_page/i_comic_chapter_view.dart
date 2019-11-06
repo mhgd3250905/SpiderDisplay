@@ -8,10 +8,8 @@ abstract class IComicChapterView<E> extends IView {
   void loadDataFailed();
   void loadDataWaiting();
 
-  //显示操作界面
-  void showSetupView();
-  //隐藏操作界面
-  void hideSetupView();
+  //切换设置界面
+  void toggleSetupView();
 
   void jumpPage(int index, bool reverse);
 }

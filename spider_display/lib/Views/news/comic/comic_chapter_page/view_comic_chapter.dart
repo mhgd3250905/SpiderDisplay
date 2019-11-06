@@ -38,6 +38,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   List<IconInfoBean> iconInfoArr;
 
   double screenWidth;
+  double screenHeight;
   double nextOffset = 0;
 
   double pointerStart = 0;
@@ -55,6 +56,10 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 
   //显示的图片地址列表
   ChapterDetail _chapterDetail;
+
+  double sliderMax;
+
+  double sliderValue;
 
   @override
   void initState() {
@@ -94,18 +99,19 @@ class _ComicChapterPageState extends State<ComicChapterPage>
     Size screenSize = MediaQuery.of(context).size;
     print("screen width is ${screenSize.width}");
     screenWidth = screenSize.width;
+    screenHeight = screenSize.height;
 
     //获取Slider的最大值
-    double sliderMax =
+    sliderMax =
         _chapterDetail == null ? 50.0 : _chapterDetail.data.length.toDouble();
     //获取Slider的选择值
-    double sliderValue =
+    sliderValue =
         (widget.reverse ? _chapterDetail.data.length - lastPage : lastPage + 1)
             .toDouble();
 
     return Material(
       child: Container(
-        color: Colors.black87,
+        color: Colors.black,
         child: Stack(
           children: <Widget>[
             Container(
@@ -115,22 +121,34 @@ class _ComicChapterPageState extends State<ComicChapterPage>
               ),
             ),
             Positioned(
-              child: Visibility(
-                visible: presenter.isShowSetupView,
-                child: ChapterSetupView(
-                  chapterName: _chapter.name,
-                  sliderMax: sliderMax,
-                  sliderValue: sliderValue,
-                  reverse: widget.reverse,
-                  sliderValueChanged: buildSliderValueChanged,
-                  tapPrevious: buildTapPrevious,
-                  tapNext: buildTapNext,
-                  iconInfoBean: iconInfoArr,
-                ),
+              child: ChapterAppbarView(
+                title: widget.chapters[widget.index].name,
+                show: presenter.isShowSetupView,
+              ),
+              top: 0.0,
+              left: 0.0,
+            ),
+            Positioned(
+              child: ChapterSetupView(
+                show: presenter.isShowSetupView,
+                chapterName: _chapter.name,
+                sliderMax: sliderMax,
+                sliderValue: sliderValue,
+                reverse: widget.reverse,
+                sliderValueChanged: buildSliderValueChanged,
+                tapPrevious: buildTapPrevious,
+                tapNext: buildTapNext,
+                iconInfoBean: iconInfoArr,
               ),
               bottom: 0.0,
               left: 0.0,
             ),
+            Positioned(
+              child: buildChapterListContainer(
+                presenter.isShowChapterListView,
+                widget.chapters,
+              ),
+            )
           ],
         ),
       ),
@@ -254,13 +272,21 @@ class _ComicChapterPageState extends State<ComicChapterPage>
           : e.globalPosition.dx;
       print("${e.globalPosition}");
 
+      if (presenter.isShowSetupView) {
+        //如果设置界面未关闭，那么任何操作都需要先关闭设置界面
+        presenter.toggleSetupView();
+        return;
+      }
+
       //如果点击的区域是屏幕中间，那么就直接显示设置区域
       if (pointInSetupZone(e.globalPosition)) {
         presenter.toggleSetupView();
         return;
       }
 
-      if (lastPage <= 0 || lastPage >= widget.chapters.length - 1) {
+      if (((lastPage <= 0) && (x < 2 * screenWidth / 5)) ||
+          ((lastPage >= _chapterDetail.data.length - 1) &&
+              (x > 3 * screenWidth / 5))) {
         if (!widget.reverse) {
           if (widget.index == 0) {
             return;
@@ -278,7 +304,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
               presenter.jumpPage(widget.index + 1, true);
             }
           } else if (x > screenWidth / 2 &&
-              lastPage >= widget.chapters.length - 1) {
+              lastPage >= _chapterDetail.data.length - 1) {
             if (!isWaitingJump) {
               Toast.toast(context,
                   msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_CLICK,
@@ -306,7 +332,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
               presenter.jumpPage(widget.index - 1, false);
             }
           } else if (x > screenWidth / 2 &&
-              lastPage >= widget.chapters.length - 1) {
+              lastPage >= _chapterDetail.data.length - 1) {
             if (!isWaitingJump) {
               Toast.toast(context,
                   msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_CLICK,
@@ -376,7 +402,14 @@ class _ComicChapterPageState extends State<ComicChapterPage>
         touchRange = (widget.reverse ? -1 : 1) * (pointerStart - pointerEnd);
         print("本次拖动距离： ${touchRange}");
 
+        //所有的操作必须要满足滑动距离>10才算是滑动
         if (touchRange.abs() < 10) {
+          return;
+        }
+
+        if (presenter.isShowSetupView) {
+          //如果设置界面未关闭，那么任何操作都需要先关闭设置界面
+          presenter.toggleSetupView();
           return;
         }
 
@@ -529,12 +562,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   }
 
   @override
-  void hideSetupView() {
-    setState(() {});
-  }
-
-  @override
-  void showSetupView() {
+  void toggleSetupView() {
     setState(() {});
   }
 
@@ -572,7 +600,8 @@ class _ComicChapterPageState extends State<ComicChapterPage>
           iconData: Icons.menu,
           onPressed: () {
             //菜单
-            Toast.toast(context, msg: "点击了menu", position: ToastPostion.bottom);
+            presenter.toggleSetupView();
+            presenter.toggleChapterListView();
           },
           enable: false),
       IconInfoBean(

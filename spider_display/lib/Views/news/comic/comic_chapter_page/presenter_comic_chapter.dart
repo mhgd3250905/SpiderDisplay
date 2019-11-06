@@ -28,19 +28,21 @@ class ComicChapterPresenter extends IComicChapterPresenter {
 
   @override
   void toggleSetupView() {
-    if (isShowSetupView) {
-      this.isShowSetupView = false;
-      this.view.hideSetupView();
-    } else {
-      this.isShowSetupView = true;
-      this.view.showSetupView();
-    }
+    this.isShowSetupView = !this.isShowSetupView;
+    this.view.toggleSetupView();
   }
 
   @override
   void jumpPage(int index, bool reverse) {
     //重置提示信息flag
     isShowSetupView = false;
+    isShowChapterListView = false;
     this.view.jumpPage(index, reverse);
+  }
+
+  @override
+  void toggleChapterListView() {
+    this.isShowChapterListView = !this.isShowChapterListView;
+    this.view.toggleSetupView();
   }
 }

@@ -7,6 +7,7 @@ import 'model_comic_chapter.dart';
 abstract class IComicChapterPresenter extends IPresenter<IComicChapterView> {
   ComicChapterModel model;
   bool isShowSetupView = false;
+  bool isShowChapterListView = false;
 
   IComicChapterPresenter() {
     model = new ComicChapterModel();
@@ -21,6 +22,11 @@ abstract class IComicChapterPresenter extends IPresenter<IComicChapterView> {
    * 切换设置界面的显示
    */
   void toggleSetupView();
+
+  /**
+   * 切换章节列表的显示
+   */
+  void toggleChapterListView();
 
   /**
    * 跳转到直接章节
