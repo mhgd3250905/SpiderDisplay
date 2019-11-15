@@ -23,9 +23,10 @@ class _SpiderMainPageState extends State<SpiderMainPage>
   double screenWidth;
   double nextOffset = 0;
 
-  double pointerStart = 0;
-  double pointerEnd = 0;
-  double touchRange = 0;
+  Offset pointerStart;
+  Offset pointerEnd;
+  double touchRangeX = 0;
+  double touchRangeY = 0;
 
   //上一次停留位置
   int lastPage = 0;
@@ -110,20 +111,27 @@ class _SpiderMainPageState extends State<SpiderMainPage>
         child: Container(
           child: Listener(
             onPointerDown: (event) {
-              pointerStart = event.position.dx;
+              pointerStart = event.position;
             },
             onPointerMove: (event) {},
             onPointerUp: (event) {
-              pointerEnd = event.position.dx;
-              touchRange = pointerStart - pointerEnd;
+              pointerEnd = event.position;
+              touchRangeX = pointerStart.dx - pointerEnd.dx;
+              touchRangeY = pointerStart.dy - pointerEnd.dy;
 
-              if ((touchRange < 0 && lastPage == 0) ||
-                  (touchRange > 0 && lastPage == _pages.length - 1)) {
+              //纵向操作大于横向操作三倍视为纵向操作
+              //这个判断拦截只有在纵向操作距离大于20.0的时候才生效
+              if (touchRangeX.abs() < touchRangeY.abs() && touchRangeY > 20) {
+                return;
+              }
+
+              if ((touchRangeX < 0 && lastPage == 0) ||
+                  (touchRangeX > 0 && lastPage == _pages.length - 1)) {
                 return;
               }
 //        print("本次拖动距离： ${touchRange}");
 //        print("上次位置： ${lastOffset}");
-              if (touchRange > screenWidth / 8) {
+              if (touchRangeX > screenWidth / 8) {
                 nextOffset = screenWidth * (lastPage + 1);
                 Future.delayed(Duration(seconds: 0), () {
                   print("animate to ${nextOffset}");
@@ -136,7 +144,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
                 }).catchError((e) {
                   print(e);
                 });
-              } else if (touchRange < -1 * screenWidth / 8) {
+              } else if (touchRangeX < -1 * screenWidth / 8) {
                 nextOffset = screenWidth * (lastPage - 1);
                 Future.delayed(Duration(seconds: 0), () {
                   print("animate to ${nextOffset}");

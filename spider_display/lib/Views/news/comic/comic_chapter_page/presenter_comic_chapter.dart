@@ -1,3 +1,4 @@
+
 import 'package:spider_display/Modle/model_comic.dart';
 import 'package:spider_display/Views/news/comic/comic_book_page/i_comic_book_model.dart';
 
@@ -44,5 +45,18 @@ class ComicChapterPresenter extends IComicChapterPresenter {
   void toggleChapterListView() {
     this.isShowChapterListView = !this.isShowChapterListView;
     this.view.toggleSetupView();
+    this.toggleSetupView();
+  }
+
+  @override
+  void toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    this.view.toggleDarkMode();
+  }
+
+  @override
+  void toggleDirection() {
+    this.isHorizontal = !this.isHorizontal;
+    this.view.toggleDirection();
   }
 }

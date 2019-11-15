@@ -41,9 +41,10 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   double screenHeight;
   double nextOffset = 0;
 
-  double pointerStart = 0;
-  double pointerEnd = 0;
-  double touchRange = 0;
+  Offset pointerStart;
+  Offset pointerEnd;
+  double touchRangeX = 0;
+  double touchRangeY = 0;
 
   //上一次停留位置
   int lastPage = 0;
@@ -73,6 +74,10 @@ class _ComicChapterPageState extends State<ComicChapterPage>
     resetChapterInfo(widget.index, widget.reverse);
 
     iconInfoArr = buildIconInfoArr();
+
+//    _scrollController.addListener(() {
+//      print("scroll: ${_scrollController.position.pixels}");
+//    });
   }
 
   /**
@@ -81,9 +86,10 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   void resetChapterInfo(int index, bool reverse) {
     lastPage = 0;
     nextOffset = 0;
-    pointerStart = 0;
-    pointerEnd = 0;
-    touchRange = 0;
+    pointerStart;
+    pointerEnd;
+    touchRangeX = 0;
+    touchRangeY = 0;
 
     isWaitingJump = false;
     widget.index = index;
@@ -144,11 +150,25 @@ class _ComicChapterPageState extends State<ComicChapterPage>
               left: 0.0,
             ),
             Positioned(
-              child: buildChapterListContainer(
-                presenter.isShowChapterListView,
-                widget.chapters,
-              ),
-            )
+              child: buildChapterListContainer(widget.index,
+                  presenter.isShowChapterListView, widget.chapters, () {
+                //onTap
+                if (presenter.isShowChapterListView) {
+                  //如果设置界面未关闭，那么任何操作都需要先关闭设置界面
+                  presenter.toggleChapterListView();
+                  return;
+                }
+              }, (int index, bool reverse) {
+                if (index == widget.index) {
+                  if (presenter.isShowChapterListView) {
+                    //如果设置界面未关闭，那么任何操作都需要先关闭设置界面
+                    presenter.toggleChapterListView();
+                  }
+                } else {
+                  resetChapterInfo(index, reverse);
+                }
+              }),
+            ),
           ],
         ),
       ),
@@ -207,9 +227,9 @@ class _ComicChapterPageState extends State<ComicChapterPage>
     controller
         .animateTo(offset,
             duration: Duration(
-              milliseconds: 100,
+              milliseconds: 200,
             ),
-            curve: Curves.linear)
+            curve: Curves.easeIn)
         .then((v) {
       if (onScrollCompleted != null) {
         onScrollCompleted();
@@ -249,14 +269,22 @@ class _ComicChapterPageState extends State<ComicChapterPage>
         cacheExtent: 3 * screenWidth,
         reverse: widget.reverse,
         controller: _scrollController,
-        scrollDirection: Axis.horizontal,
+        scrollDirection:
+            presenter.isHorizontal ? Axis.horizontal : Axis.vertical,
         itemCount: data.length,
         semanticChildCount: 5,
         itemBuilder: (BuildContext context, int index) {
           String pageStr = "${_chapter.name} "
               "${widget.reverse ? (data.length - index) : (index + 1)}/${data.length}";
           return buildImageItemView(
-              data[index], pageStr, data.length, screenWidth);
+            presenter.isHorizontal,
+            data[index],
+            presenter.isDarkMode,
+            pageStr,
+            data.length,
+            screenWidth,
+            screenHeight,
+          );
         },
       ),
     );
@@ -353,7 +381,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 //          print("animate to ${nextOffset}");
         _scrollController
             .animateTo(nextOffset,
-                duration: Duration(milliseconds: 100), curve: Curves.linear)
+                duration: Duration(milliseconds: 200), curve: Curves.easeIn)
             .then((T) {
 //          print("前进执行完毕！");
           lastPage++;
@@ -370,7 +398,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 //          print("animate to ${nextOffset}");
         _scrollController
             .animateTo(nextOffset,
-                duration: Duration(milliseconds: 100), curve: Curves.linear)
+                duration: Duration(milliseconds: 200), curve: Curves.easeIn)
             .then((T) {
 //          print("回退执行完毕！");
           lastPage--;
@@ -391,116 +419,15 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   Listener getChapterListener(List<String> data, Widget child) {
     return Listener(
       onPointerDown: (event) {
-        pointerStart = event.position.dx;
+        pointerStart = event.position;
         print("down: ${event.position}");
       },
-      onPointerMove: (event) {},
-      onPointerUp: (event) {
-        print("Up: ${event.position}");
-
-        pointerEnd = event.position.dx;
-        touchRange = (widget.reverse ? -1 : 1) * (pointerStart - pointerEnd);
-        print("本次拖动距离： ${touchRange}");
-
-        //所有的操作必须要满足滑动距离>10才算是滑动
-        if (touchRange.abs() < 10) {
-          return;
-        }
-
-        if (presenter.isShowSetupView) {
-          //如果设置界面未关闭，那么任何操作都需要先关闭设置界面
-          presenter.toggleSetupView();
-          return;
-        }
-
-        if ((touchRange < 0 && lastPage <= 0) ||
-            (touchRange > 0 && lastPage >= data.length - 1)) {
-          if (!widget.reverse) {
-            if (widget.index == 0) {
-              return;
-            }
-            if (touchRange < 0 &&
-                lastPage <= 0 &&
-                touchRange < -1 * screenWidth / 4) {
-              if (!isWaitingJump) {
-                Toast.toast(context,
-                    msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_TOUCH,
-                    position: ToastPostion.bottom);
-                postJumpWaitingDelay();
-              } else {
-                //跳转到上一章
-                presenter.jumpPage(widget.index + 1, true);
-              }
-            } else if (touchRange > 0 &&
-                lastPage >= data.length - 1 &&
-                touchRange > screenWidth / 4) {
-              if (!isWaitingJump) {
-                Toast.toast(context,
-                    msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_TOUCH,
-                    position: ToastPostion.bottom);
-                postJumpWaitingDelay();
-              } else {
-                //跳转到下一章
-                presenter.jumpPage(widget.index - 1, false);
-              }
-            } else {
-              return;
-            }
-          } else {
-            if (touchRange < 0 &&
-                lastPage <= 0 &&
-                touchRange < -1 * screenWidth / 4) {
-              if (!isWaitingJump) {
-                Toast.toast(context,
-                    msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_TOUCH,
-                    position: ToastPostion.bottom);
-                postJumpWaitingDelay();
-              } else {
-                //跳转到下一章
-                presenter.jumpPage(widget.index - 1, false);
-              }
-            } else if (touchRange > 0 &&
-                lastPage >= data.length - 1 &&
-                touchRange > screenWidth / 4) {
-              if (!isWaitingJump) {
-                Toast.toast(context,
-                    msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_TOUCH,
-                    position: ToastPostion.bottom);
-                postJumpWaitingDelay();
-              } else {
-                //跳转到上一章
-                presenter.jumpPage(widget.index + 1, true);
-              }
-            } else {
-              return;
-            }
-          }
-          return;
-        }
-
-        if (touchRange > screenWidth / 8) {
-          nextOffset = screenWidth * (lastPage + 1);
-//            print("animate to ${nextOffset}");
-          scrollAnimToOffset(_scrollController, nextOffset, () {
-            lastPage++;
-            if (lastPage >= _chapterDetail.data.length - 1) {
-              lastPage = _chapterDetail.data.length - 1;
-            }
-          });
-        } else if (touchRange < -1 * screenWidth / 8) {
-          nextOffset = screenWidth * (lastPage - 1);
-//            print("animate to ${nextOffset}");
-
-          scrollAnimToOffset(_scrollController, nextOffset, () {
-            lastPage--;
-            if (lastPage < 0) {
-              lastPage = 0;
-            }
-          });
-        } else {
-          scrollAnimToOffset(_scrollController, screenWidth * lastPage, null);
-        }
+      onPointerMove: (event) {
+        print("move: ${event.position}");
       },
+      onPointerUp: presenter.isHorizontal
+          ? getPonitUpListenerInHorizontal(data)
+          : getPonitUpListenerInVertical(data),
       child: child,
     );
   }
@@ -589,27 +516,32 @@ class _ComicChapterPageState extends State<ComicChapterPage>
   List<IconInfoBean> buildIconInfoArr() {
     return <IconInfoBean>[
       IconInfoBean(
-          iconData: Icons.favorite,
+          iconData: presenter.isHorizontal
+              ? Icons.keyboard_tab
+              : Icons.vertical_align_bottom,
           onPressed: () {
             //喜爱
-            Toast.toast(context,
-                msg: "点击了favorite", position: ToastPostion.bottom);
+            presenter.toggleDirection();
+//            Toast.toast(context,
+//                msg: "点击了favorite", position: ToastPostion.bottom);
           },
           enable: false),
       IconInfoBean(
           iconData: Icons.menu,
           onPressed: () {
             //菜单
-            presenter.toggleSetupView();
+//            presenter.toggleSetupView();
             presenter.toggleChapterListView();
           },
           enable: false),
       IconInfoBean(
-          iconData: Icons.wb_sunny,
+          iconData:
+              presenter.isDarkMode ? Icons.brightness_7 : Icons.brightness_4,
           onPressed: () {
-            //？？
-            Toast.toast(context,
-                msg: "点击了wb_sunny", position: ToastPostion.bottom);
+            //切换明暗模式
+//            Toast.toast(context,
+//                msg: "点击了wb_sunny", position: ToastPostion.bottom);
+            presenter.toggleDarkMode();
           },
           enable: false),
       IconInfoBean(
@@ -621,5 +553,250 @@ class _ComicChapterPageState extends State<ComicChapterPage>
           },
           enable: false),
     ];
+  }
+
+  @override
+  void toggleDarkMode() {
+    setState(() {
+      iconInfoArr = buildIconInfoArr();
+      content = getSuccessView(_chapterDetail.data);
+    });
+  }
+
+  @override
+  void toggleDirection() {
+    setState(() {
+      iconInfoArr = buildIconInfoArr();
+      content = getSuccessView(_chapterDetail.data);
+    });
+  }
+
+  /**
+   * 构造横向滑动时候的触摸抬起监听
+   */
+  PointerUpEventListener getPonitUpListenerInHorizontal(List<String> data) {
+    return (event) {
+      print("Up: ${event.position}");
+
+      pointerEnd = event.position;
+      touchRangeX =
+          (widget.reverse ? -1 : 1) * (pointerStart.dx - pointerEnd.dx);
+      print("本次拖动距离X： ${touchRangeX}");
+      touchRangeY =
+          (widget.reverse ? -1 : 1) * (pointerStart.dy - pointerEnd.dy);
+      print("本次拖动距离Y： ${touchRangeY}");
+
+      //所有的操作必须要满足滑动距离>10才算是滑动
+      if (touchRangeX.abs() < 10) {
+        return;
+      }
+
+      //纵向操作大于横向操作三倍视为纵向操作
+      //这个判断拦截只有在纵向操作距离大于20.0的时候才生效
+      if (touchRangeX.abs() < touchRangeY.abs() && touchRangeY > 20) {
+        return;
+      }
+
+      if (presenter.isShowSetupView) {
+        //如果设置界面未关闭，那么任何操作都需要先关闭设置界面
+        presenter.toggleSetupView();
+        return;
+      }
+
+      //跳转到下一章或者上一章或者还原
+      if ((touchRangeX < 0 && lastPage <= 0) ||
+          (touchRangeX > 0 && lastPage >= data.length - 1)) {
+        if (!widget.reverse) {
+          if (widget.index == 0) {
+            return;
+          }
+          if (touchRangeX < 0 &&
+              lastPage <= 0 &&
+              touchRangeX < -1 * screenWidth / 4) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到上一章
+              presenter.jumpPage(widget.index + 1, true);
+            }
+          } else if (touchRangeX > 0 &&
+              lastPage >= data.length - 1 &&
+              touchRangeX > screenWidth / 4) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到下一章
+              presenter.jumpPage(widget.index - 1, false);
+            }
+          } else {
+            return;
+          }
+        } else {
+          if (touchRangeX < 0 &&
+              lastPage <= 0 &&
+              touchRangeX < -1 * screenWidth / 4) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到下一章
+              presenter.jumpPage(widget.index - 1, false);
+            }
+          } else if (touchRangeX > 0 &&
+              lastPage >= data.length - 1 &&
+              touchRangeX > screenWidth / 4) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到上一章
+              presenter.jumpPage(widget.index + 1, true);
+            }
+          } else {
+            return;
+          }
+        }
+        return;
+      }
+
+      //跳转到下一页或者上一页或者不懂
+      if (touchRangeX > screenWidth / 8) {
+        nextOffset = screenWidth * (lastPage + 1);
+//            print("animate to ${nextOffset}");
+        scrollAnimToOffset(_scrollController, nextOffset, () {
+          lastPage++;
+          if (lastPage >= _chapterDetail.data.length - 1) {
+            lastPage = _chapterDetail.data.length - 1;
+          }
+        });
+      } else if (touchRangeX < -1 * screenWidth / 8) {
+        nextOffset = screenWidth * (lastPage - 1);
+//            print("animate to ${nextOffset}");
+
+        scrollAnimToOffset(_scrollController, nextOffset, () {
+          lastPage--;
+          if (lastPage < 0) {
+            lastPage = 0;
+          }
+        });
+      } else {
+        scrollAnimToOffset(_scrollController, screenWidth * lastPage, null);
+      }
+    };
+  }
+
+  /**
+   * 构造纵向滑动滑动时候的触摸抬起监听
+   * 纵向滑动的时候不需要智能识别到下一页，只需要判断上一章下一章就可以了
+   */
+  PointerUpEventListener getPonitUpListenerInVertical(List<String> data) {
+    return (event) {
+      print("Up: ${event.position}");
+
+      pointerEnd = event.position;
+      touchRangeY =
+          (widget.reverse ? -1 : 1) * (pointerStart.dy - pointerEnd.dy);
+      print("本次拖动距离Y： ${touchRangeY}");
+
+      //所有的操作必须要满足滑动距离>10才算是滑动
+      if (touchRangeY.abs() < 10) {
+        return;
+      }
+
+      //纵向操作大于横向操作三倍视为纵向操作
+      //这个判断拦截只有在纵向操作距离大于20.0的时候才生效
+      if (touchRangeX > 20) {
+        return;
+      }
+
+      if (presenter.isShowSetupView) {
+        //如果设置界面未关闭，那么任何操作都需要先关闭设置界面
+        presenter.toggleSetupView();
+        return;
+      }
+
+      print("min: ${_scrollController.position.minScrollExtent}");
+      print("max: ${_scrollController.position.maxScrollExtent}");
+
+      //跳转到下一章或者上一章或者还原
+      if ((touchRangeY < 0 &&
+              _scrollController.position.pixels < _scrollController.position.minScrollExtent) ||
+          (touchRangeY > 0 &&
+              _scrollController.position.pixels > _scrollController.position.maxScrollExtent)) {
+        if (!widget.reverse) {
+          if (widget.index == 0) {
+            return;
+          }
+          if (touchRangeY < 0 &&
+              _scrollController.position.pixels <
+                  _scrollController.position.minScrollExtent &&
+              touchRangeY < -1 * screenWidth / 6) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到上一章
+              presenter.jumpPage(widget.index + 1, true);
+            }
+          } else if (touchRangeY > 0 &&
+              _scrollController.position.pixels>_scrollController.position.maxScrollExtent
+              && touchRangeY > screenWidth / 6) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到下一章
+              presenter.jumpPage(widget.index - 1, false);
+            }
+          } else {
+            return;
+          }
+        } else {
+          if (touchRangeY < 0 &&
+              _scrollController.position.pixels <
+                  _scrollController.position.minScrollExtent &&
+              touchRangeY < -1 * screenWidth / 6) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到下一章
+              presenter.jumpPage(widget.index - 1, false);
+            }
+          } else if (touchRangeY > 0 &&
+      _scrollController.position.pixels>_scrollController.position.maxScrollExtent
+            &&touchRangeY > screenWidth / 6) {
+            if (!isWaitingJump) {
+              Toast.toast(context,
+                  msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_TOUCH,
+                  position: ToastPostion.bottom);
+              postJumpWaitingDelay();
+            } else {
+              //跳转到上一章
+              presenter.jumpPage(widget.index + 1, true);
+            }
+          } else {
+            return;
+          }
+        }
+        return;
+      }
+    };
   }
 }

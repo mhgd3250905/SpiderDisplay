@@ -3,6 +3,7 @@ import 'package:spider_display/CustomView/view_toggle_widget.dart';
 import 'package:spider_display/Modle/model_comic.dart';
 
 typedef SliderValueChanged<T> = void Function(T);
+typedef onChapterItemTap = void Function(int index, bool reverse);
 
 class ChapterSetupView extends StatefulWidget {
   bool show;
@@ -119,12 +120,35 @@ class _ChapterSetupViewState extends State<ChapterSetupView>
   Expanded buildButtonRowItem(
       IconData iconData, VoidCallback onPressed, bool enable) {
     return Expanded(
-      child: IconButton(
-          icon: Icon(
-            iconData,
-            color: enable ? Colors.blue : Colors.white,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          alignment: Alignment.center,
+          height: 60.0,
+          child: AnimatedSwitcher(
+            duration: Duration(
+              milliseconds: 200,
+            ),
+            transitionBuilder: (child, anim) {
+              return ScaleTransition(
+                scale: anim,
+                child: child,
+              );
+            },
+            child: Icon(
+              iconData,
+              key: ValueKey(iconData),
+              color: Colors.white,
+            ),
           ),
-          onPressed: onPressed),
+        ),
+      ),
+//        IconButton(
+//          icon: Icon(
+//            iconData,
+//            color: enable ? Colors.blue : Colors.white,
+//          ),
+//          onPressed: onPressed),
       flex: 1,
     );
   }
@@ -269,31 +293,47 @@ class _ChapterAppbarViewState extends State<ChapterAppbarView>
 /**
  * 构建图片
  */
-Widget buildImageItemView(
-    String path, String pageStr, int lengthStr, double screenWidth) {
+Widget buildImageItemView(bool isHorizontal, String path, bool isDarkMode,
+    String pageStr, int lengthStr, double screenWidth, double screenHeight) {
   return Container(
+    margin: EdgeInsets.only(bottom: isHorizontal ? 0.0 : 10.0),
     width: screenWidth,
     child: Stack(
       children: <Widget>[
-        Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 4.0,
-            backgroundColor: Colors.blue,
-            // value: 0.2,
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+        Container(
+          height: isHorizontal ? screenHeight : screenHeight / 2,
+          child: Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 4.0,
+              backgroundColor: Colors.blue,
+              // value: 0.2,
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
           ),
         ),
         Center(
           child: Image.network(path),
         ),
+        Visibility(
+          visible: isDarkMode,
+          child: GestureDetector(
+            onTap: null,
+            child: Container(
+              color: Colors.black.withAlpha(80),
+            ),
+          ),
+        ),
         Positioned(
-          child: Text(
-            pageStr,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15.0,
-              fontStyle: FontStyle.normal,
-              decoration: TextDecoration.none,
+          child: Visibility(
+            visible: isHorizontal,
+            child: Text(
+              pageStr,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.0,
+                fontStyle: FontStyle.normal,
+                decoration: TextDecoration.none,
+              ),
             ),
           ),
           right: 10.0,
@@ -307,62 +347,79 @@ Widget buildImageItemView(
 /**
  * 构建章节展示弹框
  */
-Widget buildChapterListContainer(bool show, List<Chapter> chapters) {
+Widget buildChapterListContainer(
+    int curIndex,
+    bool show,
+    List<Chapter> chapters,
+    GestureTapCallback onTap,
+    onChapterItemTap onItemTap) {
   return ToggleWidgetView(
-    child: buildChapterListView(chapters),
+    child: buildChapterListView(curIndex, chapters, onTap, onItemTap),
     show: show,
-    begin: Offset(0.0, -1.0),
+    begin: Offset(0.0, 1.0),
     end: Offset(0.0, 0.0),
   );
 }
 
-Widget buildChapterListView(List<Chapter> chapters) {
-  return Container(
-    child: Column(
-      children: <Widget>[
-        Expanded(
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5,
-              crossAxisSpacing: 3.0,
-              mainAxisSpacing: 3.0,
-            ),
-            itemCount: chapters.length,
-            itemBuilder: (BuildContext context, int i) {
-              return GestureDetector(
-                child: new ClipRRect(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(3.0),
-                    ),
-                    alignment: Alignment.center,
-                    height: 20.0,
-                    padding: EdgeInsets.all(3.0),
-                    child: Text(
-                      chapters[i].name,
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black87,
-                        shadows: [
-                          Shadow(
-                              color: Colors.black87, offset: Offset(0.2, 0.2))
-                        ],
-                      ),
-                    ),
-                  ),
-                  borderRadius: new BorderRadius.circular(3.0),
+Widget buildChapterListView(int curIndex, List<Chapter> chapters,
+    GestureTapCallback onBgTap, onChapterItemTap onItemTap) {
+  return GestureDetector(
+    onTap: onBgTap,
+    child: Container(
+      color: Colors.transparent,
+      padding: EdgeInsets.only(top: 400.0),
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        color: Colors.black.withAlpha(200),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 3.0,
+                  mainAxisSpacing: 3.0,
                 ),
-                onTap: () {},
-              );
-            },
-          ),
+                itemCount: chapters.length,
+                itemBuilder: (BuildContext context, int i) {
+                  return GestureDetector(
+                    child: new ClipRRect(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(3.0),
+                        ),
+                        alignment: Alignment.center,
+                        height: 20.0,
+                        padding: EdgeInsets.all(3.0),
+                        child: Text(
+                          chapters[i].name,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.white, offset: Offset(0.2, 0.2))
+                            ],
+                          ),
+                        ),
+                      ),
+                      borderRadius: new BorderRadius.circular(3.0),
+                    ),
+                    onTap: () {
+                      onItemTap(i, curIndex > i);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     ),
   );
 }

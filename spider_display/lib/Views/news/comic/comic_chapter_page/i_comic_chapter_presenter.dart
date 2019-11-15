@@ -6,8 +6,14 @@ import 'model_comic_chapter.dart';
 
 abstract class IComicChapterPresenter extends IPresenter<IComicChapterView> {
   ComicChapterModel model;
+  //是否显示设置界面
   bool isShowSetupView = false;
+  //是否显示章节列表
   bool isShowChapterListView = false;
+  //切换明暗模式
+  bool isDarkMode = false;
+  //切换横纵模式
+  bool isHorizontal = true;
 
   IComicChapterPresenter() {
     model = new ComicChapterModel();
@@ -27,6 +33,16 @@ abstract class IComicChapterPresenter extends IPresenter<IComicChapterView> {
    * 切换章节列表的显示
    */
   void toggleChapterListView();
+
+  /**
+   * 切换明暗模式
+   */
+  void toggleDarkMode();
+
+  /**
+   * 切换明暗模式
+   */
+  void toggleDirection();
 
   /**
    * 跳转到直接章节
