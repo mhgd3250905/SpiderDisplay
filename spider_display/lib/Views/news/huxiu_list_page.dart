@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
-import 'package:spider_display/Views/news/huxiu_detail_page.dart';
 import 'package:spider_display/Views/news/view_chule_item.dart';
 import 'package:spider_display/Views/news/view_huxiu_item.dart';
 import 'package:spider_display/Views/news/view_loadmore_list.dart';
+
+import 'huxiu_detail_page.dart';
 
 const TextStyle titleStyle = TextStyle(
     letterSpacing: 1.0,

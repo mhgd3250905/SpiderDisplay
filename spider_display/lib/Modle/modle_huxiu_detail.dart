@@ -1,7 +1,7 @@
 import 'dart:convert' show json;
 
-import 'package:spider_display/Modle/modle_huxiu.dart';
 
+import 'modle_huxiu.dart';
 
 class HuxiuDetailBean {
   int err_code;
@@ -35,6 +35,14 @@ class HuxiuDetailBean {
 class HuxiuDetail {
   List<Content> contents;
   NewsBean huxiuNews;
+
+  int getLength() {
+    if (contents == null) {
+      return 0;
+    } else {
+      return contents.length;
+    }
+  }
 
   HuxiuDetail(this.contents, this.huxiuNews);
 

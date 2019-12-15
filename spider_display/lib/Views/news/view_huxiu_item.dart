@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:spider_display/CustomView/clip_widgets.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import 'huxiu_list_page.dart';
 
@@ -30,6 +30,11 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
     return Column(
       children: <Widget>[
         Container(
+          color: Colors.white,
+          padding: widget.pos == 0
+              ? const EdgeInsets.only(
+              top: 15.0, bottom: 15.0, left: 10.0, right: 10.0)
+              : const EdgeInsets.only(bottom: 15.0, left: 10.0, right: 10.0),
           width: double.infinity,
           child: Stack(
             fit: StackFit.loose,
@@ -37,12 +42,12 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
               Positioned(
                 child: Hero(
                   tag:
-                      "${widget.huxiuNews.newsId}-${widget.huxiuNews.createTime}-${widget.pos}",
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: widget.huxiuNews.imageLink
+                  "${widget.huxiuNews.newsId}-${widget.huxiuNews
+                      .createTime}-${widget.pos}",
+                  child: ClipRadiusShadowImage(
+                    url: widget.huxiuNews.imageLink
                         .replaceAll("w/390/h/219", "w/600/h/320"),
-                    fit: BoxFit.cover,
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
                 left: 0.0,
@@ -145,9 +150,8 @@ class _HuxiuNewsItemViewState extends State<HuxiuNewsItemView>
                 padding: const EdgeInsets.all(1.0),
                 color: Colors.white,
                 child: ClipOval(
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: huxiuNews.author.authorImg,
+                  child: Image.network(
+                    huxiuNews.author.authorImg,
                     fit: BoxFit.cover,
                     width: 15.0,
                     height: 15.0,

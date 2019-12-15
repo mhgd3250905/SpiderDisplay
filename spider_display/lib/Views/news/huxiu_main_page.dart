@@ -4,12 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
-import 'package:spider_display/Views/news/huxiu_detail_page.dart';
 import 'package:spider_display/Views/news/view_auto_refresh.dart';
 import 'package:spider_display/Views/news/view_auto_refresh_list.dart';
 import 'package:spider_display/Views/news/view_chule_item.dart';
 import 'package:spider_display/Views/news/view_huxiu_item.dart';
 
+import 'huxiu_detail_page.dart';
 import 'huxiu_list_page.dart';
 
 const int PAGE_COUNT = 10;
@@ -229,19 +229,19 @@ class _NewsMainPageState extends State<NewsMainPage>
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(3.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.grey[300],
-            offset: Offset(2.0, 2.0),
-            blurRadius: 2.0,
-          ),
-          BoxShadow(
-            color: Colors.grey[300],
-            offset: Offset(2.0, 0.0),
-            blurRadius: 2.0,
-          )
-        ],
+//        borderRadius: BorderRadius.circular(3.0),
+//        boxShadow: <BoxShadow>[
+//          BoxShadow(
+//            color: Colors.grey[300],
+//            offset: Offset(2.0, 2.0),
+//            blurRadius: 2.0,
+//          ),
+//          BoxShadow(
+//            color: Colors.grey[300],
+//            offset: Offset(2.0, 0.0),
+//            blurRadius: 2.0,
+//          )
+//        ],
       ),
       margin:
           i == 0 ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 1.0),
@@ -376,7 +376,6 @@ class _NewsMainPageState extends State<NewsMainPage>
       ),
     );
   }
-
 }
 
 String getNewsListUrl(String tag, int page) {

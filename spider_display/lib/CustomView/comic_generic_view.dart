@@ -3,7 +3,8 @@ import 'package:spider_display/Modle/model_comic.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/news/comic/comic_chapter_list_page/view_comic_chapter_list.dart';
 
-import 'package:spider_display/CustomView/clip_image_view.dart';
+
+import 'clip_widgets.dart';
 
 /**
  * 构建用于展示漫画的 左图片 右描述的 item 布局

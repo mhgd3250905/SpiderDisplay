@@ -588,12 +588,24 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 
       //所有的操作必须要满足滑动距离>10才算是滑动
       if (touchRangeX.abs() < 10) {
+        nextOffset = screenWidth * lastPage;
+        scrollAnimToOffset(_scrollController, nextOffset, () {
+          if (lastPage < 0) {
+            lastPage = 0;
+          }
+        });
         return;
       }
 
       //纵向操作大于横向操作三倍视为纵向操作
       //这个判断拦截只有在纵向操作距离大于20.0的时候才生效
-      if (touchRangeX.abs() < touchRangeY.abs() && touchRangeY > 20) {
+      if (touchRangeX.abs() < touchRangeY.abs() && touchRangeY.abs() > 20) {
+        nextOffset = screenWidth * lastPage;
+        scrollAnimToOffset(_scrollController, nextOffset, () {
+          if (lastPage < 0) {
+            lastPage = 0;
+          }
+        });
         return;
       }
 
@@ -715,7 +727,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
 
       //纵向操作大于横向操作三倍视为纵向操作
       //这个判断拦截只有在纵向操作距离大于20.0的时候才生效
-      if (touchRangeX > 20) {
+      if (touchRangeX.abs() > 20) {
         return;
       }
 
@@ -725,21 +737,15 @@ class _ComicChapterPageState extends State<ComicChapterPage>
         return;
       }
 
-      print("min: ${_scrollController.position.minScrollExtent}");
-      print("max: ${_scrollController.position.maxScrollExtent}");
-
       //跳转到下一章或者上一章或者还原
-      if ((touchRangeY < 0 &&
-              _scrollController.position.pixels < _scrollController.position.minScrollExtent) ||
-          (touchRangeY > 0 &&
-              _scrollController.position.pixels > _scrollController.position.maxScrollExtent)) {
+      if ((touchRangeY < 0 && lastPage <= 0) ||
+          (touchRangeY > 0 && lastPage >= data.length - 1)) {
         if (!widget.reverse) {
           if (widget.index == 0) {
             return;
           }
           if (touchRangeY < 0 &&
-              _scrollController.position.pixels <
-                  _scrollController.position.minScrollExtent &&
+              lastPage <= 0 &&
               touchRangeY < -1 * screenWidth / 6) {
             if (!isWaitingJump) {
               Toast.toast(context,
@@ -751,8 +757,8 @@ class _ComicChapterPageState extends State<ComicChapterPage>
               presenter.jumpPage(widget.index + 1, true);
             }
           } else if (touchRangeY > 0 &&
-              _scrollController.position.pixels>_scrollController.position.maxScrollExtent
-              && touchRangeY > screenWidth / 6) {
+              lastPage >= data.length - 1 &&
+              touchRangeY > screenWidth / 6) {
             if (!isWaitingJump) {
               Toast.toast(context,
                   msg: TOAST_CHAPTER_IMAGE_JUMP_NEXT_TOUCH,
@@ -767,8 +773,7 @@ class _ComicChapterPageState extends State<ComicChapterPage>
           }
         } else {
           if (touchRangeY < 0 &&
-              _scrollController.position.pixels <
-                  _scrollController.position.minScrollExtent &&
+              lastPage <= 0 &&
               touchRangeY < -1 * screenWidth / 6) {
             if (!isWaitingJump) {
               Toast.toast(context,
@@ -780,8 +785,8 @@ class _ComicChapterPageState extends State<ComicChapterPage>
               presenter.jumpPage(widget.index - 1, false);
             }
           } else if (touchRangeY > 0 &&
-      _scrollController.position.pixels>_scrollController.position.maxScrollExtent
-            &&touchRangeY > screenWidth / 6) {
+              lastPage >= data.length - 1 &&
+              touchRangeY > screenWidth / 6) {
             if (!isWaitingJump) {
               Toast.toast(context,
                   msg: TOAST_CHAPTER_IMAGE_JUMP_PREVIOUS_TOUCH,

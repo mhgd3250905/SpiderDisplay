@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:spider_display/Res/res_text_style.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/news/page_refresh_test.dart';
-
 import 'comic/comic_book_page/view_comic_book.dart';
 import 'huxiu_main_page.dart';
 
@@ -52,6 +51,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
     super.initState();
 
     _pages.add(ComicBookPage());
+//    _pages.add(TestListView());
     _pages.add(new NewsMainPage("huxiu"));
     _pages.add(new NewsMainPage("chule"));
     _pages.add(new NewsMainPage("ifanr"));
@@ -75,6 +75,7 @@ class _SpiderMainPageState extends State<SpiderMainPage>
     } else {
       _tabController.animateTo(index);
     }
+    lastPage = index;
   }
 
   @override
@@ -121,12 +122,29 @@ class _SpiderMainPageState extends State<SpiderMainPage>
 
               //纵向操作大于横向操作三倍视为纵向操作
               //这个判断拦截只有在纵向操作距离大于20.0的时候才生效
-              if (touchRangeX.abs() < touchRangeY.abs() && touchRangeY > 20) {
+              if (touchRangeX.abs() < touchRangeY.abs() &&
+                  touchRangeY.abs() > 20) {
+                nextOffset = screenWidth * lastPage;
+                Future.delayed(Duration(seconds: 0), () {
+                  _pageController.animateTo(nextOffset,
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.linear);
+                }).then((T) {}).catchError((e) {
+                  print(e);
+                });
                 return;
               }
 
               if ((touchRangeX < 0 && lastPage == 0) ||
                   (touchRangeX > 0 && lastPage == _pages.length - 1)) {
+                nextOffset = screenWidth * lastPage;
+                Future.delayed(Duration(seconds: 0), () {
+                  _pageController.animateTo(nextOffset,
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.linear);
+                }).then((T) {}).catchError((e) {
+                  print(e);
+                });
                 return;
               }
 //        print("本次拖动距离： ${touchRange}");

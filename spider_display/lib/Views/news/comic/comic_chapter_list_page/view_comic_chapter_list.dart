@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:spider_display/CustomView/clip_widgets.dart';
 import 'package:spider_display/Modle/model_comic.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/news/comic/comic_chapter_page/view_comic_chapter.dart';
-import 'package:spider_display/CustomView/clip_image_view.dart';
 import 'package:spider_display/CustomView/comic_generic_view.dart';
 
 class ComicChapterListPage extends StatelessWidget {

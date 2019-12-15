@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:spider_display/CustomView/clip_widgets.dart';
 import 'package:spider_display/Modle/modle_huxiu.dart';
 import 'package:spider_display/Modle/modle_huxiu_detail.dart';
 import 'package:spider_display/Res/res_text_style.dart';
 import 'package:spider_display/Utils/navigator_router_utils.dart';
 import 'package:spider_display/Views/news/page_image_play.dart';
 import 'package:spider_display/Views/news/view_auto_refresh_list.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 Dio dio;
 
@@ -68,7 +68,9 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
               //结果错误
               return buildMainContainer(context, detail, LoadState.Error);
             } else {
-              detail = snapshot.data;
+              if (snapshot.data.contents != null) {
+                detail = snapshot.data;
+              }
             }
             return buildMainContainer(context, detail, LoadState.Success);
         }
@@ -99,7 +101,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
       ),
       body: Container(
         color: Colors.white,
-        child: detail.contents.length == 0
+        child: detail.getLength() == 0
             ? buildDefaultDetailView()
             : buildAutoRefreshListView(detail),
       ),
@@ -159,7 +161,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
   AutoRefreshListView<HuxiuDetail> buildAutoRefreshListView(
       HuxiuDetail detail) {
     return AutoRefreshListView<HuxiuDetail>(
-      childCount: detail.contents.length,
+      childCount: detail.getLength(),
       builder: (context, i) {
         return buildContentItem(i, detail.contents[i]);
       },
@@ -226,7 +228,9 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
         await dio.get(getHuxiuDetailUrl(widget.huxiuNews.newsId, widget.tag));
     HuxiuDetailBean bean =
         HuxiuDetailBean(response.data.toString().replaceAll("\n", ""));
-    detail = bean.data[0];
+    if (bean.data[0].contents != null) {
+      detail = bean.data[0];
+    }
     setState(() {});
   }
 
@@ -253,7 +257,7 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
   }
 
   Widget buildSliverToBoxAdapter() {
-    if (detail.contents.length == 0) {
+    if (detail.getLength() == 0) {
       return SliverToBoxAdapter(
         child: Container(
           color: Colors.white,
@@ -275,13 +279,18 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
         (BuildContext context, int index) {
           return buildContentItem(index, detail.contents[index]);
         },
-        childCount: detail.contents.length,
+        childCount: detail.getLength(),
       ),
     );
   }
 
   Widget buildSliverAppBar(BuildContext context) {
-    int timeMillis = int.parse(detail.huxiuNews.createTime);
+    int timeMillis = 0;
+    try {
+      timeMillis = int.parse(detail.huxiuNews.createTime);
+    } catch (e) {
+      timeMillis = 0;
+    }
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timeMillis * 1000);
 
 //    return SliverPersistentHeader(
@@ -368,15 +377,15 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
 //        ),
         //头部图片
         background: Container(
+          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
           color: Colors.white,
           width: double.infinity,
           child: Hero(
             tag:
                 "${detail.huxiuNews.newsId}-${detail.huxiuNews.createTime}-${widget.pos}",
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: detail.huxiuNews.imageLink,
-              fit: BoxFit.cover,
+            child: ClipRadiusShadowImage(
+              url: detail.huxiuNews.imageLink,
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
         ),
@@ -387,7 +396,12 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
   }
 
   Widget buildSliverTitle(BuildContext context) {
-    int timeMillis = int.parse(detail.huxiuNews.createTime);
+    int timeMillis = 0;
+    try {
+      timeMillis = int.parse(detail.huxiuNews.createTime);
+    } catch (e) {
+      timeMillis = 0;
+    }
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timeMillis * 1000);
 
     String timsStr = "${date.year}年${date.month}月${date.day}日 "
@@ -455,9 +469,8 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
                               padding: const EdgeInsets.all(0.5),
                               color: Colors.black54,
                               child: ClipOval(
-                                child: FadeInImage.memoryNetwork(
-                                  placeholder: kTransparentImage,
-                                  image: detail.huxiuNews.author.authorImg,
+                                child: Image.network(
+                                  detail.huxiuNews.author.authorImg,
                                   fit: BoxFit.cover,
                                   width: 15.0,
                                   height: 15.0,
@@ -532,9 +545,8 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
           width: double.infinity,
           child: Hero(
             tag: imageLink,
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: imageLink,
+            child: Image.network(
+              imageLink,
               fit: BoxFit.cover,
             ),
           ),
@@ -691,13 +703,17 @@ class _HuxiuDetailPageState extends State<HuxiuDetailPage>
         await dio.get(getHuxiuDetailUrl(widget.huxiuNews.newsId, widget.tag));
     HuxiuDetailBean bean =
         HuxiuDetailBean(response.data.toString().replaceAll("\n", ""));
-    detail = bean.data[0];
+    if (bean.data[0].contents != null) {
+      detail = bean.data[0];
+    }
     return detail;
   }
 
   void setRefreshDataList(data) {
     setState(() {
-      this.detail = data;
+      if (data.contents != null) {
+        this.detail = data;
+      }
     });
   }
 
